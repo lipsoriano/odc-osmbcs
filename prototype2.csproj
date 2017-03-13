@@ -102,7 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Class1.cs" />
+    <Compile Include="TextBoxValidation.cs" />
     <Compile Include="editCustomer.xaml.cs">
       <DependentUpon>editCustomer.xaml</DependentUpon>
     </Compile>

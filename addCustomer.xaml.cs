@@ -21,10 +21,14 @@ namespace prototype2
     /// </summary>
     public partial class addCustomer : Window
     {
+        public String Name { get; set; }
+        public String Address { get; set; }
+        public String City { get; set; }
         public addCustomer()
         {
             InitializeComponent();
-            
+            custCompanyNameTb.DataContext = this;
+            locationAddressTb.DataContext = this;
         }
         private static String dbname = "odc_db";
         private void setControlsValues()
@@ -104,7 +108,13 @@ namespace prototype2
             setControlsValues();
         }
 
-        
+        private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custCompanyNameTb) == true)
+                saveBtn.IsEnabled = false;
+            else
+                saveBtn.IsEnabled = true;
+        }
     }
     
 }
