@@ -8,6 +8,15 @@
         Title="addCustomer" Width="640" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Height="400">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <ControlTemplate x:Key="validationErrorTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" 
+            DockPanel.Dock="Top">!</TextBlock>
+                <AdornedElementPlaceholder 
+           x:Name="ErrorAdorner"
+        ></AdornedElementPlaceholder>
+            </DockPanel>
+        </ControlTemplate>
     </Window.Resources>
     <Grid>
         <ScrollViewer Margin="0">
@@ -48,7 +57,16 @@
                             <Label x:Name="label1_Copy1" Content="Contact Details:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="99"/>
                             <Grid x:Name="mobileNoGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="179" Margin="10,31,0,0" Height="60" Grid.RowSpan="2">
                                 <Label x:Name="streetNameTbLbl3" Content="Mobile Number:" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
-                                <TextBox x:Name="mobileNumTb" TextWrapping="Wrap" Background="{x:Null}" Width="141" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="19,31,0,3"/>
+                                <TextBox x:Name="mobileNumTb" TextWrapping="Wrap" Background="{x:Null}" Width="141" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="19,31,0,3" Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                                    <TextBox.Text>
+                                        <Binding Path="Name" Mode="TwoWay" 
+        UpdateSourceTrigger="LostFocus">
+                                            <Binding.ValidationRules>
+                                                <local:Class1></local:Class1>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                             <Grid x:Name="mobileNoGrid_Copy" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="212,31,0,0" Height="60" Grid.RowSpan="2">
                                 <Label x:Name="streetNameTbLbl1" Content="Office Number" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
