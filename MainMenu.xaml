@@ -411,7 +411,6 @@
                     <Label x:Name="label1_Copy3" Content="As of February 18, 2016" HorizontalAlignment="Right" Height="26" Margin="357,10,0,0" VerticalAlignment="Top" Width="146" FlowDirection="RightToLeft" FontWeight="Bold"/>
                 </Grid>
                 <Label x:Name="label7" Content="Dashboard" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Grid.ColumnSpan="2" Height="57" VerticalAlignment="Top"/>
-                <chartingToolkit:BarSeries HorizontalAlignment="Left" Margin="182,53,0,0" Grid.Row="3" VerticalAlignment="Top" Height="0" Width="0"/>
             </Grid>
             <Grid x:Name="transactionGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True">
                 <Grid x:Name="transactionQuotationsGrid" d:IsHidden="True">
