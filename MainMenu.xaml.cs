@@ -276,7 +276,7 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.mobileNo, CONCAT(l.locationAddress,' ',p.locProvince) AS custLocation " +
+                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.emailAddress, CONCAT(l.locationAddress,' ',p.locProvince) AS custLocation " +
                     "FROM customer_t c JOIN customer_contacts_t cc ON c.custID = cc.custID " +
                     "JOIN location_details_t l ON c.locationID = l.locationID " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId;";
@@ -293,14 +293,43 @@ namespace prototype2
             if (manageCustomeDataGrid.SelectedItems.Count > 0)
             {
                 String id = (manageCustomeDataGrid.Columns[0].GetCellContent(manageCustomeDataGrid.SelectedItem)as TextBlock).Text;
-                editCustomer editcustomer = new editCustomer();
-                editcustomer.id = id;
+                editCustomer editcustomer = new editCustomer(id);
                 editcustomer.ShowDialog();
                 setManageGridControls();
             }
             
         }
 
+        private void btnDeleteCust_Click(object sender, RoutedEventArgs e)
+        {
+            if (manageCustomeDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageCustomeDataGrid.Columns[0].GetCellContent(manageCustomeDataGrid.SelectedItem) as TextBlock).Text;
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                MessageBoxResult result = MessageBox.Show("Do you want to save this new customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    
+                    if (dbCon.IsConnect())
+                    {
+                        string query = "DELETE FROM `customer_t` WHERE `custID`= '"+id+"';";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Successfully deleted.");
+                        }
+                    }
+
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                }
+                setManageGridControls();
+            }
+        }
         private void manageCustomerAddBtn_Click(object sender, RoutedEventArgs e)
         {
             addCustomer addcustomer = new addCustomer();
@@ -330,6 +359,8 @@ namespace prototype2
         {
             setManageGridControls();
         }
+
+        
     }
     internal class Item : INotifyPropertyChanged
     {

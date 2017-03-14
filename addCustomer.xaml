@@ -5,10 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prototype2"
         mc:Ignorable="d"
-        Title="addCustomer" Width="640" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Height="400">
+        Title="addCustomer" Width="640" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Height="346">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="False">
+                            <AdornedElementPlaceholder x:Name="Box" DockPanel.Dock="Top"/>
+                            <TextBlock Foreground="Red" DockPanel.Dock="Bottom"
+                                        Text="{Binding ElementName=Box,Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -27,7 +40,7 @@
         <ScrollViewer Margin="0">
             <Grid>
                 <GroupBox x:Name="groupBox" Header="Customer Details" Margin="10,12,10,44">
-                    <Grid Margin="-1,0,-2,0" Height="415" VerticalAlignment="Top">
+                    <Grid Margin="-1,0,-2,-1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
@@ -37,7 +50,7 @@
                                 <TextBox.Text>
                                     <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <local:TextBoxValidation></local:TextBoxValidation>
+                                            <local:TextBoxValidation TextBoxType="String"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -53,11 +66,11 @@
                             <Label x:Name="label1" Content="Location/Address:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
                             <Grid x:Name="locationBrngyGrid" Margin="19,26,10,0" VerticalAlignment="Top" Height="60">
                                 <Label x:Name="locationBrngyTbLbl" Content="Address" VerticalAlignment="Top" Visibility="Visible"/>
-                                <TextBox x:Name="locationAddressTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="10,26,10,0">
+                                <TextBox x:Name="locationAddressTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="10,26,10,0" TextChanged="locationAddressTb_TextChanged">
                                     <TextBox.Text>
                                         <Binding Path="Address" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
-                                                <local:TextBoxValidation></local:TextBoxValidation>
+                                                <local:TextBoxValidation TextBoxType="String"/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
@@ -65,28 +78,58 @@
                             </Grid>
                             <Grid x:Name="locationCityGrid" Margin="19,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
                                 <Label x:Name="locationCityTbLbl" Content="City" VerticalAlignment="Top" Visibility="Visible"/>
-                                <TextBox x:Name="locationCityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,10,10" Width="170" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="locationCityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,10,10" Width="170" HorizontalAlignment="Center" TextChanged="locationCityTb_TextChanged">
+                                    <TextBox.Text>
+                                        <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="String"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                             <Grid x:Name="locationProvinceGrid" Margin="225,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
-                                <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center"/>
+                                <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" SelectionChanged="custProvinceCust_SelectionChanged">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="locProvinceId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                                 <Label x:Name="label1_Copy" Content="Province:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             </Grid>
                         </Grid>
-                        <Grid Margin="10,314,26,0" Height="111" VerticalAlignment="Top">
+                        <Grid Margin="10,314,26,0" Height="104" VerticalAlignment="Top">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="33*"/>
                                 <RowDefinition Height="92*"/>
                             </Grid.RowDefinitions>
                             <Label x:Name="label1_Copy1" Content="Contact Details:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="99"/>
-                            <Grid x:Name="mobileNoGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="179" Margin="10,31,0,0" Height="60" Grid.RowSpan="2">
-                                <Label x:Name="streetNameTbLbl3" Content="Mobile Number:" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
-                                <TextBox x:Name="mobileNumTb" TextWrapping="Wrap" Background="{x:Null}" Width="141" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="19,31,0,3" >
-
+                            <Grid x:Name="mobileNoGrid_Copy" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="16,31,0,0" Height="60" Grid.RowSpan="2">
+                                <Label x:Name="streetNameTbLbl1" Content="Office Number" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
+                                <TextBox x:Name="officeNumber" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="10,29,7,5" TextChanged="officeNumber_TextChanged">
+                                    <TextBox.Text>
+                                        <Binding Path="Number" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="Number"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
                                 </TextBox>
                             </Grid>
-                            <Grid x:Name="mobileNoGrid_Copy" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="212,31,0,0" Height="60" Grid.RowSpan="2">
-                                <Label x:Name="streetNameTbLbl1" Content="Office Number" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
-                                <TextBox x:Name="officeNumber" TextWrapping="Wrap" Background="{x:Null}" Width="141" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="19,29,0,5"/>
+                            <Grid x:Name="mobileNoGrid_Copy1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="189,31,0,0" Height="60" Grid.RowSpan="2">
+                                <Label x:Name="streetNameTbLbl2" Content="Email Address" VerticalAlignment="Top" Visibility="Visible" Height="25"/>
+                                <TextBox x:Name="emailAddress" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="100" Margin="10,29,7,5" TextChanged="emailAddress_TextChanged">
+                                    <TextBox.Text>
+                                        <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="Email"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                         </Grid>
                     </Grid>

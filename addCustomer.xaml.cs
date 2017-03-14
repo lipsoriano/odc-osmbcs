@@ -24,11 +24,18 @@ namespace prototype2
         public String Name { get; set; }
         public String Address { get; set; }
         public String City { get; set; }
+        public String Number { get; set; }
+        public String Email { get; set; }
+        public object locProvinceId { get; set; }
         public addCustomer()
         {
             InitializeComponent();
             custCompanyNameTb.DataContext = this;
             locationAddressTb.DataContext = this;
+            locationCityTb.DataContext = this;
+            emailAddress.DataContext = this;
+            officeNumber.DataContext = this;
+            custProvinceCust.DataContext = this;
         }
         private static String dbname = "odc_db";
         private void setControlsValues()
@@ -80,10 +87,10 @@ namespace prototype2
                             {
                                 custId = myRow[0].ToString();
                             }
-                            query = "INSERT INTO customer_contacts_t (custID,officePhoneNo,mobileNo) VALUES ('" + custId + "','" + officeNumber.Text + "','" + mobileNumTb.Text + "')";
+                            query = "INSERT INTO customer_contacts_t (custID,officePhoneNo,emailAddress) VALUES ('" + custId + "','" + officeNumber.Text + "','" + emailAddress.Text + "')";
                             if (dbCon.insertQuery(query, dbCon.Connection))
                             {
-                                MessageBox.Show("New customer is added on the database.");
+                                MessageBox.Show("Saved");
                                 this.Close();
                             }
                         }
@@ -112,8 +119,53 @@ namespace prototype2
         {
             if (System.Windows.Controls.Validation.GetHasError(custCompanyNameTb) == true)
                 saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void locationAddressTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(locationAddressTb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void locationCityTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(locationCityTb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void custProvinceCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custProvinceCust) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void officeNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(officeNumber) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void emailAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(emailAddress) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+        private void validateTextBoxes()
+        {
+            if (custCompanyNameTb.Text.Equals("")||locationAddressTb.Text.Equals("")||locationCityTb.Text.Equals("")||custProvinceCust.SelectedIndex==-1||officeNumber.Text.Equals("")||emailAddress.Text.Equals(""))
+            {
+                saveBtn.IsEnabled = false;
+            }
             else
+            {
                 saveBtn.IsEnabled = true;
+            }
         }
     }
     
