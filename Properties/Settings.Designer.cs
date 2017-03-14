@@ -46,5 +46,17 @@ namespace prototype2.Properties {
                 this["Setting"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MANAGER,ADMIN OFFICER,REGULAR EMPLOYEE")]
+        public string posType {
+            get {
+                return ((string)(this["posType"]));
+            }
+            set {
+                this["posType"] = value;
+            }
+        }
     }
 }

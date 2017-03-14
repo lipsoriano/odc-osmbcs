@@ -8,5 +8,8 @@
     <Setting Name="Setting" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="posType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MANAGER,ADMIN OFFICER,REGULAR EMPLOYEE</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

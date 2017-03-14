@@ -48,7 +48,12 @@ namespace prototype2
 
         private void reportsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            reportsGrid.Visibility = Visibility.Visible;
         }
 
         private void dashBoardBtn_Click(object sender, RoutedEventArgs e)
@@ -270,7 +275,7 @@ namespace prototype2
             
         }
 
-        private void setManageGridControls()
+        private void setManageCustomerGridControls()
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
@@ -295,7 +300,7 @@ namespace prototype2
                 String id = (manageCustomeDataGrid.Columns[0].GetCellContent(manageCustomeDataGrid.SelectedItem)as TextBlock).Text;
                 editCustomer editcustomer = new editCustomer(id);
                 editcustomer.ShowDialog();
-                setManageGridControls();
+                setManageCustomerGridControls();
             }
             
         }
@@ -307,7 +312,7 @@ namespace prototype2
                 String id = (manageCustomeDataGrid.Columns[0].GetCellContent(manageCustomeDataGrid.SelectedItem) as TextBlock).Text;
                 var dbCon = DBConnection.Instance();
                 dbCon.DatabaseName = dbname;
-                MessageBoxResult result = MessageBox.Show("Do you want to save this new customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     
@@ -327,14 +332,14 @@ namespace prototype2
                 else if (result == MessageBoxResult.Cancel)
                 {
                 }
-                setManageGridControls();
+                setManageCustomerGridControls();
             }
         }
         private void manageCustomerAddBtn_Click(object sender, RoutedEventArgs e)
         {
             addCustomer addcustomer = new addCustomer();
             addcustomer.ShowDialog();
-            setManageGridControls();
+            setManageCustomerGridControls();
         }
 
         private void manageCustomeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -346,21 +351,84 @@ namespace prototype2
                 if (manageCustomeDataGrid.SelectedItems.Count > 0)
                 {
                     manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtn)].Visibility = Visibility.Visible;
+                    manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteBtn)].Visibility = Visibility.Visible;
                 }
             }
         }
 
-        private void manageCustomerGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void manageCustomerGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            setManageGridControls();
+            setManageCustomerGridControls();
         }
 
-        
+        private void manageEmployeeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(manageEmployeeDataGrid))
+            {
+                if (manageCustomeDataGrid.SelectedItems.Count > 0)
+                {
+                    manageEmployeeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Visible;
+                    manageEmployeeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void manageEmployeeDataGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            setManageEmployeeGridControls();
+        }
+
+        private void setManageEmployeeGridControls()
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
+            {
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName, e.empContacts, e.empEmail, CONCAT(l.locationAddress,'',l.locationCity,' ',p.locProvince)" +
+                    "FROM employee_t e " +
+                    "JOIN location_details_t l ON e.locationID = l.locationID " +
+                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                manageEmployeeDataGrid.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
+        }
+
+        private void manageEmployeeAddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            addEmployee addEmployee = new addEmployee();
+            addEmployee.ShowDialog();
+            setManageEmployeeGridControls();
+        }
+
+        private void btnEditEmp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteEmp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void employeeManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageEmployeeGrid.Visibility = Visibility.Visible;
+        }
     }
     internal class Item : INotifyPropertyChanged
     {
