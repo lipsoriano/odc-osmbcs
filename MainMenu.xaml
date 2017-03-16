@@ -622,12 +622,13 @@
                         <Button x:Name="manageEmployeeAddBtn" Content="+ add new" HorizontalAlignment="Right" Height="26" Margin="0,0,10,0" VerticalAlignment="Top" Width="90" Click="manageEmployeeAddBtn_Click"/>
                         <DataGrid x:Name="manageEmployeeDataGrid" Margin="10,41,10,10" CanUserAddRows="False" ColumnWidth="0" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" SelectionChanged="manageEmployeeDataGrid_SelectionChanged" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" IsVisibleChanged="manageEmployeeDataGrid_IsVisibleChanged">
                             <DataGrid.Columns >
-                                <DataGridTextColumn Binding="{Binding empId}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Visible"/>
-                                <DataGridTextColumn Binding="{Binding empName}" ClipboardContentBinding="{x:Null}" Header="Company Name" Width="200" CanUserResize="False"/>
-                                <DataGridTextColumn Binding="{Binding empAddress}" ClipboardContentBinding="{x:Null}" Header="Description" Width="350" />
-                                <DataGridTextColumn Binding="{Binding empContacts}" ClipboardContentBinding="{x:Null}" Header="Address" Width="200" CanUserResize="False"/>
-                                <DataGridTextColumn Binding="{Binding empEmail}" ClipboardContentBinding="{x:Null}" Header="Office No." Width="200" CanUserResize="False" />
-                                <DataGridTextColumn Binding="{Binding position}" ClipboardContentBinding="{x:Null}" Header="Email Address" Width="100" CanUserResize="False" />
+                                <DataGridTextColumn Binding="{Binding empID}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Visible"/>
+                                <DataGridTextColumn Binding="{Binding empPic}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Visible"/>
+                                <DataGridTextColumn Binding="{Binding empName}" ClipboardContentBinding="{x:Null}" Header="Employee Name" Width="200" CanUserResize="False"/>
+                                <DataGridTextColumn Binding="{Binding empAddress}" ClipboardContentBinding="{x:Null}" Header="Address" Width="350" />
+                                <DataGridTextColumn Binding="{Binding empContacts}" ClipboardContentBinding="{x:Null}" Header="Mobile Number" Width="200" CanUserResize="False"/>
+                                <DataGridTextColumn Binding="{Binding empEmail}" ClipboardContentBinding="{x:Null}" Header="Email Address" Width="200" CanUserResize="False" />
+                                <DataGridTextColumn Binding="{Binding position}" ClipboardContentBinding="{x:Null}" Header="Position" Width="100" CanUserResize="False" />
                                 <DataGridTemplateColumn x:Name="columnEditBtnEmp" Width="100" Visibility="Hidden"  CanUserResize="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -657,7 +658,13 @@
                         <Button x:Name="manageCustomerAddBtn2" Content="+ add new" HorizontalAlignment="Right" Height="26" Margin="0,0,10,0" VerticalAlignment="Top" Width="90" Click="manageCustomerAddBtn_Click"/>
                         <DataGrid x:Name="manageCustomeDataGrid2" Margin="10,41,10,10" CanUserAddRows="False" ColumnWidth="0" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" SelectionChanged="manageCustomeDataGrid_SelectionChanged" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0">
                             <DataGrid.Columns >
-                                <DataGridTextColumn Binding="{Binding custID}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Visible"/>
+                                <DataGridTemplateColumn x:Name="picture" Width="100" Visibility="Hidden">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image></Image>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding custCompanyName}" ClipboardContentBinding="{x:Null}" Header="Company Name" Width="200" CanUserResize="False"/>
                                 <DataGridTextColumn Binding="{Binding custAddInfo}" ClipboardContentBinding="{x:Null}" Header="Description" Width="200" />
                                 <DataGridTextColumn Binding="{Binding custLocation}" ClipboardContentBinding="{x:Null}" Header="Address" Width="350" CanUserResize="False"/>

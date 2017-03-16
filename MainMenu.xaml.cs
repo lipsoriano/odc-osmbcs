@@ -87,6 +87,15 @@ namespace prototype2
             {
                 manageCustomeDataGrid.SelectedIndex = -1;
                 manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtn)].Visibility = Visibility.Hidden;
+                manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteBtn)].Visibility = Visibility.Hidden;
+            }
+            if (visual.IsDescendantOf(manageEmployeeDataGrid))
+            {
+                if (manageEmployeeDataGrid.SelectedItems.Count > 0)
+                {
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Visible;
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -284,7 +293,8 @@ namespace prototype2
                 string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.emailAddress, CONCAT(l.locationAddress,' ',p.locProvince) AS custLocation " +
                     "FROM customer_t c JOIN customer_contacts_t cc ON c.custID = cc.custID " +
                     "JOIN location_details_t l ON c.locationID = l.locationID " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId;";
+                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
                 dataAdapter.Fill(fromDb, "t");
@@ -321,6 +331,7 @@ namespace prototype2
                         if (dbCon.insertQuery(query, dbCon.Connection))
                         {
                             MessageBox.Show("Successfully deleted.");
+                            setManageCustomerGridControls();
                         }
                     }
 
@@ -366,10 +377,10 @@ namespace prototype2
             Visual visual = e.OriginalSource as Visual;
             if (visual.IsDescendantOf(manageEmployeeDataGrid))
             {
-                if (manageCustomeDataGrid.SelectedItems.Count > 0)
+                if (manageEmployeeDataGrid.SelectedItems.Count > 0)
                 {
-                    manageEmployeeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Visible;
-                    manageEmployeeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Visible;
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Visible;
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Visible;
                 }
             }
         }
@@ -385,10 +396,11 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName, e.empContacts, e.empEmail, CONCAT(l.locationAddress,'',l.locationCity,' ',p.locProvince)" +
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,e.position, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',l.locationCity,' ',p.locProvince) as empAddress " +
                     "FROM employee_t e " +
                     "JOIN location_details_t l ON e.locationID = l.locationID " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId;";
+                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
                 dataAdapter.Fill(fromDb, "t");
@@ -406,12 +418,44 @@ namespace prototype2
 
         private void btnEditEmp_Click(object sender, RoutedEventArgs e)
         {
-
+            if (manageEmployeeDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageEmployeeDataGrid.Columns[0].GetCellContent(manageEmployeeDataGrid.SelectedItem) as TextBlock).Text;
+                editEmployee editEmployee = new editEmployee(id);
+                editEmployee.ShowDialog();
+                setManageEmployeeGridControls();
+            }
         }
 
         private void btnDeleteEmp_Click(object sender, RoutedEventArgs e)
         {
+            if (manageEmployeeDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageEmployeeDataGrid.Columns[0].GetCellContent(manageEmployeeDataGrid.SelectedItem) as TextBlock).Text;
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (dbCon.IsConnect())
+                    {
+                        string query = "UPDATE `employee_t` SET `isDeleted`= 1 WHERE empID = '" + id + "';";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Successfully deleted.");
+                            setManageEmployeeGridControls();
+                        }
+                    }
 
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                }
+                setManageCustomerGridControls();
+            }
         }
 
         private void employeeManageMenuBtn_Click(object sender, RoutedEventArgs e)
