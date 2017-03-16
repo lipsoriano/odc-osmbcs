@@ -108,6 +108,7 @@ namespace prototype2
                             if (dbCon.insertQuery(query, dbCon.Connection))
                             {
                                 MessageBox.Show("Updated");
+                                this.Close();
                             }
                         }
                     }

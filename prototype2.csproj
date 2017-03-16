@@ -189,7 +189,7 @@
     <Resource Include="Resources\photo-camera.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\picture.png" />
+    <Resource Include="Resources\picture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,7 +31,7 @@ namespace prototype2
                 {
                     try
                     {
-                        int number = int.Parse(value.ToString());
+                        Decimal number = Decimal.Parse(value.ToString());
                         if (value.ToString().Length < 7)
                         {
                             return new ValidationResult(false, "*Must be greate than 7.");

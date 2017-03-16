@@ -315,10 +315,9 @@ namespace prototype2
                 MessageBoxResult result = MessageBox.Show("Do you want to delete this customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    
                     if (dbCon.IsConnect())
                     {
-                        string query = "DELETE FROM `customer_t` WHERE `custID`= '"+id+"';";
+                        string query = "UPDATE `customer_t` SET `isDeleted`= 1 WHERE custID = '"+id+"';";
                         if (dbCon.insertQuery(query, dbCon.Connection))
                         {
                             MessageBox.Show("Successfully deleted.");

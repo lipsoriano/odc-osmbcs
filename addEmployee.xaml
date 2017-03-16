@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prototype2"
         mc:Ignorable="d"
-        Title="Employee - Add new Employee" Height="702" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Width="640">
+        Title="Employee - Add new Employee" Height="257.6" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Width="650">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type TextBox}">
@@ -44,37 +44,53 @@
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="193*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Full Name" HorizontalAlignment="Left" Margin="1,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <Label Content="First Name" HorizontalAlignment="Left" Margin="18,34,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="firstNameTb" HorizontalAlignment="Left" Height="23" Margin="37,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontWeight="Normal" Grid.Column="1"/>
-                        <Label Content="Middle Initial" HorizontalAlignment="Left" Margin="167,34,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="middleInitialTb" HorizontalAlignment="Left" Height="23" Margin="180,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontWeight="Normal" MaxLength="3" Grid.Column="1"/>
-                        <Label Content="Last Name" HorizontalAlignment="Left" Margin="273,34,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="lastNameTb" HorizontalAlignment="Left" Height="23" Margin="292,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" FontWeight="Normal" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
-                            <TextBox.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="0.099"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </TextBox.RenderTransform>
+                        <Label x:Name="label2" Content="All fields are required" HorizontalAlignment="Left" Margin="3,4,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1" Width="135" FontStyle="Italic"/>
+                        <Label Content="Full Name" HorizontalAlignment="Left" Margin="2,25,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <Label Content="First Name" HorizontalAlignment="Left" Margin="19,49,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="firstNameTb" HorizontalAlignment="Left" Height="23" Margin="38,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontWeight="Normal" Grid.Column="1" TextChanged="firstNameTb_TextChanged">
+                            <Binding Path="FirstName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="String"/>
+                                </Binding.ValidationRules>
+                            </Binding>
                         </TextBox>
-                        <Image x:Name="empImage" Grid.Column="1" HorizontalAlignment="Left" Height="80" Margin="481,7,0,0" VerticalAlignment="Top" Width="80" Source="pack://siteoforigin:,,,/Resources/picture.png"/>
-                        <Button x:Name="openFileBtn" Content="+ Open Image" Grid.Column="1" HorizontalAlignment="Left" Margin="475,86,0,0" VerticalAlignment="Top" Width="94" FontWeight="Normal" Click="openFileBtn_Click"/>
-                        <Label Content="Address" HorizontalAlignment="Left" Margin="1,101,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <Label Content="Permanent Address" VerticalAlignment="Top" Visibility="Visible" Margin="20,126,444,0" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="addressTb" HorizontalAlignment="Left" Height="23" Margin="39,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="518" FontWeight="Normal" Grid.Column="1"/>
-                        <Label Content="City" VerticalAlignment="Top" Visibility="Visible" Margin="20,186,508,0" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="cityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="39,217,370,0" Width="170" HorizontalAlignment="Center" Grid.Column="1">
+                        <Label Content="Middle Initial" HorizontalAlignment="Left" Margin="168,49,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="middleInitialTb" HorizontalAlignment="Left" Height="23" Margin="181,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontWeight="Normal" MaxLength="3" Grid.Column="1" TextChanged="middleInitialTb_TextChanged">
+                            <Binding Path="MiddleName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="String"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Label Content="Last Name" HorizontalAlignment="Left" Margin="274,49,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="lastNameTb" HorizontalAlignment="Left" Height="23" Margin="293,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" FontWeight="Normal" Grid.Column="1" RenderTransformOrigin="0.5,0.5" TextChanged="lastNameTb_TextChanged">
+                            <Binding Path="LastName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="String"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Image x:Name="empImage" Grid.Column="1" HorizontalAlignment="Left" Height="80" Margin="477,28,0,0" VerticalAlignment="Top" Width="80" Source="Resources/picture.png"/>
+                        <Button x:Name="openFileBtn" Content="+ Open Image" Grid.Column="1" HorizontalAlignment="Left" Margin="471,107,0,0" VerticalAlignment="Top" Width="94" FontWeight="Normal" Click="openFileBtn_Click"/>
+                        <Label Content="Address" HorizontalAlignment="Left" Margin="2,116,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <Label Content="Address" VerticalAlignment="Top" Visibility="Visible" Margin="21,141,443,0" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="addressTb" HorizontalAlignment="Left" Height="23" Margin="38,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="520" FontWeight="Normal" Grid.Column="1" TextChanged="addressTb_TextChanged">
+                            <Binding Path="Address" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="String"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Label Content="City" VerticalAlignment="Top" Visibility="Visible" Margin="21,201,507,0" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="cityTb" TextWrapping="Wrap" Background="{x:Null}" Height="23" MaxLines="1" VerticalAlignment="Top" Margin="47,232,0,0" Width="153" HorizontalAlignment="Left" Grid.Column="1" FontWeight="Normal" VerticalContentAlignment="Center" TextChanged="cityTb_TextChanged">
                             <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:TextBoxValidation TextBoxType="String"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <Label Content="Province" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="228,186,0,0" FontWeight="Normal" Grid.Column="1"/>
-                        <ComboBox x:Name="provinceCb" Margin="247,217,162,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" Grid.Column="1">
+                        <Label Content="Province" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="229,201,0,0" FontWeight="Normal" Grid.Column="1"/>
+                        <ComboBox x:Name="provinceCb" Margin="261,232,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="157" HorizontalAlignment="Left" FontWeight="Normal" Grid.Column="1" SelectionChanged="provinceCb_SelectionChanged">
                             <ComboBox.SelectedItem>
                                 <Binding Path="locProvinceId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -83,18 +99,38 @@
                                 </Binding>
                             </ComboBox.SelectedItem>
                         </ComboBox>
-                        <Label Content="Contact Details" HorizontalAlignment="Left" Margin="3,252,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <Label Content="Mobile Number" HorizontalAlignment="Left" Margin="20,276,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="mobileNumberTb" HorizontalAlignment="Left" Height="23" Margin="39,307,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontWeight="Normal" Grid.Column="1"/>
-                        <Label Content="Email Address" HorizontalAlignment="Left" Margin="181,276,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="emailAddressTb" HorizontalAlignment="Left" Height="23" Margin="200,307,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontWeight="Normal" Grid.Column="1"/>
-                        <Label Content="Position" HorizontalAlignment="Left" Margin="3,344,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <ComboBox x:Name="postionCb" HorizontalAlignment="Left" Margin="39,375,0,0" VerticalAlignment="Top" Width="170" Height="26" Grid.Column="1"/>
-                        <Label x:Name="label_Copy5" Content="Account Credentials" HorizontalAlignment="Left" Margin="3,415,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <Label x:Name="label_Copy6" Content="Username:" HorizontalAlignment="Left" Margin="20,447,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="textBox_Copy3" HorizontalAlignment="Left" Height="23" Margin="39,478,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontWeight="Normal" Grid.Column="1"/>
-                        <Label x:Name="label_Copy7" Content="Password:" HorizontalAlignment="Left" Margin="181,447,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
-                        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="200,478,0,0" VerticalAlignment="Top" Width="140" Height="23" Grid.Column="1"/>
+                        <Label Content="Contact Details" HorizontalAlignment="Left" Margin="4,267,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <Label Content="Mobile Number" HorizontalAlignment="Left" Margin="21,291,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="mobileNumberTb" HorizontalAlignment="Left" Height="23" Margin="47,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" FontWeight="Normal" Grid.Column="1" TextChanged="mobileNumberTb_TextChanged">
+                            <Binding Path="Number" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="Number"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Label Content="Email Address" HorizontalAlignment="Left" Margin="229,291,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1"/>
+                        <TextBox x:Name="emailAddressTb" HorizontalAlignment="Left" Height="23" Margin="261,322,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="157" FontWeight="Normal" Grid.Column="1" TextChanged="emailAddressTb_TextChanged">
+                            <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:TextBoxValidation TextBoxType="Email"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Label Content="Position" HorizontalAlignment="Left" Margin="4,359,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <ComboBox x:Name="postionCb" HorizontalAlignment="Left" Margin="38,390,0,0" VerticalAlignment="Top" Width="162" Height="26" Grid.Column="1" SelectedValuePath="Content" FontWeight="Normal" SelectionChanged="postionCb_SelectionChanged">
+                            <ComboBox.SelectedItem>
+                                <Binding Path="Content" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedItem>
+                        </ComboBox>
+                        <Label x:Name="label_Copy5" Content="Account Credentials" HorizontalAlignment="Left" Margin="4,430,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <Label x:Name="label_Copy6" Content="Your username is same as your email address. &#xA;Password will be automatically generated and will be sent to your email." HorizontalAlignment="Left" Margin="38,461,0,0" VerticalAlignment="Top" FontWeight="Normal" Grid.Column="1" Height="42" Width="399"/>
+                        <Label x:Name="label_Copy" Content="Signature" HorizontalAlignment="Left" Margin="4,508,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
+                        <InkCanvas x:Name="MyInkCanvas" Margin="38,542,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="214" Width="507" Grid.Column="1" Background="Transparent"/>
+                        <Button x:Name="btnClear" Content="Clear Signature" HorizontalAlignment="Left" Margin="440,761,0,0" VerticalAlignment="Top" Width="105" Grid.Column="1" Click="btnClear_Click" FontWeight="Normal"/>
                     </Grid>
                 </GroupBox>
 
