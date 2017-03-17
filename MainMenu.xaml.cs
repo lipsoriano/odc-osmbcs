@@ -39,6 +39,12 @@ namespace prototype2
 
         private void serviceBtn_Click(object sender, RoutedEventArgs e)
         {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            servicesGrid.Visibility = Visibility.Visible;
         }
 
         private void inventoryBtn_Click(object sender, RoutedEventArgs e)
@@ -217,6 +223,15 @@ namespace prototype2
                     reqType.Items.Add(reTypeString);
                 }
             }
+            reqTypeSettings = Properties.Settings.Default.serviceType.ToString();
+            reqTypeArr = reqTypeSettings.Split(',');
+            if (typesOfService.Items.IsEmpty)
+            {
+                foreach (String reTypeString in reqTypeArr)
+                {
+                    typesOfService.Items.Add(reTypeString);
+                }
+            }
         }
 
         private void setTransControlValues()
@@ -233,6 +248,7 @@ namespace prototype2
                 dbCon.Close();
 
             }
+
         }
 
         private void custCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -619,6 +635,176 @@ namespace prototype2
             }
             makeSalesQuoteGrid.Visibility = Visibility.Visible;
         }
+
+        private void appSettingsManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageApplicationGrid.Visibility = Visibility.Visible;
+        }
+
+        private void manageApplicationGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+            setManageApplicationSettingsControls();
+        }
+        private void setManageApplicationSettingsControls()
+        {
+            String[] reqTypeArr = { };
+            String reqTypeSettings = Properties.Settings.Default.posType.ToString();
+            reqTypeArr = reqTypeSettings.Split(',');
+            if (employeePositionLb.Items.IsEmpty)
+            {
+                foreach (String reTypeString in reqTypeArr)
+                {
+                    employeePositionLb.Items.Add(reTypeString);
+                }
+            }
+            else
+            {
+                employeePositionLb.Items.Clear();
+                foreach (String reTypeString in reqTypeArr)
+                {
+                    employeePositionLb.Items.Add(reTypeString);
+                }
+            }
+            String[] itemcategoryTypeArr = { };
+            String itemcategoryType = Properties.Settings.Default.inventoryCategory.ToString();
+            itemcategoryTypeArr = itemcategoryType.Split(',');
+            if (invProductsCategoryLb.Items.IsEmpty)
+            {
+                foreach (String reTypeString in itemcategoryTypeArr)
+                {
+                    invProductsCategoryLb.Items.Add(reTypeString);
+                }
+            }
+            else
+            {
+                invProductsCategoryLb.Items.Clear();
+                foreach (String reTypeString in itemcategoryTypeArr)
+                {
+                    invProductsCategoryLb.Items.Add(reTypeString);
+                }
+            }
+        }
+
+        private void addEmpPosBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String posTypeSettings = Properties.Settings.Default.posType.ToString();
+            if (posTypeSettings.Equals(""))
+            {
+                posTypeSettings = empPosNewTb.Text;
+            }
+            else
+            {
+                posTypeSettings = posTypeSettings+","+empPosNewTb.Text;
+            }
+            Properties.Settings.Default.posType = posTypeSettings;
+            Properties.Settings.Default.Save();
+            MessageBox.Show("Added new position");
+            setManageApplicationSettingsControls();
+            empPosNewTb.Text = "";
+        }
+
+        private void deleteEmpPosBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String[] reqTypeArr = { };
+            String reqTypeSettings = Properties.Settings.Default.posType.ToString();
+            reqTypeArr = reqTypeSettings.Split(',');
+            String newListPos = "";
+            foreach(String type in reqTypeArr)
+            {
+                if (!type.Equals(employeePositionLb.SelectedItem.ToString()))
+                {
+                    if (newListPos.Equals(""))
+                    {
+                        newListPos = type;
+                    }
+                    else
+                    {
+                        newListPos = newListPos + "," + type;
+                    }
+                }
+                
+            }
+            Properties.Settings.Default.posType = newListPos;
+            Properties.Settings.Default.Save();
+            setManageApplicationSettingsControls();
+            MessageBox.Show("Delete the position");
+
+        }
+
+        private void reqType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show("" + reqType.SelectedItem.ToString());
+            string reTypeS = reqType.SelectedItem.ToString();
+            if (reTypeS.Equals("SERVICES"))
+            {
+                toServiceLbl.IsEnabled = true;
+                typesOfService.IsEnabled = true;
+            }
+            else
+            {
+                toServiceLbl.IsEnabled = false;
+                typesOfService.IsEnabled = false;
+            }
+        }
+
+        private void deleteCategoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String[] reqTypeArr = { };
+            String reqTypeSettings = Properties.Settings.Default.inventoryCategory.ToString();
+            reqTypeArr = reqTypeSettings.Split(',');
+            String newListPos = "";
+            foreach (String type in reqTypeArr)
+            {
+                if (!type.Equals(invProductsCategoryLb.SelectedItem.ToString()))
+                {
+                    if (newListPos.Equals(""))
+                    {
+                        newListPos = type;
+                    }
+                    else
+                    {
+                        newListPos = newListPos + "," + type;
+                    }
+                }
+
+            }
+            Properties.Settings.Default.inventoryCategory = newListPos;
+            Properties.Settings.Default.Save();
+            setManageApplicationSettingsControls();
+            MessageBox.Show("Delete the category");
+            
+        }
+
+        private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            String categoryTypeSettings = Properties.Settings.Default.inventoryCategory.ToString();
+            if (categoryTypeSettings.Equals(""))
+            {
+                categoryTypeSettings = invCategoryTb.Text;
+            }
+            else
+            {
+                categoryTypeSettings = categoryTypeSettings + "," + invCategoryTb.Text;
+            }
+            Properties.Settings.Default.inventoryCategory = categoryTypeSettings;
+            Properties.Settings.Default.Save();
+            MessageBox.Show("Added new category");
+            setManageApplicationSettingsControls();
+            invCategoryTb.Text = "";
+        }
+
+        
     }
     internal class Item : INotifyPropertyChanged
     {

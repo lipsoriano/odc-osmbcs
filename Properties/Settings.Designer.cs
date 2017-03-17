@@ -58,5 +58,29 @@ namespace prototype2.Properties {
                 this["posType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("EXTREME HAULING")]
+        public string serviceType {
+            get {
+                return ((string)(this["serviceType"]));
+            }
+            set {
+                this["serviceType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ROUTER,MODEM,SWITCH,RJ45")]
+        public string inventoryCategory {
+            get {
+                return ((string)(this["inventoryCategory"]));
+            }
+            set {
+                this["inventoryCategory"] = value;
+            }
+        }
     }
 }

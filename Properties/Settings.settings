@@ -11,5 +11,11 @@
     <Setting Name="posType" Type="System.String" Scope="User">
       <Value Profile="(Default)">MANAGER,ADMIN OFFICER,REGULAR EMPLOYEE</Value>
     </Setting>
+    <Setting Name="serviceType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">EXTREME HAULING</Value>
+    </Setting>
+    <Setting Name="inventoryCategory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ROUTER,MODEM,SWITCH,RJ45</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
