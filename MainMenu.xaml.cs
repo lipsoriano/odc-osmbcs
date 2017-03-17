@@ -472,6 +472,31 @@ namespace prototype2
             }
             manageEmployeeGrid.Visibility = Visibility.Visible;
         }
+
+        private void supplierManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageSupplierGrid.Visibility = Visibility.Visible;
+        }
+
+        private void manageSupplierGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            setManageSupplierGridControls();
+        }
+
+        private void setManageSupplierGridControls()
+        {
+            
+        }
     }
     internal class Item : INotifyPropertyChanged
     {

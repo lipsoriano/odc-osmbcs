@@ -376,7 +376,8 @@
             <Grid x:Name="manageSubMenugrid" HorizontalAlignment="Right" Width="379" Visibility="Hidden">
                 <Button x:Name="employeeManageMenuBtn" Content="Employees" Margin="294,0,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" Width="75" Click="employeeManageMenuBtn_Click"/>
                 <Button x:Name="customerManageMenuBtn" Content="Customers" Margin="214,1,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" Width="75" Click="customerManageMenuBtn_Click"/>
-                <Button x:Name="appSettingsManageMenuBtn" Content="Applications Setting" Margin="99,0,170,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White"/>
+                <Button x:Name="supplierManageMenuBtn" Content="Suppliers" Margin="135,0,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" Width="74" Click="supplierManageMenuBtn_Click"/>
+                <Button x:Name="appSettingsManageMenuBtn" Content="Applications Setting" Margin="20,0,249,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White"/>
             </Grid>
         </Grid>
         <Grid x:Name="containerGrid" Grid.Row="1" Background="#FF2980B9">
@@ -575,7 +576,7 @@
                 </Grid>
             </Grid>
             <Grid x:Name="reportsGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True"/>
-            <Grid x:Name="manageGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True" >
+            <Grid x:Name="manageGrid" Margin="10,0" Background="#FFECF0F1" >
                 <Grid x:Name="manageCustomerGrid" IsVisibleChanged="manageCustomerGrid_IsVisibleChanged" d:IsHidden="True">
                     <Label x:Name="label7_Copy" Content="Manage - Customer" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
                     <Grid Margin="10,70,10,10">
@@ -647,8 +648,8 @@
                         </DataGrid>
                     </Grid>
                 </Grid>
-                <Grid x:Name="manageCustomerGrid_Copy1" IsVisibleChanged="manageCustomerGrid_IsVisibleChanged" d:IsHidden="True">
-                    <Label x:Name="label7_Copy5" Content="Manage - Customer" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
+                <Grid x:Name="manageSupplierGrid" IsVisibleChanged="manageSupplierGrid_IsVisibleChanged">
+                    <Label x:Name="label7_Copy5" Content="Manage - Supplier" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
                     <Grid Margin="10,70,10,10">
                         <Grid Margin="10,1,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Label x:Name="label15" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
