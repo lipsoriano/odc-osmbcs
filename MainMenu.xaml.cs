@@ -179,11 +179,19 @@ namespace prototype2
         }
         private void transRequestBack_Click(object sender, RoutedEventArgs e)
         {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            MessageBoxResult result = MessageBox.Show("Do you want to cancel this transaction?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+                for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+                {
+                    transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+                }
+                quotationsGridHome.Visibility = Visibility.Visible;
             }
-            quotationsGridHome.Visibility = Visibility.Visible;
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -547,11 +555,69 @@ namespace prototype2
 
         private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Do you want to save this progress?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+                {
+                    transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+                }
+                addRequestionGrid.Visibility = Visibility.Visible;
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+            
+        }
+
+        private void logoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to logout?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        }
+
+        private void transQuotationSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
             for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
             {
                 transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
             }
-            addRequestionGrid.Visibility = Visibility.Visible;
+            viewQuotationGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transViewSaveOnlyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            quotationsGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transViewSaveSend_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            quotationsGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transViewBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            makeSalesQuoteGrid.Visibility = Visibility.Visible;
         }
     }
     internal class Item : INotifyPropertyChanged

@@ -55,12 +55,49 @@
         </Grid.RowDefinitions>
 
         <Grid Background="#FF2C3E50" Height="70" VerticalAlignment="Top">
-            <Grid Margin="10,10,747,10">
+            <Grid Margin="10,10,882,10">
                 <Image x:Name="image" HorizontalAlignment="Left" Width="50" Source="Resources/user-16.png"/>
                 <Label x:Name="label" Content="Lewis Ken Kinaadman" HorizontalAlignment="Left" Margin="64,9,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
+                <Button x:Name="logoutBtn" HorizontalAlignment="Left" Margin="231,10,0,0" VerticalAlignment="Top" Width="29" Background="{x:Null}" BorderBrush="White" Height="30" ToolTip="Logout" Click="logoutBtn_Click">
+                    <Canvas Name="Capa_1" Canvas.Left="0" Canvas.Top="0" Width="20" Height="18.9">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Resources/>
+                        <!--Unknown tag: metadata-->
+                        <!--Unknown tag: sodipodi:namedview-->
+                        <Canvas Name="g6">
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path2" Fill="White" Height="8.922" Canvas.Left="8.786" Stretch="Fill" Canvas.Top="4.289" Width="11.928">
+                                <Path.Data>
+                                    <PathGeometry Figures="M53.924 23.618c-0.051-0.123-0.125-0.234-0.217-0.327L41.708 11.293c-0.391-0.391-1.023-0.391-1.414 0   s-0.391 1.023 0 1.414L50.587 23H29.001c-0.553 0-1 0.447-1 1s0.447 1 1 1h21.586L40.294 35.293c-0.391 0.391-0.391 1.023 0 1.414   C40.489 36.902 40.745 37 41.001 37s0.512-0.098 0.707-0.293l11.999-11.999c0.093-0.092 0.166-0.203 0.217-0.326   C54.025 24.138 54.025 23.862 53.924 23.618z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path4" Fill="White" Height="17.666" Canvas.Left="1.808" Stretch="Fill" Canvas.Top="0.917" Width="11.884">
+                                <Path.Data>
+                                    <PathGeometry Figures="M36.001 29c-0.553 0-1 0.447-1 1v16h-10V8c0-0.436-0.282-0.821-0.697-0.953L8.442 2h26.559v16c0 0.553 0.447 1 1 1   s1-0.447 1-1V1c0-0.553-0.447-1-1-1h-34c-0.032 0-0.06 0.015-0.091 0.018C1.854 0.023 1.805 0.036 1.752 0.05   C1.658 0.075 1.574 0.109 1.493 0.158C1.467 0.174 1.436 0.174 1.411 0.192C1.38 0.215 1.356 0.244 1.328 0.269   c-0.017 0.016-0.035 0.03-0.051 0.047C1.201 0.398 1.139 0.489 1.093 0.589c-0.009 0.02-0.014 0.04-0.022 0.06   C1.029 0.761 1.001 0.878 1.001 1v46c0 0.125 0.029 0.243 0.072 0.355c0.014 0.037 0.035 0.068 0.053 0.103   c0.037 0.071 0.079 0.136 0.132 0.196c0.029 0.032 0.058 0.061 0.09 0.09c0.058 0.051 0.123 0.093 0.193 0.13   c0.037 0.02 0.071 0.041 0.111 0.056c0.017 0.006 0.03 0.018 0.047 0.024l22 7C23.797 54.984 23.899 55 24.001 55   c0.21 0 0.417-0.066 0.59-0.192c0.258-0.188 0.41-0.488 0.41-0.808v-6h11c0.553 0 1-0.447 1-1V30   C37.001 29.447 36.553 29 36.001 29z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                        <Canvas Name="g8"/>
+                        <Canvas Name="g10"/>
+                        <Canvas Name="g12"/>
+                        <Canvas Name="g14"/>
+                        <Canvas Name="g16"/>
+                        <Canvas Name="g18"/>
+                        <Canvas Name="g20"/>
+                        <Canvas Name="g22"/>
+                        <Canvas Name="g24"/>
+                        <Canvas Name="g26"/>
+                        <Canvas Name="g28"/>
+                        <Canvas Name="g30"/>
+                        <Canvas Name="g32"/>
+                        <Canvas Name="g34"/>
+                        <Canvas Name="g36"/>
+                    </Canvas>
+                </Button>
             </Grid>
-            <Grid HorizontalAlignment="Right">
-                <Button x:Name="dashBoardBtn" Click="dashBoardBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" Margin="7,0,0,0" HorizontalAlignment="Left" Width="125" Foreground="White">
+            <Grid HorizontalAlignment="Right" Width="877">
+                <Button x:Name="dashBoardBtn" Click="dashBoardBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" Margin="81,1,0,-1" HorizontalAlignment="Left" Width="125" Foreground="White">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Canvas x:Name="Capa_2" Canvas.Left="0" Canvas.Top="0" Width="30" Height="30">
                             <Canvas.RenderTransform>
@@ -92,7 +129,7 @@
                         <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="15,8,0,0" Padding="0" VerticalAlignment="Top" Width="70" Height="17"><Run Text="Dashboard"/><LineBreak/><Run/></TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="salesBtn" Margin="137,0,0,0" Click="salesBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="130" Foreground="White" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="5" ScrollViewer.CanContentScroll="True">
+                <Button x:Name="salesBtn" Margin="211,1,0,-1" Click="salesBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="130" Foreground="White" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="5" ScrollViewer.CanContentScroll="True">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                         <Canvas x:Name="Capa_3" Width="29.875" Height="29.875" Canvas.Left="0" Canvas.Top="0">
                             <Canvas.RenderTransform>
@@ -218,7 +255,41 @@
                         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="15,8,0,0" Padding="0" VerticalAlignment="Top" Width="70" Height="18" Text="Transaction"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="inventoryBtn" Margin="272,0,0,0" Click="inventoryBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="125" Foreground="White">
+                <Button x:Name="servicesBtn" Margin="346,0,0,0" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="130" Foreground="White" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="5" ScrollViewer.CanContentScroll="True">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Canvas x:Name="Capa_1gh" Width="30" Height="30" Canvas.Left="0" Canvas.Top="0">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+                            <!--Unknown tag: metadata-->
+                            <!--Unknown tag: sodipodi:namedview-->
+                            <Canvas x:Name="g4gh">
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2gh" Fill="#FFFFFFFF" Height="32" Stretch="Fill" Width="30">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M453.584 405.715L298.332 250.457c-1.454-1.46-3.009-2.755-4.61-3.967l27.497-28.954c1.406-1.416 2.736-2.905 3.96-4.436   c36.505 13.77 79.34 6.029 108.682-23.309c21.402-21.409 32.195-51.013 29.583-81.226c-0.283-3.419-2.548-6.375-5.769-7.542   c-3.228-1.179-6.845-0.375-9.274 2.045l-49.757 49.754l-50.377-12.699l-14.287-51.967l49.745-49.748   c2.441-2.433 3.239-6.053 2.063-9.277c-1.171-3.233-4.126-5.479-7.555-5.78c-30.21-2.604-59.816 8.183-81.226 29.592   c-29.317 29.317-37.078 72.129-23.323 108.619c-1.496 1.265-2.985 2.61-4.445 4.049l-40.471 38.869l-74.319-74.312   c-0.928-0.931-1.918-1.75-2.938-2.519c0.872-1.53 1.72-3.105 2.512-4.74c15.696 3.021 44.39-27.544 68.76-51.905L151.787 0   c-31.747 31.752-54.929 53.061-51.92 68.757c-7.258 3.546-13.728 7.882-18.326 12.486l-10.001 9.998   c-6.493 6.502-10.409 14.588-11.807 23.014c-0.97 1.108-1.957 2.275-2.938 3.523l-3.727 4.684   c-0.104 0.115-0.425 0.576-0.514 0.694l-3.378 4.729c-2.113 2.819-3.96 5.881-5.746 8.836c-0.659 1.097-1.33 2.196-2.015 3.292   c-0.109 0.189-0.216 0.375-0.313 0.562l-1.501 2.828c-1.814 3.402-3.697 6.924-5.308 10.799l-0.26 0.617   c-1.9 4.513-3.869 9.186-5.243 14.139l-0.665 2.143c-0.544 1.762-1.097 3.52-1.605 5.621l-1.38 6.833   c-1.029 4.273-1.375 8.488-1.676 12.221l-0.201 2.453c-0.508 3.871-0.36 7.521-0.222 10.742c0.047 1.079 0.089 2.137 0.121 3.564   c0.036 0.594 0.042 1.173 0.06 1.744c0.035 1.439 0.074 3.074 0.352 4.793l0.866 5.545c0.186 1.072 0.343 2.113 0.491 3.111   c0.331 2.252 0.671 4.581 1.342 6.792l3.632 12.602c1.12 3.83 4.758 6.366 8.739 6.088c2.107-0.147 4.001-1.058 5.411-2.471   c1.259-1.259 2.131-2.914 2.397-4.781l1.883-12.812c0.139-1.017 0.576-2.506 1.028-4.082c0.322-1.093 0.635-2.208 0.877-3.159   l1.339-4.782c0.163-0.647 0.479-1.277 0.757-1.924c0.266-0.6 0.532-1.218 0.769-1.827c0.449-1.017 0.872-2.033 1.288-3.076   c0.825-2.045 1.605-3.969 2.796-5.858c0.518-0.872 0.999-1.738 1.49-2.622c1.241-2.222 2.42-4.32 3.821-6.059   c0.088-0.103 0.168-0.218 0.26-0.34l3.159-4.356c0.647-0.819 1.374-1.593 2.081-2.373c0.502-0.55 1.005-1.103 1.64-1.83   c1.865-2.243 4.055-4.199 6.168-6.124l1.132-1.017c1.566-1.454 3.378-2.822 5.284-4.268c0.78-0.583 1.543-1.162 2.293-1.732   c0.963-0.624 1.895-1.247 2.813-1.865c1.72-1.162 3.209-2.167 4.93-3.062l3.745-2.131l3.789-1.858   c1.321-0.683 2.622-1.209 3.821-1.693c0.712-0.296 1.416-0.583 2.069-0.866c0.665-0.23 1.306-0.479 1.912-0.703   c0.812-0.296 1.513-0.58 2.465-0.828l1.022-0.23c1.114 1.803 2.42 3.517 3.987 5.083l73.515 73.518L31.647 393.822   c-0.062 0.059-0.121 0.124-0.178 0.178c-19.529 19.529-22.709 48.131-3.177 67.666c19.532 19.529 46.316 14.522 65.84-5   c0.086-0.083 0.16-0.16 0.236-0.249l138.448-145.782c0.812 0.957 1.616 1.92 2.518 2.824l155.24 155.253   c17.396 17.401 45.613 17.401 63.009 0C470.974 451.322 470.974 423.104 453.584 405.715z M73.871 440.564   c-7.191 7.199-18.855 7.199-26.052 0c-7.19-7.193-7.19-18.85 0-26.043c7.19-7.188 18.855-7.193 26.052 0   C81.055 421.715 81.055 433.371 73.871 440.564z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                            <Canvas x:Name="g6gh"/>
+                            <Canvas x:Name="g8gh"/>
+                            <Canvas x:Name="g10gh"/>
+                            <Canvas x:Name="g12gh"/>
+                            <Canvas x:Name="g14gh"/>
+                            <Canvas x:Name="g16gh"/>
+                            <Canvas x:Name="g18gh"/>
+                            <Canvas x:Name="g20gh"/>
+                            <Canvas x:Name="g22gh"/>
+                            <Canvas x:Name="g24gh"/>
+                            <Canvas x:Name="g26gh"/>
+                            <Canvas x:Name="g28gh"/>
+                            <Canvas x:Name="g30gh"/>
+                            <Canvas x:Name="g32gh"/>
+                            <Canvas x:Name="g34gh"/>
+                        </Canvas>
+                        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="15,8,0,0" Padding="0" VerticalAlignment="Top" Width="47" Height="18" Text="Services"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="inventoryBtn" Margin="481,0,0,0" Click="inventoryBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="125" Foreground="White">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                         <Canvas x:Name="Capa_4" Width="30.822" Height="30.823" Canvas.Left="0" Canvas.Top="0">
                             <Canvas.RenderTransform>
@@ -252,7 +323,7 @@
                         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Inventory" Margin="15,8,0,0" Padding="0" VerticalAlignment="Top" Width="50"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="reportsBtn" Margin="402,0,0,0" Click="reportsBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="125" Foreground="White">
+                <Button x:Name="reportsBtn" Margin="611,0,0,0" Click="reportsBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="125" Foreground="White">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Canvas x:Name="Capa_1d1" Width="27.646" Height="27.647" Canvas.Left="0" Canvas.Top="0">
                             <Canvas.RenderTransform>
@@ -289,7 +360,7 @@
                         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Reports" Margin="15,8,0,0" Padding="0" VerticalAlignment="Top" Width="50"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="manageBtn" Margin="532,0,0,0" Click="manageBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="126" Foreground="White">
+                <Button x:Name="manageBtn" Margin="741,0,0,0" Click="manageBtn_Click" Style="{StaticResource mainButton}" MinWidth="125" HorizontalAlignment="Left" Width="126" Foreground="White">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                         <Canvas x:Name="Capa_1g" Width="30" Height="30">
                             <Canvas.RenderTransform>
@@ -415,7 +486,7 @@
                 <Label x:Name="label7" Content="Dashboard" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Grid.ColumnSpan="2" Height="57" VerticalAlignment="Top"/>
             </Grid>
             <Grid x:Name="transactionGrid" Margin="10,0" Background="#FFECF0F1">
-                <Grid x:Name="transactionQuotationsGrid">
+                <Grid x:Name="transactionQuotationsGrid" d:IsHidden="True">
                     <Label x:Name="transQuotationHeader" Content="Transaction - Quotations" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid x:Name="quotationsGridHome" Margin="10,70,10,10" d:IsHidden="True">
                         <Grid Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="476">
@@ -465,60 +536,15 @@
                                     </Label.RenderTransform>
                                 </Label>
                                 <TextBox x:Name="itemNoTb" HorizontalAlignment="Left" Height="23" Margin="130,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="94" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1" Grid.Row="1"/>
-                                <Label x:Name="label12_Copy3" Content="Description:" VerticalAlignment="Top" Height="26" Margin="32,50,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
+                                <Label x:Name="label12_Copy3" Content="Description:" VerticalAlignment="Top" Height="26" Margin="32,50,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1"/>
                                 <TextBox x:Name="descriptionTb" HorizontalAlignment="Left" Height="54" Margin="130,55,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="296" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Row="1" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy4" Content="Unit:" VerticalAlignment="Top" Height="26" Margin="454,9,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
+                                <Label x:Name="label12_Copy4" Content="Unit:" VerticalAlignment="Top" Height="26" Margin="454,9,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1"/>
                                 <ComboBox x:Name="unitCb" HorizontalAlignment="Left" Margin="520,13,0,0" VerticalAlignment="Top" Width="72" FontSize="12" Grid.Column="1" Height="22" Grid.Row="1"/>
-                                <Label x:Name="label12_Copy5" Content="Quantity:" VerticalAlignment="Top" Height="26" Margin="454,55,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
+                                <Label x:Name="label12_Copy5" Content="Quantity:" VerticalAlignment="Top" Height="26" Margin="454,55,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1"/>
                                 <xctk:IntegerUpDown x:Name="qtyTb" Grid.Column="1" HorizontalAlignment="Left" Margin="520,59,0,0" Grid.Row="1" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="12" FontStyle="Normal" FontWeight="Normal" Width="72" RenderTransformOrigin="-0.722,0" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" AllowTextInput="False"/>
-                                <Label x:Name="label12_Copy6" Content="Unit Price:" VerticalAlignment="Top" Height="26" Margin="633,9,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
+                                <Label x:Name="label12_Copy6" Content="Unit Price:" VerticalAlignment="Top" Height="26" Margin="633,9,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1"/>
                                 <TextBox x:Name="totalPrice" HorizontalAlignment="Left" Height="23" Margin="731,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Row="1" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy7" Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="632,54,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
+                                <Label x:Name="label12_Copy7" Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="632,54,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="1"/>
                                 <TextBox x:Name="totalPrice_Copy" HorizontalAlignment="Left" Height="23" Margin="731,56,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Row="1" Grid.Column="1" IsEnabled="False"/>
                                 <DataGrid x:Name="itemDg" Margin="10,114,10,10" ItemsSource="{Binding items}" CanUserAddRows="False" ColumnWidth="0" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" Grid.Row="1" Grid.ColumnSpan="2" CanUserReorderColumns="False" CanUserResizeColumns="False">
                                     <DataGrid.Columns >
@@ -540,57 +566,57 @@
                     <Grid x:Name="makeSalesQuoteGrid" Margin="10,70,10,10" d:IsHidden="True">
                         <Button x:Name="transQuotationFormBack" Content="&lt; Back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="74" Height="24" Click="transQuotationFormBack_Click"/>
                         <GroupBox x:Name="groupBox2" Header="Quotation Form" Margin="10,29,10,42" FontFamily="Segoe UI Symbol" FontSize="16" FontWeight="Bold" FontStyle="Italic" BorderBrush="Black" VerticalContentAlignment="Stretch">
-                            <Grid Margin="0,0,-2,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="6*"/>
-                                    <ColumnDefinition Width="455*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label x:Name="customersRepLbl" Content="Customer's Representative:" Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <ComboBox x:Name="comboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="229,14,0,0" VerticalAlignment="Top" Width="221" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <Button x:Name="quotationFormAddRep" Content="+ add" Grid.Column="1" HorizontalAlignment="Left" Margin="462,14,0,0" VerticalAlignment="Top" Width="75" FontSize="14" FontFamily="Segoe UI" FontWeight="Normal" FontStyle="Normal" d:IsLocked="True"/>
-                                <Label x:Name="openingRemarksLbl" Content="Opening Remarks:" Grid.Column="1" HorizontalAlignment="Left" Margin="0,59,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <TextBox x:Name="body1" Grid.Column="1" HorizontalAlignment="Left" Height="65" Margin="229,59,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <Label x:Name="closingRemarksLbl" Content="Closing Remarks:" Grid.Column="1" HorizontalAlignment="Left" Margin="0,133,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <TextBox x:Name="body2" Grid.Column="1" HorizontalAlignment="Left" Height="65" Margin="229,133,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <CheckBox x:Name="defaultTemplateCheckB" Content="Use Default Letter Template" Grid.Column="1" HorizontalAlignment="Left" Margin="229,210,0,0" VerticalAlignment="Top" Checked="defaultTemplateCheckB_Checked" Unchecked="defaultTemplateCheckB_Unchecked" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <Label x:Name="label16_Copy2" Content="Terms and Conditions" Grid.Column="1" HorizontalAlignment="Left" Margin="0,233,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI" d:IsLocked="True"/>
-                                <Label x:Name="label16_Copy3" Content="Price:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,269,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
-                                <ComboBox x:Name="comboBox_Copy" HorizontalAlignment="Left" Margin="130,273,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <CheckBox x:Name="landedCheckBox" Content="Landed Price" Grid.Column="1" HorizontalAlignment="Left" Margin="270,275,0,0" VerticalAlignment="Top" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <CheckBox x:Name="vatCheckBox" Content="VAT Exclusive" Grid.Column="1" HorizontalAlignment="Left" Margin="415,275,0,0" VerticalAlignment="Top" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <Label x:Name="label16_Copy4" Content="Payment :" Grid.Column="1" HorizontalAlignment="Left" Margin="26,314,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="paymentDefaultRd" Content="50% Downpayment (Upon Release of Order), 50% Balance Upon Delivery" Grid.Column="1" HorizontalAlignment="Left" Margin="130,321,0,0" VerticalAlignment="Top" IsChecked="True" GroupName="Payment" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="paymentCustomRb" Content="Custom" Grid.Column="1" HorizontalAlignment="Left" Margin="130,354,0,0" VerticalAlignment="Top" GroupName="Payment" Checked="paymentCustomRb_Checked" Unchecked="paymentCustomRb_Unchecked" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <xctk:IntegerUpDown x:Name="downPercentTb" Grid.Column="1" HorizontalAlignment="Left" Margin="229,351,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
-                                <Label x:Name="paymentDpLbl" Content="Downpayment (Upon Release of Order)" Grid.Column="1" HorizontalAlignment="Left" Margin="284,348,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <Label x:Name="deliveryLbl" Content="Delivery:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,401,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="deliveryDefaultRd" Content="Thirty (30) days upon receipt of DP" Grid.Column="1" HorizontalAlignment="Left" Margin="131,401,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="deliveryCustomRd" Content="Custom" Grid.Column="1" HorizontalAlignment="Left" Margin="131,426,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="deliveryNoneRd" Content="None" Grid.Column="1" HorizontalAlignment="Left" Margin="131,451,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <xctk:IntegerUpDown x:Name="deliveryDaysTb" Grid.Column="1" HorizontalAlignment="Left" Margin="229,426,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
-                                <Label x:Name="deliveryDaysCustomLbl" Content="days" Grid.Column="1" HorizontalAlignment="Left" Margin="284,420,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <Label x:Name="warrantyLbl" Content="Warranty:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,494,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="warrantyDefaultRd" Content="One (1) Year" Grid.Column="1" HorizontalAlignment="Left" Margin="130,494,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="warrantycustomRd" Content="Custom" Grid.Column="1" HorizontalAlignment="Left" Margin="130,519,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="warrantyNoneRd" Content="None" Grid.Column="1" HorizontalAlignment="Left" Margin="131,542,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <xctk:IntegerUpDown x:Name="warrantyDaysCustom" Grid.Column="1" HorizontalAlignment="Left" Margin="230,519,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
-                                <Label x:Name="deliveryDaysCustomLbl_Copy" Content="Year" Grid.Column="1" HorizontalAlignment="Left" Margin="288,515,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="28"/>
-                                <Label x:Name="validityLbl" Content="Validity:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,585,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="warrantyDefaultRd_Copy" Content="Thirty (30) days" Grid.Column="1" HorizontalAlignment="Left" Margin="130,585,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <RadioButton x:Name="warrantycustomRd_Copy" Content="Custom" Grid.Column="1" HorizontalAlignment="Left" Margin="130,610,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                                <xctk:IntegerUpDown x:Name="warrantyDaysCustom_Copy" Grid.Column="1" HorizontalAlignment="Left" Margin="229,611,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
-                                <Label x:Name="deliveryDaysCustomLbl_Copy1" Content="days" Grid.Column="1" HorizontalAlignment="Left" Margin="284,606,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
-                            </Grid>
+                            <ScrollViewer Margin="10,10,15,13">
+                                <Grid>
+                                    <Label x:Name="openingRemarksLbl" Content="Opening Remarks:" HorizontalAlignment="Left" Margin="16,17,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <TextBox x:Name="body1" HorizontalAlignment="Left" Height="65" Margin="245,17,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="closingRemarksLbl" Content="Closing Remarks:" HorizontalAlignment="Left" Margin="16,91,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <TextBox x:Name="body2" HorizontalAlignment="Left" Height="65" Margin="245,91,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="600" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <CheckBox x:Name="defaultTemplateCheckB" Content="Use Default Letter Template" HorizontalAlignment="Left" Margin="245,168,0,0" VerticalAlignment="Top" Checked="defaultTemplateCheckB_Checked" Unchecked="defaultTemplateCheckB_Unchecked" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="label16_Copy2" Content="Terms and Conditions" HorizontalAlignment="Left" Margin="16,191,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="label16_Copy3" Content="Price:" HorizontalAlignment="Left" Margin="42,227,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <ComboBox x:Name="comboBox_Copy" HorizontalAlignment="Left" Margin="146,231,0,0" VerticalAlignment="Top" Width="120" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <CheckBox x:Name="landedCheckBox" Content="Landed Price" HorizontalAlignment="Left" Margin="286,233,0,0" VerticalAlignment="Top" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <CheckBox x:Name="vatCheckBox" Content="VAT Exclusive" HorizontalAlignment="Left" Margin="431,233,0,0" VerticalAlignment="Top" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="label16_Copy4" Content="Payment :" HorizontalAlignment="Left" Margin="42,272,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="paymentDefaultRd" Content="50% Downpayment (Upon Release of Order), 50% Balance Upon Delivery" HorizontalAlignment="Left" Margin="146,279,0,0" VerticalAlignment="Top" IsChecked="True" GroupName="Payment" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="paymentCustomRb" Content="Custom" HorizontalAlignment="Left" Margin="146,312,0,0" VerticalAlignment="Top" GroupName="Payment" Checked="paymentCustomRb_Checked" Unchecked="paymentCustomRb_Unchecked" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <xctk:IntegerUpDown x:Name="downPercentTb" HorizontalAlignment="Left" Margin="245,309,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
+                                    <Label x:Name="paymentDpLbl" Content="Downpayment (Upon Release of Order)" HorizontalAlignment="Left" Margin="300,306,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="deliveryLbl" Content="Delivery:" HorizontalAlignment="Left" Margin="42,359,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="deliveryDefaultRd" Content="Thirty (30) days upon receipt of DP" HorizontalAlignment="Left" Margin="147,359,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="deliveryCustomRd" Content="Custom" HorizontalAlignment="Left" Margin="147,384,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="deliveryNoneRd" Content="None" HorizontalAlignment="Left" Margin="147,409,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <xctk:IntegerUpDown x:Name="deliveryDaysTb" HorizontalAlignment="Left" Margin="245,384,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
+                                    <Label x:Name="deliveryDaysCustomLbl" Content="days" HorizontalAlignment="Left" Margin="300,378,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <Label x:Name="warrantyLbl" Content="Warranty:" HorizontalAlignment="Left" Margin="42,452,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="warrantyDefaultRd" Content="One (1) Year" HorizontalAlignment="Left" Margin="146,452,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="warrantycustomRd" Content="Custom" HorizontalAlignment="Left" Margin="146,477,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="warrantyNoneRd" Content="None" HorizontalAlignment="Left" Margin="147,500,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <xctk:IntegerUpDown x:Name="warrantyDaysCustom" HorizontalAlignment="Left" Margin="246,477,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
+                                    <Label x:Name="deliveryDaysCustomLbl_Copy" Content="Year" HorizontalAlignment="Left" Margin="304,473,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="28"/>
+                                    <Label x:Name="validityLbl" Content="Validity:" HorizontalAlignment="Left" Margin="42,543,0,0" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Italic" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="warrantyDefaultRd_Copy" Content="Thirty (30) days" HorizontalAlignment="Left" Margin="146,543,0,0" VerticalAlignment="Top" GroupName="Delivery" IsChecked="True" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <RadioButton x:Name="warrantycustomRd_Copy" Content="Custom" HorizontalAlignment="Left" Margin="146,568,0,0" VerticalAlignment="Top" GroupName="Delivery" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                    <xctk:IntegerUpDown x:Name="warrantyDaysCustom_Copy" HorizontalAlignment="Left" Margin="245,569,0,0" VerticalAlignment="Top" Width="55" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI" Height="20"/>
+                                    <Label x:Name="deliveryDaysCustomLbl_Copy1" Content="days" HorizontalAlignment="Left" Margin="300,564,0,0" VerticalAlignment="Top" IsEnabled="False" FontWeight="Normal" FontStyle="Normal" FontSize="14" FontFamily="Segoe UI"/>
+                                </Grid>
+                            </ScrollViewer>
                         </GroupBox>
-                        <Button x:Name="transQuotationSaveBtn" Content="Next &gt;" HorizontalAlignment="Right" Margin="0,0,14,8" VerticalAlignment="Bottom" Width="74" Height="24"/>
+                        <Button x:Name="transQuotationSaveBtn" Content="Next &gt;" HorizontalAlignment="Right" Margin="0,0,14,8" VerticalAlignment="Bottom" Width="74" Height="24" Click="transQuotationSaveBtn_Click"/>
                     </Grid>
-                    <Grid x:Name="veiwQuoationGrid" Margin="10,70,10,10">
-                        <Button x:Name="transQuotationFormBack1" Content="&lt; Back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="74" Height="24" Click="transQuotationFormBack_Click"/>
+                    <Grid x:Name="viewQuotationGrid" Margin="10,70,10,10" d:IsHidden="True">
+                        <Button x:Name="transViewBackBtn" Content="&lt; Back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="74" Height="24" Click="transViewBackBtn_Click"/>
                         <GroupBox x:Name="groupBox3" Header="View Sale Quotation" Margin="10,29,10,42" FontFamily="Segoe UI Symbol" FontSize="16" FontWeight="Bold" FontStyle="Italic" BorderBrush="Black" VerticalContentAlignment="Stretch"/>
-                        <Button x:Name="transQuotationSaveBtn1" Content="Next &gt;" HorizontalAlignment="Right" Margin="0,0,14,8" VerticalAlignment="Bottom" Width="74" Height="24"/>
+                        <Button x:Name="transViewSaveOnlyBtn" Content="Save and Close" HorizontalAlignment="Right" Margin="0,0,113,10" VerticalAlignment="Bottom" Width="104" Height="24" Click="transViewSaveOnlyBtn_Click"/>
+                        <Button x:Name="transViewSaveSend" Content="Save and Send" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="98" Height="24" Click="transViewSaveSend_Click"/>
+                        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="684" Margin="40,59,0,0" VerticalAlignment="Top" Width="1162">
+                            <ScrollViewer>
+                                <Grid>
+                                    <Label x:Name="label16" Content="CREATED SALES QUOTATION HERE (PDF) VIEWER HERE" HorizontalAlignment="Left" Margin="375,273,0,0" VerticalAlignment="Top" FontSize="20"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
                     </Grid>
                 </Grid>
                 <Grid x:Name="transactionInvoiceGrid" d:IsHidden="True">
