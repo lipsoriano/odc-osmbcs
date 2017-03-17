@@ -497,6 +497,62 @@ namespace prototype2
         {
             
         }
+
+        private void btnEditSupp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteSupp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
+        {
+            body1.IsEnabled = false;
+            body2.IsEnabled = false;
+            openingRemarksLbl.IsEnabled = false;
+            closingRemarksLbl.IsEnabled = false;
+        }
+
+        private void defaultTemplateCheckB_Unchecked(object sender, RoutedEventArgs e)
+        {
+            body1.IsEnabled = true;
+            body2.IsEnabled = true;
+            openingRemarksLbl.IsEnabled = true;
+            closingRemarksLbl.IsEnabled = true;
+        }
+
+        private void paymentCustomRb_Checked(object sender, RoutedEventArgs e)
+        {
+            downPercentTb.IsEnabled = true;
+            paymentDpLbl.IsEnabled = true;
+        }
+
+        private void paymentCustomRb_Unchecked(object sender, RoutedEventArgs e)
+        {
+            downPercentTb.IsEnabled = false;
+            paymentDpLbl.IsEnabled = false;
+        }
+
+        private void transRequestNext_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            makeSalesQuoteGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            addRequestionGrid.Visibility = Visibility.Visible;
+        }
     }
     internal class Item : INotifyPropertyChanged
     {

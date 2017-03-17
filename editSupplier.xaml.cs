@@ -17,25 +17,29 @@ using System.Windows.Shapes;
 namespace prototype2
 {
     /// <summary>
-    /// Interaction logic for addSupplier.xaml
+    /// Interaction logic for editCustomer.xaml
     /// </summary>
-    public partial class addSupplier : Window
+    public partial class editSupplier: Window
     {
-        public String Name { get; set; }
+        public String id;
+        public String locId;
+        public String CompName { get; set; }
         public String Address { get; set; }
         public String City { get; set; }
         public String Number { get; set; }
         public String Email { get; set; }
         public object locProvinceId { get; set; }
-        public addSupplier()
+        public editSupplier(String id)
         {
             InitializeComponent();
+            this.id = id;
             custCompanyNameTb.DataContext = this;
             locationAddressTb.DataContext = this;
             locationCityTb.DataContext = this;
             emailAddress.DataContext = this;
             officeNumber.DataContext = this;
             custProvinceCust.DataContext = this;
+            setControlValuesSynced(id);
         }
         private static String dbname = "odc_db";
         private void setControlsValues()
@@ -53,58 +57,71 @@ namespace prototype2
 
             }
         }
+        private void setControlValuesSynced(String id)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
+            {
+                string query ="SELECT s.suppID, s.suppCompanyName, s.suppAddInfo,s.locationId, sc.sOfficeNo, sc.EmailAdd,ld.locationAddress,ld.locationCity,lp.locProvinceID FROM supplier_t s " +
+                    "JOIN supplier_contacts_t sc ON s.custID = sc.custID " +
+                    "JOIN location_details_t ld ON c.locationID = ld.locationID " +
+                    "JOIN provinces_t lp ON ld.locationProvinceID = lp.locProvinceID WHERE c.custID = '"+ id + "';";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet(); 
+                DataTable fromDbTable = new DataTable();
+                dataAdapter.Fill(fromDb, "t");
+                fromDbTable = fromDb.Tables["t"];
+                foreach (DataRow dr in fromDbTable.Rows)
+                {
+                    locId = dr["locationId"].ToString();
+                    CompName = dr["suppCompanyName"].ToString();
+                    custAddInfoTb.Text = dr["suppAddInfo"].ToString();
+                    int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
+                    custProvinceCust.SelectedIndex = locProvId-1;
+                    Address = dr["locationAddress"].ToString();
+                    City = dr["locationCity"].ToString();
+                    Number = dr["sOfficeNo"].ToString();
+                    Email = dr["EmailAdd"].ToString();
+                }
+                dbCon.Close();
+            }
+        }
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
-            MessageBoxResult result = MessageBox.Show("Do you want to save this new supplier?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            MessageBoxResult result = MessageBox.Show("Do you want to save changes?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result==MessageBoxResult.Yes)
             {
                 if (dbCon.IsConnect())
                 {
-                    string query = "INSERT INTO location_details_t (locationAddress,locationCity,locationProvinceID) VALUES ('" + locationAddressTb.Text + "','" + locationCityTb.Text + "', '" + custProvinceCust.SelectedValue + "')";
+                    string query = "UPDATE `supplier_t` SET `suppCompanyname`='" + custCompanyNameTb.Text + "',`suppAddInfo`='" + custAddInfoTb.Text + "' WHERE `suppID`='" + id + "';";
 
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
-                        query = "select last_insert_id() from location_details_t";
-                        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                        DataSet fromDb = new DataSet();
-                        dataAdapter.Fill(fromDb, "t");
-                        string locID = "";
-                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                        {
-                            locID = myRow[0].ToString();
-                        }
-                        query = "INSERT INTO supplier_t (suppCompanyName,suppAddInfo,locationID) VALUES ('" + custCompanyNameTb.Text + "','" + custAddInfoTb.Text + "','" + locID + "')";
+                        query = "UPDATE `location_details_t` SET `locationAddress`='" + locationAddressTb.Text + "',`locationCity`='" + locationCityTb.Text + "',`locationProvinceID`='" + custProvinceCust.SelectedValue + "' WHERE `locationId`='" + locId + "';";
                         if (dbCon.insertQuery(query, dbCon.Connection))
                         {
-                            query = "select last_insert_id() from supplier_t";
-                            dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                            fromDb = new DataSet();
-                            dataAdapter.Fill(fromDb, "t");
-                            string custId = "";
-                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                            {
-                                custId = myRow[0].ToString();
-                            }
-                            query = "INSERT INTO customer_contacts_t (suppID,sofficeNo,sEmailAdd) VALUES ('" + custId + "','" + officeNumber.Text + "','" + emailAddress.Text + "')";
+
+                            query = "UPDATE `supplier_contacts_t` SET `sOfficeNo`='" + officeNumber.Text + "',`sEmailAdd`='" + emailAddress.Text + "' WHERE `suppID`='" + id + "';";
                             if (dbCon.insertQuery(query, dbCon.Connection))
                             {
-                                MessageBox.Show("Saved");
+                                MessageBox.Show("Updated");
                                 this.Close();
                             }
                         }
                     }
                 }
             }
-            else if (result == MessageBoxResult.No)
+            else if(result == MessageBoxResult.No)
             {
                 this.Close();
             }
             else if (result == MessageBoxResult.Cancel)
             {
             }
-            
+
         }
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -113,6 +130,7 @@ namespace prototype2
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             setControlsValues();
+            
         }
 
         private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
@@ -158,7 +176,7 @@ namespace prototype2
         }
         private void validateTextBoxes()
         {
-            if (custCompanyNameTb.Text.Equals("")||locationAddressTb.Text.Equals("")||locationCityTb.Text.Equals("")||custProvinceCust.SelectedIndex==-1||officeNumber.Text.Equals("")||emailAddress.Text.Equals(""))
+            if (custCompanyNameTb.Text.Equals("") || locationAddressTb.Text.Equals("") || locationCityTb.Text.Equals("") || custProvinceCust.SelectedIndex == -1 || officeNumber.Text.Equals("") || emailAddress.Text.Equals(""))
             {
                 saveBtn.IsEnabled = false;
             }
@@ -167,6 +185,6 @@ namespace prototype2
                 saveBtn.IsEnabled = true;
             }
         }
+
     }
-    
 }

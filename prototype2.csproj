@@ -102,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="editSupplier.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="editEmployee.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,6 +132,9 @@
     </Page>
     <Compile Include="addSupplier.xaml.cs">
       <DependentUpon>addSupplier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="editSupplier.xaml.cs">
+      <DependentUpon>editSupplier.xaml</DependentUpon>
     </Compile>
     <Compile Include="editEmployee.xaml.cs">
       <DependentUpon>editEmployee.xaml</DependentUpon>
