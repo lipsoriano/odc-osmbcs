@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prototype2"
         mc:Ignorable="d"
-        Title="addCustomer" Width="640" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Height="563">
+        Title="Add new supplier" Width="640" MinWidth="640" MinHeight="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Height="563">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type TextBox}">
@@ -75,13 +75,15 @@
                             </Grid>
                             <Grid x:Name="locationCityGrid" Margin="19,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
                                 <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" Margin="0,1,0,0" FontWeight="Normal"/>
-                                <TextBox x:Name="locationCityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,10,10" Width="170" HorizontalAlignment="Center" TextChanged="locationCityTb_TextChanged">
-                                    <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <local:TextBoxValidation TextBoxType="String"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox>
+                                <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </Grid>
                             <Grid x:Name="locationProvinceGrid" Margin="225,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
                                 <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" SelectionChanged="custProvinceCust_SelectionChanged">
@@ -114,7 +116,7 @@
                             </Grid>
                             <Grid x:Name="mobileNoGrid_Copy1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="189,31,0,0" Height="60" Grid.RowSpan="2">
                                 <Label x:Name="streetNameTbLbl2" Content="* Email Address" VerticalAlignment="Top" Visibility="Visible" Height="25" FontWeight="Normal"/>
-                                <TextBox x:Name="emailAddress" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="100" Margin="10,29,7,5" TextChanged="emailAddress_TextChanged">
+                                <TextBox x:Name="emailAddress" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="100" Margin="10,30,7,4" TextChanged="emailAddress_TextChanged">
                                     <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <local:TextBoxValidation TextBoxType="Email"/>

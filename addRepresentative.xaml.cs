@@ -26,6 +26,7 @@ namespace prototype2
         }
         public string custName { get; set; }
         public string custId { get; set; }
+        public string repType { get; set; }
         private void setControlsValue()
         {
             companyNameLbl.Content = custName;
@@ -40,9 +41,18 @@ namespace prototype2
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
+            if (dbCon.IsConnect()&&repType.Equals("CUST"))
             {
                 string query = "INSERT INTO customer_rep_t (custRepLname,custRepFname,custRepMi,custID,companyRepMobileNo,companyRepEmail) VALUES ('" + lastNameTb.Text + "','" + firstNameTb.Text + "', '" + middleInitialTb.Text + "','" + custId + "','" + mobileNumTb.Text + "','" + emailAddressTb.Text + "')";
+
+                if (dbCon.insertQuery(query, dbCon.Connection))
+                {
+                    MessageBox.Show("Customer's Representative Details is successfully inserted");
+                }
+            }
+            else if (dbCon.IsConnect() && repType.Equals("SUPP"))
+            {
+                string query = "INSERT INTO supplier_rep_t (suppRepLname,suppRepFname,suppRepMi,custID,companyRepMobileNo,suppRepEmail) VALUES ('" + lastNameTb.Text + "','" + firstNameTb.Text + "', '" + middleInitialTb.Text + "','" + custId + "','" + mobileNumTb.Text + "','" + emailAddressTb.Text + "')";
 
                 if (dbCon.insertQuery(query, dbCon.Connection))
                 {

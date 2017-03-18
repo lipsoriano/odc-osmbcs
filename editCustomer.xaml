@@ -75,13 +75,15 @@
                             </Grid>
                             <Grid x:Name="locationCityGrid" Margin="19,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
                                 <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" FontWeight="Normal"/>
-                                <TextBox x:Name="locationCityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,10,10" Width="170" HorizontalAlignment="Center" TextChanged="locationCityTb_TextChanged">
-                                    <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <local:TextBoxValidation TextBoxType="String"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox>
+                                <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </Grid>
                             <Grid x:Name="locationProvinceGrid" Margin="225,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
                                 <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" SelectionChanged="custProvinceCust_SelectionChanged">

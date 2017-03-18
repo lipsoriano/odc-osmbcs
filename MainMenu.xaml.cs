@@ -92,15 +92,23 @@ namespace prototype2
             if (!visual.IsDescendantOf(manageCustomeDataGrid))
             {
                 manageCustomeDataGrid.SelectedIndex = -1;
-                manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtn)].Visibility = Visibility.Hidden;
-                manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteBtn)].Visibility = Visibility.Hidden;
+                manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditCustBtn)].Visibility = Visibility.Hidden;
+                manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteCustBtn)].Visibility = Visibility.Hidden;
             }
-            if (visual.IsDescendantOf(manageEmployeeDataGrid))
+            if (!visual.IsDescendantOf(manageEmployeeDataGrid))
             {
                 if (manageEmployeeDataGrid.SelectedItems.Count > 0)
                 {
-                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Visible;
-                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Visible;
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnEditBtnEmp)].Visibility = Visibility.Hidden;
+                    manageEmployeeDataGrid.Columns[manageEmployeeDataGrid.Columns.IndexOf(columnDelBtnEmp)].Visibility = Visibility.Hidden;
+                }
+            }
+            if (!visual.IsDescendantOf(manageSupplierDataGrid))
+            {
+                if (manageSupplierDataGrid.SelectedItems.Count > 0)
+                {
+                    manageSupplierDataGrid.Columns[manageSupplierDataGrid.Columns.IndexOf(columnEditSuppBtn)].Visibility = Visibility.Hidden;
+                    manageSupplierDataGrid.Columns[manageSupplierDataGrid.Columns.IndexOf(columnDeleteSuppBtn)].Visibility = Visibility.Hidden;
                 }
             }
         }
@@ -314,10 +322,11 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.emailAddress, CONCAT(l.locationAddress,' ',p.locProvince) AS custLocation " +
+                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.emailAddress, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) AS custLocation " +
                     "FROM customer_t c JOIN customer_contacts_t cc ON c.custID = cc.custID " +
                     "JOIN location_details_t l ON c.locationID = l.locationID " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -371,8 +380,8 @@ namespace prototype2
         }
         private void manageCustomerAddBtn_Click(object sender, RoutedEventArgs e)
         {
-            addCustomer addcustomer = new addCustomer();
-            addcustomer.ShowDialog();
+            addCustomer addCustomer = new addCustomer();
+            addCustomer.ShowDialog();
             setManageCustomerGridControls();
         }
 
@@ -384,8 +393,8 @@ namespace prototype2
             {
                 if (manageCustomeDataGrid.SelectedItems.Count > 0)
                 {
-                    manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditBtn)].Visibility = Visibility.Visible;
-                    manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteBtn)].Visibility = Visibility.Visible;
+                    manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnEditCustBtn)].Visibility = Visibility.Visible;
+                    manageCustomeDataGrid.Columns[manageCustomeDataGrid.Columns.IndexOf(columnDeleteCustBtn)].Visibility = Visibility.Visible;
                 }
             }
         }
@@ -420,10 +429,11 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,e.position, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',l.locationCity,' ',p.locProvince) as empAddress " +
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,e.positionId, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as empAddress " +
                     "FROM employee_t e " +
                     "JOIN location_details_t l ON e.locationID = l.locationID " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -519,17 +529,65 @@ namespace prototype2
 
         private void setManageSupplierGridControls()
         {
-            
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
+            {
+                string query = query = "SELECT c.suppID, c.suppCompanyName, c.suppAddInfo, cc.sOfficeNo, cc.sEmailAddress, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) AS suppLocation " +
+                    "FROM supplier_t c JOIN supplier_contacts_t cc ON c.suppID = cc.suppID " +
+                    "JOIN location_details_t l ON c.locationID = l.locationID " +
+                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
+                    "WHERE isDeleted = 0;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                manageSupplierDataGrid.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
         }
 
         private void btnEditSupp_Click(object sender, RoutedEventArgs e)
         {
-
+            if (manageSupplierDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageSupplierDataGrid.Columns[0].GetCellContent(manageSupplierDataGrid.SelectedItem) as TextBlock).Text;
+                editSupplier editSupplier = new editSupplier(id);
+                editSupplier.ShowDialog();
+                setManageSupplierGridControls();
+            }
+            
         }
 
         private void btnDeleteSupp_Click(object sender, RoutedEventArgs e)
         {
+            if (manageSupplierDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageSupplierDataGrid.Columns[0].GetCellContent(manageSupplierDataGrid.SelectedItem) as TextBlock).Text;
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this supplier?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (dbCon.IsConnect())
+                    {
+                        string query = "UPDATE `supplier_t` SET `isDeleted`= 1 WHERE suppID = '" + id + "';";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Successfully deleted.");
+                            setManageSupplierGridControls();
+                        }
+                    }
 
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                }
+                setManageCustomerGridControls();
+            }
         }
 
         private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
@@ -566,7 +624,7 @@ namespace prototype2
             {
                 transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
             }
-            makeSalesQuoteGrid.Visibility = Visibility.Visible;
+            viewPurchaseOrder.Visibility = Visibility.Visible;
         }
 
         private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
@@ -658,87 +716,67 @@ namespace prototype2
         }
         private void setManageApplicationSettingsControls()
         {
-            String[] reqTypeArr = { };
-            String reqTypeSettings = Properties.Settings.Default.posType.ToString();
-            reqTypeArr = reqTypeSettings.Split(',');
-            if (employeePositionLb.Items.IsEmpty)
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
             {
-                foreach (String reTypeString in reqTypeArr)
-                {
-                    employeePositionLb.Items.Add(reTypeString);
-                }
+                string query = "SELECT * FROM ITEM_CATEGORY_T;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                invProductsCategoryLb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                invProductsCategoryLb.DisplayMemberPath = "categoryName";
+                invProductsCategoryLb.SelectedValuePath = "categoryId";
             }
-            else
+            if (dbCon.IsConnect())
             {
-                employeePositionLb.Items.Clear();
-                foreach (String reTypeString in reqTypeArr)
-                {
-                    employeePositionLb.Items.Add(reTypeString);
-                }
+                string query = "SELECT * FROM EMP_POSITION_T;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t1");
+                employeePositionLb.ItemsSource = fromDb.Tables["t1"].DefaultView;
+                employeePositionLb.DisplayMemberPath = "positionName";
+                employeePositionLb.SelectedValuePath = "positionId";
+                dbCon.Close();
+
             }
-            String[] itemcategoryTypeArr = { };
-            String itemcategoryType = Properties.Settings.Default.inventoryCategory.ToString();
-            itemcategoryTypeArr = itemcategoryType.Split(',');
-            if (invProductsCategoryLb.Items.IsEmpty)
-            {
-                foreach (String reTypeString in itemcategoryTypeArr)
-                {
-                    invProductsCategoryLb.Items.Add(reTypeString);
-                }
-            }
-            else
-            {
-                invProductsCategoryLb.Items.Clear();
-                foreach (String reTypeString in itemcategoryTypeArr)
-                {
-                    invProductsCategoryLb.Items.Add(reTypeString);
-                }
-            }
+
         }
 
         private void addEmpPosBtn_Click(object sender, RoutedEventArgs e)
         {
-            String posTypeSettings = Properties.Settings.Default.posType.ToString();
-            if (posTypeSettings.Equals(""))
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
             {
-                posTypeSettings = empPosNewTb.Text;
+                string query = "INSERT INTO `odc_db`.`emp_position_t` (`positionName`) VALUES('" + empPosNewTb.Text + "')";
+                if (dbCon.insertQuery(query, dbCon.Connection))
+                {
+                    MessageBox.Show("Added");
+                    
+                    dbCon.Close();
+                }
             }
-            else
-            {
-                posTypeSettings = posTypeSettings+","+empPosNewTb.Text;
-            }
-            Properties.Settings.Default.posType = posTypeSettings;
-            Properties.Settings.Default.Save();
-            MessageBox.Show("Added new position");
             setManageApplicationSettingsControls();
-            empPosNewTb.Text = "";
         }
 
         private void deleteEmpPosBtn_Click(object sender, RoutedEventArgs e)
         {
-            String[] reqTypeArr = { };
-            String reqTypeSettings = Properties.Settings.Default.posType.ToString();
-            reqTypeArr = reqTypeSettings.Split(',');
-            String newListPos = "";
-            foreach(String type in reqTypeArr)
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
             {
-                if (!type.Equals(employeePositionLb.SelectedItem.ToString()))
+                string query = "DELETE FROM `odc_db`.`emp_position_t` WHERE `positionID`='" + employeePositionLb.SelectedValue + "';";
+                if (dbCon.insertQuery(query, dbCon.Connection))
                 {
-                    if (newListPos.Equals(""))
-                    {
-                        newListPos = type;
-                    }
-                    else
-                    {
-                        newListPos = newListPos + "," + type;
-                    }
+                    dbCon.Close();
+                    MessageBox.Show("Delete the position");
+                    
                 }
-                
+
+
             }
-            Properties.Settings.Default.posType = newListPos;
-            Properties.Settings.Default.Save();
             setManageApplicationSettingsControls();
-            MessageBox.Show("Delete the position");
 
         }
 
@@ -760,51 +798,140 @@ namespace prototype2
 
         private void deleteCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-            String[] reqTypeArr = { };
-            String reqTypeSettings = Properties.Settings.Default.inventoryCategory.ToString();
-            reqTypeArr = reqTypeSettings.Split(',');
-            String newListPos = "";
-            foreach (String type in reqTypeArr)
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
             {
-                if (!type.Equals(invProductsCategoryLb.SelectedItem.ToString()))
+                string query = "DELETE FROM `odc_db`.`item_category_t` WHERE `categoryID`='" + invProductsCategoryLb.SelectedValue + "';";
+                if (dbCon.insertQuery(query, dbCon.Connection))
                 {
-                    if (newListPos.Equals(""))
-                    {
-                        newListPos = type;
-                    }
-                    else
-                    {
-                        newListPos = newListPos + "," + type;
-                    }
+                    dbCon.Close();
+
+                    setManageApplicationSettingsControls();
+                    MessageBox.Show("Delete the category");
                 }
 
+
             }
-            Properties.Settings.Default.inventoryCategory = newListPos;
-            Properties.Settings.Default.Save();
-            setManageApplicationSettingsControls();
-            MessageBox.Show("Delete the category");
             
         }
 
         private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
-            String categoryTypeSettings = Properties.Settings.Default.inventoryCategory.ToString();
-            if (categoryTypeSettings.Equals(""))
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
             {
-                categoryTypeSettings = invCategoryTb.Text;
+                string query = "INSERT INTO `odc_db`.`item_category_t` (`categoryName`) VALUES('"+ invCategoryTb.Text+ "')";
+                if (dbCon.insertQuery(query, dbCon.Connection))
+                {
+                    MessageBox.Show("Added");
+                    dbCon.Close();
+                }
+                
+
             }
-            else
-            {
-                categoryTypeSettings = categoryTypeSettings + "," + invCategoryTb.Text;
-            }
-            Properties.Settings.Default.inventoryCategory = categoryTypeSettings;
-            Properties.Settings.Default.Save();
-            MessageBox.Show("Added new category");
-            setManageApplicationSettingsControls();
-            invCategoryTb.Text = "";
         }
 
-        
+        private void manageSupplierAddbtn_Click(object sender, RoutedEventArgs e)
+        {
+            addSupplier addSupplier = new addSupplier();
+            addSupplier.ShowDialog();
+            setManageSupplierGridControls();
+        }
+
+        private void manageSupplierDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(manageSupplierDataGrid))
+            {
+                if (manageSupplierDataGrid.SelectedItems.Count > 0)
+                {
+                    manageSupplierDataGrid.Columns[manageSupplierDataGrid.Columns.IndexOf(columnEditSuppBtn)].Visibility = Visibility.Visible;
+                    manageSupplierDataGrid.Columns[manageSupplierDataGrid.Columns.IndexOf(columnDeleteSuppBtn)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void validtycustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            ValidityCustom.IsEnabled = true;
+            validtycustomlbl.IsEnabled = true;
+        }
+
+        private void validtycustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ValidityCustom.IsEnabled = false;
+            validtycustomlbl.IsEnabled = false;
+        }
+
+        private void warrantycustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            warrantyDaysCustom.IsEnabled = true;
+            warrantyDaysCustomLbl.IsEnabled = true;
+        }
+
+        private void warrantycustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            warrantyDaysCustom.IsEnabled = false;
+            warrantyDaysCustomLbl.IsEnabled = false;
+        }
+
+        private void deliveryCustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            deliveryDaysCustomLbl.IsEnabled = true;
+            deliveryDaysTb.IsEnabled = true;
+        }
+
+        private void deliveryCustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            deliveryDaysCustomLbl.IsEnabled = false;
+            deliveryDaysTb.IsEnabled = false;
+        }
+
+        private void orderFormBack_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to cancel this transaction?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+                {
+                    transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+                }
+                transOrdersGridHome.Visibility = Visibility.Visible;
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        }
+
+        private void transOrdersAddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            orderFormGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transOrderSaveOnly_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            transOrdersGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transOrderSaveSend_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            transOrdersGridHome.Visibility = Visibility.Visible;
+        }
     }
     internal class Item : INotifyPropertyChanged
     {

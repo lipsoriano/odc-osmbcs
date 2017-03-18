@@ -32,6 +32,7 @@ namespace prototype2
         public String Email { get; set; }
         public object locProvinceId { get; set; }
         public object positionSelected { get; set; }
+        public object cityID { get; set; }
         String Empid = "";
         String locId = "";
         List<Position> position = new List<Position>();
@@ -42,7 +43,7 @@ namespace prototype2
             middleInitialTb.DataContext = this;
             lastNameTb.DataContext = this;
             addressTb.DataContext = this;
-            cityTb.DataContext = this;
+            cityCb.DataContext = this;
             mobileNumberTb.DataContext = this;
             emailAddressTb.DataContext = this;
             provinceCb.DataContext = this;
@@ -66,16 +67,14 @@ namespace prototype2
                 dbCon.Close();
 
             }
-            String[] posTypeArr = { };
-            String posTypeSettings = Properties.Settings.Default.posType.ToString();
-            posTypeArr = posTypeSettings.Split(',');
-            if (postionCb.Items.IsEmpty)
+            if (dbCon.IsConnect())
             {
-                foreach (String reTypeString in posTypeArr)
-                {
-                    position.Add(new Position() { Name= reTypeString });
-                }
-                postionCb.ItemsSource = position;
+                string query = "SELECT * FROM EMP_POSITION_T;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                postionCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
             }
         }
 
@@ -86,7 +85,7 @@ namespace prototype2
             if (dbCon.IsConnect())
             {
 
-                string query = "SELECT e.empID,e.empFName,e.empAddInfo,e.empMi,e.empLname,e.position, e.empContacts, e.empEmail, e.locationId, l.locationAddress,l.locationCity, p.locProvinceID,pic.empPic,pic.empSignature " +
+                string query = "SELECT e.empID,e.empFName,e.empAddInfo,e.empMi,e.empLname,e.position, e.empContacts, e.empEmail, e.locationId, l.locationAddress,l.locationCityID, p.locProvinceID,pic.empPic,pic.empSignature " +
                     "FROM employee_t e " +
                     "JOIN location_details_t l ON e.locationID = l.locationID " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
@@ -135,7 +134,8 @@ namespace prototype2
                         int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
                         provinceCb.SelectedIndex = locProvId - 1;
                         Address = dr["locationAddress"].ToString();
-                        City = dr["locationCity"].ToString();
+                        int locCityId = Int32.Parse(dr["locationCityID"].ToString());
+                        cityCb.SelectedIndex = locCityId - 1;
                         Number = dr["empContacts"].ToString();
                         Email = dr["empEmail"].ToString();
                         postionCb.SelectedValue = dr["position"].ToString();
@@ -194,7 +194,7 @@ namespace prototype2
             {
                 if (dbCon.IsConnect())
                 {
-                    string query = "UPDATE `location_details_t` SET locationAddress = '"+ addressTb.Text + "',locationCity = '" + cityTb.Text + "', locationProvinceId = '" + provinceCb.SelectedValue + "' WHERE locationID = '"+locId+"'";
+                    string query = "UPDATE `location_details_t` SET locationAddress = '"+ addressTb.Text + "',locationCityID = '" + cityCb.SelectedValue + "', locationProvinceId = '" + provinceCb.SelectedValue + "' WHERE locationID = '"+locId+"'";
 
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
@@ -297,7 +297,7 @@ namespace prototype2
 
         private void cityTb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (System.Windows.Controls.Validation.GetHasError(cityTb) == true)
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
                 saveBtn.IsEnabled = false;
             else validateTextBoxes();
         }
@@ -331,7 +331,7 @@ namespace prototype2
         }
         private void validateTextBoxes()
         {
-            if (firstNameTb.Text.Equals("") || lastNameTb.Text.Equals("") || middleInitialTb.Text.Equals("") || provinceCb.SelectedIndex == -1 || cityTb.Text.Equals("") || emailAddressTb.Text.Equals("") || mobileNumberTb.Text.Equals("") || postionCb.SelectedIndex == -1)
+            if (firstNameTb.Text.Equals("") || lastNameTb.Text.Equals("") || middleInitialTb.Text.Equals("") || provinceCb.SelectedIndex == -1 || cityCb.SelectedIndex==-1 || emailAddressTb.Text.Equals("") || mobileNumberTb.Text.Equals("") || postionCb.SelectedIndex == -1)
             {
                 saveBtn.IsEnabled = false;
             }
@@ -339,6 +339,12 @@ namespace prototype2
             {
                 saveBtn.IsEnabled = true;
             }
+        }
+        private void cityCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
         }
     }
     public class Position

@@ -34,9 +34,14 @@ namespace prototype2
                         Decimal number = Decimal.Parse(value.ToString());
                         if (value.ToString().Length < 7)
                         {
-                            return new ValidationResult(false, "*Must be greate than 7.");
+                            return new ValidationResult(false, "*Must be greater than 7.");
                         }
-                    }catch(Exception e)
+                        else if (value.ToString().Length > 11)
+                        {
+                            return new ValidationResult(false, "*Must be less than/equal 11.");
+                        }
+                    }
+                    catch(Exception e)
                     {
                         return new ValidationResult(false, "*Only numbers.");
                     }

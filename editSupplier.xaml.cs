@@ -29,13 +29,14 @@ namespace prototype2
         public String Number { get; set; }
         public String Email { get; set; }
         public object locProvinceId { get; set; }
+        public object cityID { get; set; }
         public editSupplier(String id)
         {
             InitializeComponent();
             this.id = id;
             custCompanyNameTb.DataContext = this;
             locationAddressTb.DataContext = this;
-            locationCityTb.DataContext = this;
+            cityCb.DataContext = this;
             emailAddress.DataContext = this;
             officeNumber.DataContext = this;
             custProvinceCust.DataContext = this;
@@ -63,10 +64,10 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query ="SELECT s.suppID, s.suppCompanyName, s.suppAddInfo,s.locationId, sc.sOfficeNo, sc.EmailAdd,ld.locationAddress,ld.locationCity,lp.locProvinceID FROM supplier_t s " +
-                    "JOIN supplier_contacts_t sc ON s.custID = sc.custID " +
-                    "JOIN location_details_t ld ON c.locationID = ld.locationID " +
-                    "JOIN provinces_t lp ON ld.locationProvinceID = lp.locProvinceID WHERE c.custID = '"+ id + "';";
+                string query ="SELECT s.suppID, s.suppCompanyName, s.suppAddInfo,s.locationId, sc.sOfficeNo, sc.sEmailAddress,ld.locationAddress,ld.locationCityID,lp.locProvinceID FROM supplier_t s " +
+                    "JOIN supplier_contacts_t sc ON s.suppID = sc.suppID " +
+                    "JOIN location_details_t ld ON s.locationID = ld.locationID " +
+                    "JOIN provinces_t lp ON ld.locationProvinceID = lp.locProvinceID WHERE s.suppID = '"+ id + "';";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet(); 
                 DataTable fromDbTable = new DataTable();
@@ -80,9 +81,10 @@ namespace prototype2
                     int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
                     custProvinceCust.SelectedIndex = locProvId-1;
                     Address = dr["locationAddress"].ToString();
-                    City = dr["locationCity"].ToString();
+                    int locCityId = Int32.Parse(dr["locationCityID"].ToString());
+                    cityCb.SelectedIndex = locCityId - 1;
                     Number = dr["sOfficeNo"].ToString();
-                    Email = dr["EmailAdd"].ToString();
+                    Email = dr["sEmailAddress"].ToString();
                 }
                 dbCon.Close();
             }
@@ -100,11 +102,11 @@ namespace prototype2
 
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
-                        query = "UPDATE `location_details_t` SET `locationAddress`='" + locationAddressTb.Text + "',`locationCity`='" + locationCityTb.Text + "',`locationProvinceID`='" + custProvinceCust.SelectedValue + "' WHERE `locationId`='" + locId + "';";
+                        query = "UPDATE `location_details_t` SET `locationAddress`='" + locationAddressTb.Text + "',`locationCityID`='" + cityCb.SelectedValue + "',`locationProvinceID`='" + custProvinceCust.SelectedValue + "' WHERE `locationId`='" + locId + "';";
                         if (dbCon.insertQuery(query, dbCon.Connection))
                         {
 
-                            query = "UPDATE `supplier_contacts_t` SET `sOfficeNo`='" + officeNumber.Text + "',`sEmailAdd`='" + emailAddress.Text + "' WHERE `suppID`='" + id + "';";
+                            query = "UPDATE `supplier_contacts_t` SET `sOfficeNo`='" + officeNumber.Text + "',`sEmailAddress`='" + emailAddress.Text + "' WHERE `suppID`='" + id + "';";
                             if (dbCon.insertQuery(query, dbCon.Connection))
                             {
                                 MessageBox.Show("Updated");
@@ -130,7 +132,6 @@ namespace prototype2
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             setControlsValues();
-            
         }
 
         private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
@@ -149,13 +150,24 @@ namespace prototype2
 
         private void locationCityTb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (System.Windows.Controls.Validation.GetHasError(locationCityTb) == true)
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
                 saveBtn.IsEnabled = false;
             else validateTextBoxes();
         }
 
         private void custProvinceCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect() && custProvinceCust.SelectedIndex != -1)
+            {
+                string query = "SELECT * FROM city_by_province_t cp WHERE provinceID = '" + custProvinceCust.SelectedValue + "'";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                cityCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
             if (System.Windows.Controls.Validation.GetHasError(custProvinceCust) == true)
                 saveBtn.IsEnabled = false;
             else validateTextBoxes();
@@ -176,7 +188,7 @@ namespace prototype2
         }
         private void validateTextBoxes()
         {
-            if (custCompanyNameTb.Text.Equals("") || locationAddressTb.Text.Equals("") || locationCityTb.Text.Equals("") || custProvinceCust.SelectedIndex == -1 || officeNumber.Text.Equals("") || emailAddress.Text.Equals(""))
+            if (custCompanyNameTb.Text.Equals("") || locationAddressTb.Text.Equals("") || cityCb.SelectedIndex == -1 || custProvinceCust.SelectedIndex == -1 || officeNumber.Text.Equals("") || emailAddress.Text.Equals(""))
             {
                 saveBtn.IsEnabled = false;
             }
@@ -184,6 +196,13 @@ namespace prototype2
             {
                 saveBtn.IsEnabled = true;
             }
+        }
+
+        private void cityCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
         }
 
     }

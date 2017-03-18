@@ -39,14 +39,15 @@
 
         <ScrollViewer Margin="0">
             <Grid>
-                <GroupBox x:Name="groupBox" Header="Customer Details" Margin="10,12,10,44" FontWeight="Bold">
+
+                <GroupBox x:Name="groupBox" Header="Supplier Details" Margin="10,12,10,31" FontWeight="Bold">
                     <Grid Margin="-1,0,-2,-1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Label x:Name="label2" Content="All required fields are marked with (*)" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
-                        <Grid Margin="10,25,10,0" VerticalAlignment="Top" Height="50">
-                            <Label x:Name="label" Content="*Company Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="107" FontWeight="Bold" Margin="0,2,0,0" FontStyle="Italic"/>
+                        <Label x:Name="label2" Content="All required fields are marked with (*)" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" FontWeight="Normal"/>
+                        <Grid Margin="10,28,10,0" VerticalAlignment="Top" Height="50">
+                            <Label x:Name="label" Content="* Suppliers Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123" FontWeight="Bold" Margin="0,2,0,0" FontStyle="Italic"/>
                             <TextBox x:Name="custCompanyNameTb" Height="23" Margin="128,5,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="custCompanyNameTb_TextChanged">
                                 <Binding Path="CompName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -57,12 +58,12 @@
 
 
                         </Grid>
-                        <Grid Margin="10,77,10,0" VerticalAlignment="Top" Height="84">
+                        <Grid Margin="10,80,10,0" VerticalAlignment="Top" Height="84">
                             <TextBox x:Name="custAddInfoTb" Height="84" TextWrapping="Wrap" VerticalAlignment="Top" Margin="128,0,10,0"/>
                             <Label x:Name="label_Copy" Content="Description:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="107" FontWeight="Bold" FontStyle="Italic"/>
                         </Grid>
-                        <Grid Margin="10,166,0,0" VerticalAlignment="Top" Height="170">
-                            <Label x:Name="label1" Content="* Location/Address:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
+                        <Grid Margin="10,169,0,0" VerticalAlignment="Top" Height="170">
+                            <Label x:Name="label1" Content="Location/Address:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
                             <Grid x:Name="locationBrngyGrid" Margin="19,26,10,0" VerticalAlignment="Top" Height="60">
                                 <Label x:Name="locationBrngyTbLbl" Content="* Address" VerticalAlignment="Top" Visibility="Visible" FontWeight="Normal"/>
                                 <TextBox x:Name="locationAddressTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="10,26,10,0" TextChanged="locationAddressTb_TextChanged">
@@ -74,14 +75,16 @@
                                 </TextBox>
                             </Grid>
                             <Grid x:Name="locationCityGrid" Margin="19,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
-                                <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" FontWeight="Normal"/>
-                                <TextBox x:Name="locationCityTb" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,10,10" Width="170" HorizontalAlignment="Center" TextChanged="locationCityTb_TextChanged">
-                                    <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <local:TextBoxValidation TextBoxType="String"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox>
+                                <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" Margin="0,1,0,0" FontWeight="Normal"/>
+                                <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </Grid>
                             <Grid x:Name="locationProvinceGrid" Margin="225,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
                                 <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" SelectionChanged="custProvinceCust_SelectionChanged">
@@ -93,15 +96,15 @@
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
-                                <Label x:Name="label1_Copy" Content="*Province:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Normal"/>
+                                <Label x:Name="label1_Copy" Content="* Province:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Normal"/>
                             </Grid>
                         </Grid>
-                        <Grid Margin="10,336,26,0" Height="104" VerticalAlignment="Top">
+                        <Grid Margin="10,339,26,0" Height="104" VerticalAlignment="Top">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="33*"/>
                                 <RowDefinition Height="92*"/>
                             </Grid.RowDefinitions>
-                            <Label x:Name="label1_Copy1" Content="* Contact Details:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="112" FontStyle="Italic"/>
+                            <Label x:Name="label1_Copy1" Content="Contact Details:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="99" FontStyle="Italic"/>
                             <Grid x:Name="mobileNoGrid_Copy" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="16,31,0,0" Height="60" Grid.RowSpan="2">
                                 <Label x:Name="streetNameTbLbl1" Content="* Office Number" VerticalAlignment="Top" Visibility="Visible" Height="25" FontWeight="Normal"/>
                                 <TextBox x:Name="officeNumber" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="20" Margin="10,29,7,5" TextChanged="officeNumber_TextChanged">
@@ -112,9 +115,9 @@
                                     </Binding>
                                 </TextBox>
                             </Grid>
-                            <Grid x:Name="mobileNoGrid_Copy1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="233,7,0,0" Height="60" Grid.Row="1">
+                            <Grid x:Name="mobileNoGrid_Copy1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="173" Margin="189,31,0,0" Height="60" Grid.RowSpan="2">
                                 <Label x:Name="streetNameTbLbl2" Content="* Email Address" VerticalAlignment="Top" Visibility="Visible" Height="25" FontWeight="Normal"/>
-                                <TextBox x:Name="emailAddress" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="100" Margin="10,29,7,5" TextChanged="emailAddress_TextChanged">
+                                <TextBox x:Name="emailAddress" TextWrapping="Wrap" Background="{x:Null}" Height="26" MaxLines="1" VerticalContentAlignment="Center" MaxLength="100" Margin="10,30,7,4" TextChanged="emailAddress_TextChanged">
                                     <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <local:TextBoxValidation TextBoxType="Email"/>

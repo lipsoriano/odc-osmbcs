@@ -82,13 +82,15 @@
                             </Binding>
                         </TextBox>
                         <Label Content="City" VerticalAlignment="Top" Visibility="Visible" Margin="21,201,507,0" FontWeight="Normal" Grid.Column="1"/>
-                        <TextBox x:Name="cityTb" TextWrapping="Wrap" Background="{x:Null}" Height="23" MaxLines="1" VerticalAlignment="Top" Margin="47,232,0,0" Width="153" HorizontalAlignment="Left" Grid.Column="1" FontWeight="Normal" VerticalContentAlignment="Center" TextChanged="cityTb_TextChanged">
-                            <Binding Path="City" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <local:TextBoxValidation TextBoxType="String"/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+                        <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                            <ComboBox.SelectedItem>
+                                <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedItem>
+                        </ComboBox>
                         <Label Content="Province" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="229,201,0,0" FontWeight="Normal" Grid.Column="1"/>
                         <ComboBox x:Name="provinceCb" Margin="261,232,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="157" HorizontalAlignment="Left" FontWeight="Normal" Grid.Column="1" SelectionChanged="provinceCb_SelectionChanged">
                             <ComboBox.SelectedItem>
@@ -117,7 +119,7 @@
                             </Binding>
                         </TextBox>
                         <Label Content="Position" HorizontalAlignment="Left" Margin="4,359,0,0" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" Grid.Column="1"/>
-                        <ComboBox x:Name="postionCb" HorizontalAlignment="Left" Margin="38,390,0,0" VerticalAlignment="Top" Width="162" Height="26" Grid.Column="1" SelectedValuePath="Name" DisplayMemberPath="Name" FontWeight="Normal" SelectionChanged="postionCb_SelectionChanged">
+                        <ComboBox x:Name="postionCb" HorizontalAlignment="Left" Margin="38,390,0,0" VerticalAlignment="Top" Width="162" Height="26" Grid.Column="1" SelectedValuePath="positionId" DisplayMemberPath="positionName" FontWeight="Normal" SelectionChanged="postionCb_SelectionChanged">
                             <ComboBox.SelectedItem>
                                 <Binding Path="positionSelected" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
