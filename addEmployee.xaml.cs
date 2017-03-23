@@ -132,8 +132,8 @@ namespace prototype2
                             locID = myRow[0].ToString();
                         }
                         string pass = RandomString(9);
-                        string selectedPos = postionCb.SelectedItem.ToString();
-                        string query1 = "INSERT INTO employee_t (empFname,empLname,empMI,empEmail,empContacts,position,password,locationID) VALUES ('" + firstNameTb.Text + "','" + lastNameTb.Text + "','" + middleInitialTb.Text + "','" + emailAddressTb.Text + "','" + mobileNumberTb.Text + "','" +selectedPos+ "','" + pass + "','" + locID + "')";
+                        string selectedPos = postionCb.SelectedValue.ToString();
+                        string query1 = "INSERT INTO employee_t (empFname,empLname,empMI,empEmail,empContacts,positionID,password,locationID) VALUES ('" + firstNameTb.Text + "','" + lastNameTb.Text + "','" + middleInitialTb.Text + "','" + emailAddressTb.Text + "','" + mobileNumberTb.Text + "','" + postionCb.SelectedValue + "','" + pass + "','" + locID + "')";
                         if (dbCon.insertQuery(query1, dbCon.Connection))
                         {
                             

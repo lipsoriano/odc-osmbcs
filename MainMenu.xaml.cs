@@ -429,9 +429,10 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,e.positionId, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as empAddress " +
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,ept.positionName, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as empAddress " +
                     "FROM employee_t e " +
                     "JOIN location_details_t l ON e.locationID = l.locationID " +
+                    "JOIN emp_position_t ept ON e.positionID = ept.positionId " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
                     "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
                     "WHERE isDeleted = 0;";
@@ -624,7 +625,7 @@ namespace prototype2
             {
                 transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
             }
-            viewPurchaseOrder.Visibility = Visibility.Visible;
+            makeSalesQuoteGrid.Visibility = Visibility.Visible;
         }
 
         private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
@@ -779,23 +780,7 @@ namespace prototype2
             setManageApplicationSettingsControls();
 
         }
-
-        private void reqType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            MessageBox.Show("" + reqType.SelectedItem.ToString());
-            string reTypeS = reqType.SelectedItem.ToString();
-            if (reTypeS.Equals("SERVICES"))
-            {
-                toServiceLbl.IsEnabled = true;
-                typesOfService.IsEnabled = true;
-            }
-            else
-            {
-                toServiceLbl.IsEnabled = false;
-                typesOfService.IsEnabled = false;
-            }
-        }
-
+        
         private void deleteCategoryBtn_Click(object sender, RoutedEventArgs e)
         {
             var dbCon = DBConnection.Instance();

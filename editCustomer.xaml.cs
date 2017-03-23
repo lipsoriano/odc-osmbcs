@@ -36,10 +36,11 @@ namespace prototype2
             this.id = id;
             custCompanyNameTb.DataContext = this;
             locationAddressTb.DataContext = this;
-            cityCb.DataContext = this;
+            
             emailAddress.DataContext = this;
             officeNumber.DataContext = this;
             custProvinceCust.DataContext = this;
+            cityCb.DataContext = this;
             setControlValuesSynced(id);
         }
         private static String dbname = "odc_db";
@@ -75,13 +76,14 @@ namespace prototype2
                 fromDbTable = fromDb.Tables["t"];
                 foreach (DataRow dr in fromDbTable.Rows)
                 {
+                    int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
+                    custProvinceCust.SelectedIndex = locProvId - 1;
                     locId = dr["locationId"].ToString();
                     CompName = dr["custCompanyName"].ToString();
                     custAddInfoTb.Text = dr["custAddInfo"].ToString();
-                    int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
-                    custProvinceCust.SelectedIndex = locProvId-1;
+                    
                     int locCityId = Int32.Parse(dr["locationCityID"].ToString());
-                    cityCb.SelectedIndex = locCityId - 1;
+                    cityCb.SelectedValue = locCityId;
                     Address = dr["locationAddress"].ToString();
                     Number = dr["officePhoneNo"].ToString();
                     Email = dr["emailAddress"].ToString();
@@ -132,7 +134,7 @@ namespace prototype2
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             setControlsValues();
-            
+
         }
 
         private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)

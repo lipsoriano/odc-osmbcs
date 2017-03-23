@@ -82,7 +82,7 @@ namespace prototype2
                     custProvinceCust.SelectedIndex = locProvId-1;
                     Address = dr["locationAddress"].ToString();
                     int locCityId = Int32.Parse(dr["locationCityID"].ToString());
-                    cityCb.SelectedIndex = locCityId - 1;
+                    cityCb.SelectedValue = locCityId;
                     Number = dr["sOfficeNo"].ToString();
                     Email = dr["sEmailAddress"].ToString();
                 }

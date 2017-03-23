@@ -494,9 +494,11 @@
                             <Button x:Name="button" Content="search" HorizontalAlignment="Left" Margin="396,3,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
                         </Grid>
                         <Button x:Name="transQuoteAddBtn" Content="add" HorizontalAlignment="Right" Height="26" Margin="0,10,10,0" VerticalAlignment="Top" Width="90" Click="transQuoteAddBtn_Click"/>
-                        <DataGrid x:Name="quotationsDataGrid" Margin="0,41,0,0" AutoGenerateColumns="False"/>
+                        <DataGrid x:Name="quotationsDataGrid" Margin="0,41,0,0" AutoGenerateColumns="False">
+
+                        </DataGrid>
                     </Grid>
-                    <Grid x:Name="addRequestionGrid" Margin="10,70,10,10" d:IsHidden="True">
+                    <Grid x:Name="addRequestionGrid" Margin="10,70,10,10">
                         <Button x:Name="transRequestBack" Content="&lt; Back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="74" Height="24" Click="transRequestBack_Click"/>
                         <GroupBox x:Name="groupBox1" Header="Requisition Form" Margin="10,29,10,42" FontFamily="Segoe UI Symbol" FontSize="16" FontWeight="Bold" FontStyle="Italic" BorderBrush="Black" VerticalContentAlignment="Stretch">
                             <Grid Margin="0,0,-2,0">
@@ -520,33 +522,9 @@
                                     <ComboBox x:Name="custRepCb" Margin="0,0,50,0" DisplayMemberPath = "custRepFullName" SelectedValuePath = "custRepID" IsEditable="True" HorizontalAlignment="Right" Width="201" Height="22" VerticalAlignment="Top" FontWeight="Normal" FontStyle="Normal" FontFamily="Segoe UI" FontSize="12"/>
                                     <Button x:Name="addCustRepBtn" Content="+ add" Margin="204,3,0,-23" VerticalAlignment="Top" Click="addCustRepBtn_Click" Height="20" HorizontalAlignment="Right" Width="45" FontWeight="Normal" FontStyle="Normal" FontFamily="Segoe UI" FontSize="12"/>
                                 </Grid>
-                                <Label Content="Requested Products/Services" VerticalAlignment="Top" Height="26" Margin="2,76,0,0" HorizontalAlignment="Left" Width="174" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy1" Content="Request Type:" VerticalAlignment="Top" Height="26" Margin="29,107,0,0" HorizontalAlignment="Left" Width="86" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1"/>
-                                <ComboBox x:Name="reqType" HorizontalAlignment="Left" Margin="140,111,0,0" VerticalAlignment="Top" Width="94" FontSize="12" Grid.Column="1" Height="22" SelectionChanged="reqType_SelectionChanged"/>
-                                <Label x:Name="toServiceLbl" Content="Type of Service" VerticalAlignment="Top" Height="26" Margin="29,152,0,0" HorizontalAlignment="Left" Width="96" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1" IsEnabled="False"/>
-                                <ComboBox x:Name="typesOfService" HorizontalAlignment="Left" Margin="140,152,0,0" VerticalAlignment="Top" Width="94" FontSize="12" Grid.Column="1" Height="22" IsEnabled="False"/>
-                                <Label x:Name="label12_Copy2" Content="Item Code:" VerticalAlignment="Top" Height="26" Margin="30,186,0,0" HorizontalAlignment="Left" Width="82" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
-                                    <Label.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-0.402"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Label.RenderTransform>
-                                </Label>
-                                <TextBox x:Name="itemNoTb" HorizontalAlignment="Left" Height="23" Margin="140,190,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="94" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy3" Content="Description:" VerticalAlignment="Top" Height="26" Margin="29,231,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                                <TextBox x:Name="descriptionTb" HorizontalAlignment="Left" Height="54" Margin="140,235,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="296" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy4" Content="Unit:" VerticalAlignment="Top" Height="26" Margin="451,190,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                                <ComboBox x:Name="unitCb" HorizontalAlignment="Left" Margin="517,194,0,0" VerticalAlignment="Top" Width="72" FontSize="12" Grid.Column="1" Height="22"/>
-                                <Label x:Name="label12_Copy5" Content="Quantity:" VerticalAlignment="Top" Height="26" Margin="451,236,0,0" HorizontalAlignment="Left" Width="61" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                                <xctk:IntegerUpDown x:Name="qtyTb" Grid.Column="1" HorizontalAlignment="Left" Margin="517,240,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="12" FontStyle="Normal" FontWeight="Normal" Width="72" RenderTransformOrigin="-0.722,0" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" AllowTextInput="False" Height="20"/>
-                                <Label x:Name="label12_Copy6" Content="Unit Price:" VerticalAlignment="Top" Height="26" Margin="630,190,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                                <TextBox x:Name="totalPrice" HorizontalAlignment="Left" Height="23" Margin="728,191,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1"/>
-                                <Label x:Name="label12_Copy7" Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="629,235,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
-                                <TextBox x:Name="totalPrice_Copy" HorizontalAlignment="Left" Height="23" Margin="728,237,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" Grid.Column="1" IsEnabled="False"/>
-                                <DataGrid x:Name="itemDg" Margin="10,300,10,10" ItemsSource="{Binding items}" CanUserAddRows="False" ColumnWidth="0" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" Grid.ColumnSpan="2" CanUserReorderColumns="False" CanUserResizeColumns="False">
+                                <Label Content="Requested Items" VerticalAlignment="Top" Height="26" Margin="0,76,0,0" HorizontalAlignment="Left" Width="241" FontSize="14" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" Grid.Column="1"/>
+                                <Button x:Name="transReqAddNewItem" Content="+add new item" Grid.Column="1" HorizontalAlignment="Left" Margin="1064,122,0,0" VerticalAlignment="Top" Width="119" FontWeight="Normal" FontStyle="Normal" FontFamily="Segoe UI" FontSize="14"/>
+                                <DataGrid x:Name="itemDg" Margin="10,150,10,10" ItemsSource="{Binding items}" CanUserAddRows="False" ColumnWidth="0" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" Grid.ColumnSpan="2" CanUserReorderColumns="False" CanUserResizeColumns="False">
                                     <DataGrid.Columns >
                                         <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Width="25" CanUserResize="False"/>
                                         <DataGridTextColumn Binding="{Binding lineNo}" ClipboardContentBinding="{x:Null}" Header="Line #" Width="50" CanUserResize="False"/>
@@ -558,7 +536,6 @@
                                         <DataGridTextColumn Binding="{Binding totalAmount}" ClipboardContentBinding="{x:Null}" Header="Total Amount" Width="100" />
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button x:Name="button4" Content="+add" Grid.Column="1" HorizontalAlignment="Left" Margin="871,221,0,0" VerticalAlignment="Top" Width="75" FontFamily="Segoe UI" FontSize="12" FontWeight="Normal" FontStyle="Normal" Height="20"/>
                             </Grid>
                         </GroupBox>
                         <Button x:Name="transRequestNext" Content="Next &gt;" HorizontalAlignment="Right" Margin="0,0,14,8" VerticalAlignment="Bottom" Width="74" Height="24" Click="transRequestNext_Click"/>
@@ -643,7 +620,7 @@
                         <DataGrid x:Name="quotationsDataGrid3" Margin="0,41,0,0" AutoGenerateColumns="False"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="transactionOrdersGrid">
+                <Grid x:Name="transactionOrdersGrid" d:IsHidden="True">
                     <Label x:Name="label7_Copy3" Content="Transaction - Purchase Orders" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid x:Name="transOrdersGridHome" Margin="10,70,10,10" d:IsHidden="True">
                         <Grid Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="474">
@@ -740,7 +717,7 @@
                         <ColumnDefinition Width="557*"/>
                     </Grid.ColumnDefinitions>
                     <Viewbox Margin="10,10,25,10">
-                        <Calendar HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                        <Calendar x:Name="calendear" VerticalContentAlignment="Stretch"/>
                     </Viewbox>
                 </Grid>
             </Grid>
@@ -798,7 +775,7 @@
                                 <DataGridTextColumn Binding="{Binding empAddress}" ClipboardContentBinding="{x:Null}" Header="Address" Width="350" />
                                 <DataGridTextColumn Binding="{Binding empContacts}" ClipboardContentBinding="{x:Null}" Header="Mobile Number" Width="200" CanUserResize="False"/>
                                 <DataGridTextColumn Binding="{Binding empEmail}" ClipboardContentBinding="{x:Null}" Header="Email Address" Width="200" CanUserResize="False" />
-                                <DataGridTextColumn Binding="{Binding position}" ClipboardContentBinding="{x:Null}" Header="Position" Width="100" CanUserResize="False" />
+                                <DataGridTextColumn Binding="{Binding positionName}" ClipboardContentBinding="{x:Null}" Header="Position" Width="100" CanUserResize="False" />
                                 <DataGridTemplateColumn x:Name="columnEditBtnEmp" Width="100" Visibility="Hidden"  CanUserResize="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

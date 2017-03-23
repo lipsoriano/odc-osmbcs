@@ -82,7 +82,7 @@
                             </Binding>
                         </TextBox>
                         <Label Content="City" VerticalAlignment="Top" Visibility="Visible" Margin="21,201,507,0" FontWeight="Normal" Grid.Column="1"/>
-                        <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                        <ComboBox x:Name="cityCb" Margin="47,232,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="153" HorizontalAlignment="Left" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal" Grid.Column="1">
                             <ComboBox.SelectedItem>
                                 <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>

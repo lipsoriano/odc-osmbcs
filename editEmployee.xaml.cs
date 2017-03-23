@@ -85,10 +85,10 @@ namespace prototype2
             if (dbCon.IsConnect())
             {
 
-                string query = "SELECT e.empID,e.empFName,e.empAddInfo,e.empMi,e.empLname,e.position, e.empContacts, e.empEmail, e.locationId, l.locationAddress,l.locationCityID, p.locProvinceID,pic.empPic,pic.empSignature " +
+                string query = "SELECT e.empID,e.empFName,e.empAddInfo,e.empMi,e.empLname,e.positionID, e.empContacts, e.empEmail, e.locationId, ld.locationAddress,ld.locationCityID, p.locProvinceID,pic.empPic,pic.empSignature " +
                     "FROM employee_t e " +
-                    "JOIN location_details_t l ON e.locationID = l.locationID " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "JOIN location_details_t ld ON e.locationID = ld.locationID " +
+                    "JOIN provinces_t p ON ld.locationProvinceID = p.locProvinceId " +
                     "JOIN emp_pic_t pic ON e.empID = pic.empID WHERE e.empID = '"+id+"';";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -130,15 +130,14 @@ namespace prototype2
                             }
                         }
                         Address = dr["locationAddress"].ToString();
-                        City = dr["locationCity"].ToString();
                         int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
                         provinceCb.SelectedIndex = locProvId - 1;
                         Address = dr["locationAddress"].ToString();
                         int locCityId = Int32.Parse(dr["locationCityID"].ToString());
-                        cityCb.SelectedIndex = locCityId - 1;
+                        cityCb.SelectedValue = locCityId;
                         Number = dr["empContacts"].ToString();
                         Email = dr["empEmail"].ToString();
-                        postionCb.SelectedValue = dr["position"].ToString();
+                        postionCb.SelectedValue = dr["positionID"].ToString();
                     }
                     catch (Exception)
                     {
@@ -200,7 +199,7 @@ namespace prototype2
                     {
 
                         string selectedPos = postionCb.SelectedValue.ToString();
-                        string query1 = "UPDATE `employee_t` SET empFname = '" + firstNameTb.Text + "',empLname = '" + lastNameTb.Text + "', empMI = '" + middleInitialTb.Text + "', empEmail = '" + emailAddressTb.Text + "', empContacts = '" + mobileNumberTb.Text + "', position = '" + selectedPos + "' WHERE empID = '" + Empid + "'";
+                        string query1 = "UPDATE `employee_t` SET empFname = '" + firstNameTb.Text + "',empLname = '" + lastNameTb.Text + "', empMI = '" + middleInitialTb.Text + "', empEmail = '" + emailAddressTb.Text + "', empContacts = '" + mobileNumberTb.Text + "', positionID = '" + selectedPos + "' WHERE empID = '" + Empid + "'";
                         if (dbCon.insertQuery(query1, dbCon.Connection))
                         {
                             try
@@ -304,6 +303,17 @@ namespace prototype2
 
         private void provinceCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect() && provinceCb.SelectedIndex != -1)
+            {
+                string query = "SELECT * FROM city_by_province_t cp WHERE provinceID = '" + provinceCb.SelectedValue + "'";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                cityCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
             if (System.Windows.Controls.Validation.GetHasError(provinceCb) == true)
                 saveBtn.IsEnabled = false;
             else validateTextBoxes();
