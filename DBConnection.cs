@@ -1,6 +1,7 @@
 ﻿using MySql.Data;
 using MySql.Data.MySqlClient;
 using System;
+using System.Windows;
 
 namespace prototype2
 
@@ -58,7 +59,19 @@ namespace prototype2
                 sqlCommand = new MySqlCommand();
                 sqlCommand.Connection = con;
                 sqlCommand.CommandText = query;
-                sqlCommand.ExecuteNonQuery();
+                try
+                {
+                    sqlCommand.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    int errorcode = ex.Number;
+                    if (errorcode == 1062)
+                    {
+                        MessageBox.Show("Duplicate Entry");
+                    }
+                }
+               
                 con.Close();
                 return true;
             }

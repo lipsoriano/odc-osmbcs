@@ -74,19 +74,7 @@
                                     </Binding>
                                 </TextBox>
                             </Grid>
-                            <Grid x:Name="locationCityGrid" Margin="19,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
-                                <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" Margin="0,1,0,0" FontWeight="Normal"/>
-                                <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
-                                    <ComboBox.SelectedItem>
-                                        <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </ComboBox.SelectedItem>
-                                </ComboBox>
-                            </Grid>
-                            <Grid x:Name="locationProvinceGrid" Margin="225,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
+                            <Grid x:Name="locationProvinceGrid" Margin="19,96,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65" Width="206">
                                 <ComboBox x:Name="custProvinceCust" Margin="10,31,10,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="170" HorizontalAlignment="Center" SelectionChanged="custProvinceCust_SelectionChanged">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="locProvinceId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -97,6 +85,18 @@
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
                                 <Label x:Name="label1_Copy" Content="* Province:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Normal"/>
+                            </Grid>
+                            <Grid x:Name="locationCityGrid" Margin="230,96,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="191" Height="65">
+                                <Label x:Name="locationCityTbLbl" Content="* City" VerticalAlignment="Top" Visibility="Visible" Margin="0,1,0,0" FontWeight="Normal"/>
+                                <ComboBox x:Name="cityCb" Margin="18,31,3,0" VerticalAlignment="Top" Height="26" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="170" HorizontalAlignment="Center" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:TextBoxValidation TextBoxType="ComboBox"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
                             </Grid>
                         </Grid>
                         <Grid Margin="10,339,26,0" Height="104" VerticalAlignment="Top">

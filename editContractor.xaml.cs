@@ -19,9 +19,9 @@ using System.Windows.Shapes;
 namespace prototype2
 {
     /// <summary>
-    /// Interaction logic for addEmployee.xaml
+    /// Interaction logic for editEmployee.xaml
     /// </summary>
-    public partial class addEmployee : Window
+    public partial class editContractor : Window
     {
         public String FirstName { get; set; }
         public String MiddleName { get; set; }
@@ -31,9 +31,12 @@ namespace prototype2
         public String Number { get; set; }
         public String Email { get; set; }
         public object locProvinceId { get; set; }
-        public object positionSelected { get; set; }
+        public String JobTitle { get; set; }
         public object cityID { get; set; }
-        public addEmployee()
+        String Empid = "";
+        String locId = "";
+        List<Position> position = new List<Position>();
+        public editContractor(String id)
         {
             InitializeComponent();
             firstNameTb.DataContext = this;
@@ -44,7 +47,9 @@ namespace prototype2
             mobileNumberTb.DataContext = this;
             emailAddressTb.DataContext = this;
             provinceCb.DataContext = this;
-            postionCb.DataContext = this;
+            jobTitleTb.DataContext = this;
+            Empid = id;
+            setControlValuesSynced(id);
 
         }
         private static String dbname = "odc_db";
@@ -62,13 +67,65 @@ namespace prototype2
                 dbCon.Close();
 
             }
+        }
+
+        private void setControlValuesSynced(String id)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = "SELECT * FROM EMP_POSITION_T;";
+
+                string query = "SELECT e.contID,e.contFName,e.contMi,e.contLname,e.jobTitle, e.contContact, e.contEmail, e.locationId, e.dateEnded, e.dateStarted, ld.locationAddress,ld.locationCityID, p.locProvinceID,pic.contPic,pic.contSignature " +
+                    "FROM contractor_t e " +
+                    "JOIN location_details_t ld ON e.locationID = ld.locationID " +
+                    "JOIN provinces_t p ON ld.locationProvinceID = p.locProvinceId " +
+                    "JOIN cont_pic_t pic ON e.contID = pic.contID WHERE e.contID = '"+id+"';";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
+                DataTable fromDbTable = new DataTable();
                 dataAdapter.Fill(fromDb, "t");
-                postionCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                fromDbTable = fromDb.Tables["t"];
+                foreach (DataRow dr in fromDbTable.Rows)
+                {
+                    try
+                    {
+                        locId = dr["locationId"].ToString();
+                        FirstName = dr["contFName"].ToString();
+                        MiddleName = dr["contMi"].ToString();
+                        LastName = dr["contLname"].ToString();
+                        byte[] data = { };
+                        if (!Convert.IsDBNull(dr["contPic"]))
+                        {
+                            data = (byte[])dr["contPic"];
+                            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(data))
+                            {
+                                var imageSource = new BitmapImage();
+                                imageSource.BeginInit();
+                                imageSource.StreamSource = ms;
+                                imageSource.CacheOption = BitmapCacheOption.OnLoad;
+                                imageSource.EndInit();
+                                // Assign the Source property of your image
+                                empImage.Source = imageSource;
+                            }
+                        }
+                        Address = dr["locationAddress"].ToString();
+                        int locProvId = Int32.Parse(dr["locProvinceID"].ToString());
+                        provinceCb.SelectedIndex = locProvId - 1;
+                        Address = dr["locationAddress"].ToString();
+                        int locCityId = Int32.Parse(dr["locationCityID"].ToString());
+                        cityCb.SelectedValue = locCityId;
+                        Number = dr["contContact"].ToString();
+                        Email = dr["contEmail"].ToString();
+                        JobTitle = dr["jobTitle"].ToString();
+                        dateStarted.Text = dr["dateStarted"].ToString();
+                        dateEnded.Text = dr["dateStarted"].ToString();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
                 dbCon.Close();
             }
         }
@@ -113,53 +170,32 @@ namespace prototype2
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
-            MessageBoxResult result = MessageBox.Show("Do you want to save this new employee?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            MessageBoxResult result = MessageBox.Show("Do you want to save changes?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
                 if (dbCon.IsConnect())
                 {
-                    string query = "INSERT INTO location_details_t (locationAddress,locationCityID,locationProvinceID) VALUES ('" + addressTb.Text + "','" + cityCb.SelectedValue+ "', '" + provinceCb.SelectedValue + "')";
+                    string query = "UPDATE `location_details_t` SET locationAddress = '"+ addressTb.Text + "',locationCityID = '" + cityCb.SelectedValue + "', locationProvinceId = '" + provinceCb.SelectedValue + "' WHERE locationID = '"+locId+"'";
 
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
-                        query = "select last_insert_id() from location_details_t";
-                        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                        DataSet fromDb = new DataSet();
-                        dataAdapter.Fill(fromDb, "t");
-                        string locID = "";
-                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                        {
-                            locID = myRow[0].ToString();
-                        }
-                        string pass = RandomString(9);
-                        string selectedPos = postionCb.SelectedValue.ToString();
-                        string query1 = "INSERT INTO employee_t (empFname,empLname,empMI,empEmail,empContacts,positionID,password,locationID) VALUES ('" + firstNameTb.Text + "','" + lastNameTb.Text + "','" + middleInitialTb.Text + "','" + emailAddressTb.Text + "','" + mobileNumberTb.Text + "','" + postionCb.SelectedValue + "','" + pass + "','" + locID + "')";
+                        
+                        string query1 = "UPDATE `contractor_t` SET contFname = '" + firstNameTb.Text + "',contLname = '" + lastNameTb.Text + "', contMI = '" + middleInitialTb.Text + "', contEmail = '" + emailAddressTb.Text + "', contContact = '" + mobileNumberTb.Text + "', jobTitle = '" + jobTitleTb.Text + "', dateStarted = '" + dateStarted.Text + "', dateEnded = '" + dateEnded.Text + "' WHERE contID = '" + Empid + "'";
                         if (dbCon.insertQuery(query1, dbCon.Connection))
                         {
-                            
-                            query = "select last_insert_id() from employee_t";
-                            dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                            fromDb = new DataSet();
-                            dataAdapter.Fill(fromDb, "t");
-                            string empId = "";
-                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                            {
-                                empId = myRow[0].ToString();
-                            }
                             try
                             {
                                 string connstring = string.Format("Server=localhost; database={0}; UID=root; password=password", dbname);
                                 MySqlConnection conn = new MySqlConnection(connstring);
                                 conn.Open();
-                                MySqlCommand cmd = new MySqlCommand("insert into emp_pic_t(empPic,empSignature,empId)" +
-                                    " values(@picture,@signature,'"+empId+"')", conn);
+                                MySqlCommand cmd = new MySqlCommand("UPDATE cont_pic_t SET contPic = @picture ,contSignature = @signature WHERE contID = '"+Empid+"'", conn);
                                 cmd.Parameters.Add("@picture", MySqlDbType.LongBlob);
                                 cmd.Parameters["@picture"].Value = picdata;
                                 cmd.Parameters.Add("@signature", MySqlDbType.MediumBlob);
-                                cmd.Parameters["@signature"].Value = SignatureToBitmapBytes();
+                                cmd.Parameters["@signature"].Value = "";
                                 cmd.ExecuteNonQuery();
                                 conn.Close();
-                                MessageBox.Show("Saved");
+                                MessageBox.Show("Changes Saved.");
                                 this.Close();
                             }
                             catch (Exception ex)
@@ -193,49 +229,6 @@ namespace prototype2
                 builder.Append(ch);
             }
             return builder.ToString();
-        }
-
-        private void btnClear_Click(object sender, RoutedEventArgs e)
-        {
-            this.MyInkCanvas.Strokes.Clear();
-        }
-        private byte[] SignatureToBitmapBytes()
-        {
-
-            Rect bounds = VisualTreeHelper.GetDescendantBounds(MyInkCanvas);
-            double dpi = 96d;
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
-            DrawingVisual dv = new DrawingVisual();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                VisualBrush vb = new VisualBrush(MyInkCanvas);
-                dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
-            }
-            rtb.Render(dv);
-
-            string fileName = @"C:\sad\out" + firstNameTb.Text + "" + lastNameTb.Text + ".png";
-            BitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-            byte[] bitmapByte;
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
-            {
-                MyInkCanvas.Strokes.Save(ms);
-                bitmapByte = ms.ToArray();
-            }
-            
-            return bitmapByte;
-        }
-        private byte[] getSig(string fileName)
-        {
-            byte[] bitmapBytes = null;
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
-            empImage.Source = new BitmapImage(new Uri(fileName));
-            bitmapBytes = br.ReadBytes((int)fs.Length);
-            br.Close();
-            fs.Close();
-            return bitmapBytes;
         }
 
         private void firstNameTb_TextChanged(object sender, TextChangedEventArgs e)
@@ -305,9 +298,9 @@ namespace prototype2
             else validateTextBoxes();
         }
 
-        private void postionCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void jobTitleTb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (System.Windows.Controls.Validation.GetHasError(postionCb) == true)
+            if (System.Windows.Controls.Validation.GetHasError(jobTitleTb) == true)
                 saveBtn.IsEnabled = false;
             else validateTextBoxes();
         }
@@ -319,9 +312,19 @@ namespace prototype2
             else validateTextBoxes();
         }
 
+        private void dateStarted_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            validateTextBoxes();
+        }
+
+        private void dateEnded_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            validateTextBoxes();
+        }
+
         private void validateTextBoxes()
         {
-            if (firstNameTb.Text.Equals("") || lastNameTb.Text.Equals("") || middleInitialTb.Text.Equals("") || provinceCb.SelectedIndex == -1 || cityCb.SelectedIndex==-1 || emailAddressTb.Text.Equals("") || mobileNumberTb.Text.Equals("") || postionCb.SelectedIndex == -1)
+            if (firstNameTb.Text.Equals("") || lastNameTb.Text.Equals("") || middleInitialTb.Text.Equals("") || provinceCb.SelectedIndex == -1 || cityCb.SelectedIndex == -1 || emailAddressTb.Text.Equals("") || mobileNumberTb.Text.Equals("") || jobTitleTb.Text.Equals("") || dateStarted.Text.Equals("") || dateEnded.Text.Equals(""))
             {
                 saveBtn.IsEnabled = false;
             }
@@ -330,5 +333,9 @@ namespace prototype2
                 saveBtn.IsEnabled = true;
             }
         }
+    }
+    public class Position
+    {
+        public string Name { get; set; }
     }
 }

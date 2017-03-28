@@ -111,6 +111,14 @@ namespace prototype2
                     manageSupplierDataGrid.Columns[manageSupplierDataGrid.Columns.IndexOf(columnDeleteSuppBtn)].Visibility = Visibility.Hidden;
                 }
             }
+            if (!visual.IsDescendantOf(manageCustomeDataGrid))
+            {
+                if (manageCustomeDataGrid.SelectedItems.Count > 0)
+                {
+                    manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnEditBtnCont)].Visibility = Visibility.Hidden;
+                    manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Hidden;
+                }
+            }
         }
 
         private void quotesSalesMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -221,25 +229,25 @@ namespace prototype2
         private void setAddTransControlValues()
         {
             
-            String[] reqTypeArr = { };
-            String reqTypeSettings = Properties.Settings.Default.requestType.ToString();
-            reqTypeArr = reqTypeSettings.Split(',');
-            if (reqType.Items.IsEmpty)
-            {
-                foreach (String reTypeString in reqTypeArr)
-                {
-                    reqType.Items.Add(reTypeString);
-                }
-            }
-            reqTypeSettings = Properties.Settings.Default.serviceType.ToString();
-            reqTypeArr = reqTypeSettings.Split(',');
-            if (typesOfService.Items.IsEmpty)
-            {
-                foreach (String reTypeString in reqTypeArr)
-                {
-                    typesOfService.Items.Add(reTypeString);
-                }
-            }
+            //String[] reqTypeArr = { };
+            //String reqTypeSettings = Properties.Settings.Default.requestType.ToString();
+            //reqTypeArr = reqTypeSettings.Split(',');
+            //if (reqType.Items.IsEmpty)
+            //{
+            //    foreach (String reTypeString in reqTypeArr)
+            //    {
+            //        reqType.Items.Add(reTypeString);
+            //    }
+            //}
+            //reqTypeSettings = Properties.Settings.Default.serviceType.ToString();
+            //reqTypeArr = reqTypeSettings.Split(',');
+            //if (typesOfService.Items.IsEmpty)
+            //{
+            //    foreach (String reTypeString in reqTypeArr)
+            //    {
+            //        typesOfService.Items.Add(reTypeString);
+            //    }
+            //}
         }
 
         private void setTransControlValues()
@@ -729,54 +737,17 @@ namespace prototype2
                 invProductsCategoryLb.DisplayMemberPath = "categoryName";
                 invProductsCategoryLb.SelectedValuePath = "categoryId";
             }
-            if (dbCon.IsConnect())
-            {
-                string query = "SELECT * FROM EMP_POSITION_T;";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t1");
-                employeePositionLb.ItemsSource = fromDb.Tables["t1"].DefaultView;
-                employeePositionLb.DisplayMemberPath = "positionName";
-                employeePositionLb.SelectedValuePath = "positionId";
-                dbCon.Close();
-
-            }
+            
 
         }
 
-        private void addEmpPosBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "INSERT INTO `odc_db`.`emp_position_t` (`positionName`) VALUES('" + empPosNewTb.Text + "')";
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    MessageBox.Show("Added");
-                    
-                    dbCon.Close();
-                }
-            }
-            setManageApplicationSettingsControls();
-        }
+        
 
         private void deleteEmpPosBtn_Click(object sender, RoutedEventArgs e)
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "DELETE FROM `odc_db`.`emp_position_t` WHERE `positionID`='" + employeePositionLb.SelectedValue + "';";
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    dbCon.Close();
-                    MessageBox.Show("Delete the position");
-                    
-                }
-
-
-            }
+            
             setManageApplicationSettingsControls();
 
         }
@@ -916,6 +887,133 @@ namespace prototype2
                 transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
             }
             transOrdersGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void contractorManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageContractorGrid.Visibility = Visibility.Visible;
+        }
+
+        private void btnEditCont_Click(object sender, RoutedEventArgs e)
+        {
+            if (manageContractorDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageContractorDataGrid.Columns[0].GetCellContent(manageContractorDataGrid.SelectedItem) as TextBlock).Text;
+                editContractor editContractor = new editContractor(id);
+                editContractor.ShowDialog();
+                setManageContractorGridControls();
+            }
+        }
+
+        private void btnDeleteCont_Click(object sender, RoutedEventArgs e)
+        {
+            if (manageContractorDataGrid.SelectedItems.Count > 0)
+            {
+                String id = (manageContractorDataGrid.Columns[0].GetCellContent(manageContractorDataGrid.SelectedItem) as TextBlock).Text;
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this Contractor?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (dbCon.IsConnect())
+                    {
+                        string query = "UPDATE `contractor_t` SET `isDeleted`= 1 WHERE contID = '" + id + "';";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Successfully deleted.");
+                            setManageContractorGridControls();
+                        }
+                    }
+
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                }
+            }
+        }
+
+        private void manageContractorGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            setManageContractorGridControls();
+        }
+
+        private void setManageContractorGridControls()
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
+            {
+                string query = query = "SELECT e.contID, CONCAT(e.contFName,' ',e.contMi,'. ',e.contLname) AS contName,e.jobTitle, e.contContact, e.contEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as contAddress " +
+                    "FROM contractor_t e " +
+                    "JOIN location_details_t l ON e.locationID = l.locationID " +
+                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
+                    "WHERE isDeleted = 0;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                manageContractorDataGrid.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
+        }
+
+        private void manageContractorAddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            addContractor addContractor = new addContractor();
+            addContractor.ShowDialog();
+            setManageContractorGridControls();
+        }
+
+        private void utilitiesManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageApplicationGrid.Visibility = Visibility.Visible;
+        }
+
+        private void manageContractorDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(manageContractorDataGrid))
+            {
+                if (manageContractorDataGrid.SelectedItems.Count > 0)
+                {
+                    manageContractorDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnEditBtnCont)].Visibility = Visibility.Visible;
+                    manageContractorDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void settingsEmployeeGridBtn_Click(object sender, RoutedEventArgs e)
+        {
+            manageEmployeeSettings manageEmployeeSettings = new manageEmployeeSettings();
+            manageEmployeeSettings.ShowDialog();
+        }
+
+        private void settingsServicesGridBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
     internal class Item : INotifyPropertyChanged

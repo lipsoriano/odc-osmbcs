@@ -27,7 +27,7 @@
                             <TextBox x:Name="serviceDescTb" Height="79" Margin="27,93,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal"/>
                             <Label Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,186,0,0" FontWeight="Bold" FontStyle="Italic" Width="65"/>
                             <Label Content="Province" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,212,0,0" FontWeight="Normal"/>
-                            <ComboBox x:Name="provinceCb" Margin="46,243,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="157" HorizontalAlignment="Left" FontWeight="Normal" SelectionChanged="provinceCb_SelectionChanged">
+                            <ComboBox x:Name="provinceCb" Margin="46,243,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="157" HorizontalAlignment="Left" FontWeight="Normal">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="locProvinceId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
@@ -37,7 +37,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                             <Label Content="City" VerticalAlignment="Top" Visibility="Visible" Margin="248,212,331,0" FontWeight="Normal"/>
-                            <ComboBox x:Name="cityCb" Margin="271,243,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="162" HorizontalAlignment="Left" SelectionChanged="cityCb_SelectionChanged" FontWeight="Normal">
+                            <ComboBox x:Name="cityCb" Margin="271,243,0,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "cityName" SelectedValuePath = "cityID" Width="162" HorizontalAlignment="Left" FontWeight="Normal">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="cityID" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>

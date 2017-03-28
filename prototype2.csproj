@@ -223,11 +223,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="addContractor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="addNewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="addSupplier.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="editContractor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -259,11 +267,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="addContractor.xaml.cs">
+      <DependentUpon>addContractor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="addNewItem.xaml.cs">
       <DependentUpon>addNewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="addSupplier.xaml.cs">
       <DependentUpon>addSupplier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="editContractor.xaml.cs">
+      <DependentUpon>editContractor.xaml</DependentUpon>
     </Compile>
     <Compile Include="editSupplier.xaml.cs">
       <DependentUpon>editSupplier.xaml</DependentUpon>
@@ -273,6 +287,9 @@
     </Compile>
     <Compile Include="addEmployee.xaml.cs">
       <DependentUpon>addEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="manageEmployeeSettings.xaml.cs">
+      <DependentUpon>manageEmployeeSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextBoxValidation.cs" />
     <Compile Include="editCustomer.xaml.cs">
@@ -294,6 +311,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="manageEmployeeSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

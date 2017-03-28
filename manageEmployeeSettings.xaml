@@ -1,0 +1,24 @@
+﻿<Window x:Class="prototype2.manageEmployeeSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:prototype2"
+        mc:Ignorable="d"
+        Title="Manage Employee - Settings" Height="270" Width="485" Loaded="Window_Loaded" ResizeMode="NoResize" MinWidth="485" MinHeight="270">
+    <Grid>
+        <Label x:Name="label17" Content="Employee Positions" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="153" FontWeight="Bold" FontStyle="Italic" FontSize="14"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="190" Margin="10,42,0,0" VerticalAlignment="Top" Width="459">
+            <Grid Margin="0,0,-1,0">
+                <Label x:Name="label18" Content="Position Name:" HorizontalAlignment="Left" Margin="12,6,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="empPosNewTb" HorizontalAlignment="Left" Height="23" Margin="117,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236"/>
+                <Button x:Name="addEmpPosBtn" Content="+ add" HorizontalAlignment="Left" Margin="358,10,0,0" VerticalAlignment="Top" Width="90" Click="addEmpPosBtn_Click"/>
+                <Button x:Name="saveEmpPosBtn" Content="save" HorizontalAlignment="Left" Margin="358,10,0,0" VerticalAlignment="Top" Width="90" Click="saveEmpPosBtn_Click" Visibility="Hidden"/>
+                <ListBox x:Name="employeePositionLb" HorizontalAlignment="Left" Height="127" Margin="16,46,0,0" VerticalAlignment="Top" Width="337" />
+                <Button x:Name="deleteEmpPosBtn" Content="- delete" HorizontalAlignment="Left" Margin="358,64,0,0" VerticalAlignment="Top" Width="90" Click="deleteEmpPosBtn_Click"/>
+                <Button x:Name="editEmpPosBtn" Content="edit" HorizontalAlignment="Left" Margin="358,89,0,0" VerticalAlignment="Top" Width="90" Click="editEmpPosBtn_Click"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
