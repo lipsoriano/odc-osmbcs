@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:prototype2"
         mc:Ignorable="d"
-        Title="Manage Employee - Settings" Height="270" Width="485" Loaded="Window_Loaded" ResizeMode="NoResize" MinWidth="485" MinHeight="270">
+        Title="Manage Employee - Settings" Height="270" Width="485" Loaded="Window_Loaded" ResizeMode="CanMinimize" MinWidth="485" MinHeight="270">
     <Grid>
         <Label x:Name="label17" Content="Employee Positions" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="153" FontWeight="Bold" FontStyle="Italic" FontSize="14"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="190" Margin="10,42,0,0" VerticalAlignment="Top" Width="459">
+        <Border BorderBrush="Black" BorderThickness="1" Margin="10,42,10,10">
             <Grid Margin="0,0,-1,0">
                 <Label x:Name="label18" Content="Position Name:" HorizontalAlignment="Left" Margin="12,6,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="empPosNewTb" HorizontalAlignment="Left" Height="23" Margin="117,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236"/>

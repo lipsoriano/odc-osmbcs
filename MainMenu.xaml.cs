@@ -49,7 +49,12 @@ namespace prototype2
 
         private void inventoryBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            subMenuGrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            inventoryGrid.Visibility = Visibility.Visible;
         }
 
         private void reportsBtn_Click(object sender, RoutedEventArgs e)
@@ -117,6 +122,14 @@ namespace prototype2
                 {
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnEditBtnCont)].Visibility = Visibility.Hidden;
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Hidden;
+                }
+            }
+            if (!visual.IsDescendantOf(invetoryDg))
+            {
+                if (invetoryDg.SelectedItems.Count > 0)
+                {
+                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnEditBtn2)].Visibility = Visibility.Hidden;
+                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnDelBtn2)].Visibility = Visibility.Hidden;
                 }
             }
         }
@@ -717,77 +730,7 @@ namespace prototype2
             }
             manageApplicationGrid.Visibility = Visibility.Visible;
         }
-
-        private void manageApplicationGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
-            setManageApplicationSettingsControls();
-        }
-        private void setManageApplicationSettingsControls()
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "SELECT * FROM ITEM_CATEGORY_T;";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t");
-                invProductsCategoryLb.ItemsSource = fromDb.Tables["t"].DefaultView;
-                invProductsCategoryLb.DisplayMemberPath = "categoryName";
-                invProductsCategoryLb.SelectedValuePath = "categoryId";
-            }
-            
-
-        }
-
         
-
-        private void deleteEmpPosBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            
-            setManageApplicationSettingsControls();
-
-        }
-        
-        private void deleteCategoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "DELETE FROM `odc_db`.`item_category_t` WHERE `categoryID`='" + invProductsCategoryLb.SelectedValue + "';";
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    dbCon.Close();
-
-                    setManageApplicationSettingsControls();
-                    MessageBox.Show("Delete the category");
-                }
-
-
-            }
-            
-        }
-
-        private void addCategoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "INSERT INTO `odc_db`.`item_category_t` (`categoryName`) VALUES('"+ invCategoryTb.Text+ "')";
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    MessageBox.Show("Added");
-                    dbCon.Close();
-                }
-                
-
-            }
-        }
 
         private void manageSupplierAddbtn_Click(object sender, RoutedEventArgs e)
         {
@@ -1013,7 +956,240 @@ namespace prototype2
 
         private void settingsServicesGridBtn_Click(object sender, RoutedEventArgs e)
         {
+            manageServicesSettings manageServicesSettings = new manageServicesSettings();
+            manageServicesSettings.ShowDialog();
+        }
 
+        private void settingsInvetoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            manageProductSettings manageProductSettings = new manageProductSettings();
+            manageProductSettings.ShowDialog();
+        }
+
+        private void addProductBtn_Click(object sender, RoutedEventArgs e)
+        {
+            itemListGrid.Visibility = Visibility.Collapsed;
+            addNewItemGrid.Visibility = Visibility.Visible;
+        }
+
+        private void invetoryDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(invetoryDg))
+            {
+                if (invetoryDg.SelectedItems.Count > 0)
+                {
+                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnEditBtn2)].Visibility = Visibility.Visible;
+                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnDelBtn2)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void inventoryGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            setInventoryControls();
+        }
+
+        private void setInventoryControls()
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect())
+            {
+                string query = "SELECT p.itemNo, p.itemName, p.itemDescr, p.unit, p.salesPrice, c.categoryName, q.availQnty " +
+                    "FROM item_t p " +
+                    "JOIN inventory_item_t q ON p.itemNo = q.itemNo " +
+                    "JOIN item_category_t c ON p.categoryID = c.categoryID;";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                invetoryDg.ItemsSource = fromDb.Tables["t"].DefaultView;
+                if (dbCon.IsConnect())
+                {
+                    query = "SELECT * FROM item_category_t";
+                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                    fromDb = new DataSet();
+                    dataAdapter.Fill(fromDb, "t1");
+                    categoryCb.ItemsSource = fromDb.Tables["t1"].DefaultView;
+                    dbCon.Close();
+                }
+            }
+        }
+        string item_id = "";
+        private void saveAddInventoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            MessageBoxResult result = MessageBox.Show("Do you want to save this item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (dbCon.IsConnect())
+                {
+                    if (item_id.Equals(""))
+                    {
+                        string query = "INSERT INTO item_t (itemName,itemDescr,unit,salesPrice,categoryID) VALUES ('" + itemName.Text + "','" + itemDescr.Text + "', '" + unitCb.SelectedValue + "','" + salePrice.Value + "', '" + categoryCb.SelectedValue + "')";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            query = "select last_insert_id() from item_t";
+                            MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                            DataSet fromDb = new DataSet();
+                            dataAdapter.Fill(fromDb, "t");
+                            string itemid = "";
+                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                            {
+                                itemid = myRow[0].ToString();
+                            }
+                            query = "INSERT INTO inventory_item_t (itemNo,availQnty,minStock)VALUES ('" + itemid + "','" + availStock.Value + "', '" + minQty.Value + "')";
+                            if (dbCon.insertQuery(query, dbCon.Connection))
+                            {
+                                MessageBox.Show("Added");
+                                itemListGrid.Visibility = Visibility.Visible;
+                                addNewItemGrid.Visibility = Visibility.Collapsed;
+                                dbCon.Close();
+                                setInventoryControls();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string query = "UPDATE `item_t` SET itemName = '" + itemName.Text + "',itemDescr = '" + itemDescr.Text + "', salesPrice = '" + salePrice.Value + "' WHERE itemNo = '" + item_id + "'";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            query = "UPDATE `inventory_item_t` SET availQnty = '" + availStock.Value + "',minStock = '" + minQty.Value + "' WHERE itemNo = '" + item_id + "'";
+                            if (dbCon.insertQuery(query, dbCon.Connection))
+                            {
+                                MessageBox.Show("Updated");
+                                item_id = "";
+                                itemListGrid.Visibility = Visibility.Visible;
+                                addNewItemGrid.Visibility = Visibility.Collapsed;
+                                dbCon.Close();
+                                setInventoryControls();
+                            }
+                        }
+                    }
+                }
+                
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                item_id = "";
+                itemListGrid.Visibility = Visibility.Visible;
+                addNewItemGrid.Visibility = Visibility.Collapsed;
+                setInventoryControls();
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+            }
+        }
+
+        private void cancelAddInventoryBtn_Click(object sender, RoutedEventArgs e)
+        {
+            item_id = "";
+            itemListGrid.Visibility = Visibility.Visible;
+            addNewItemGrid.Visibility = Visibility.Collapsed;
+            setInventoryControls();
+        }
+
+        private void btnEdit2_Click(object sender, RoutedEventArgs e)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (invetoryDg.SelectedItems.Count > 0)
+            {
+                item_id = (invetoryDg.Columns[0].GetCellContent(invetoryDg.SelectedItem) as TextBlock).Text;
+                
+                string query = "SELECT i.itemNo, i.itemName, i.itemDescr, i.unit, i.salesPrice, i.categoryID, ii.availQnty, ii.minStock FROM item_t i " +
+                    "JOIN inventory_item_t ii ON i.itemNo = ii.itemNo " +
+                    "WHERE i.itemNo = '" + item_id + "';";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                DataTable fromDbTable = new DataTable();
+                fromDbTable = fromDb.Tables["t"];
+                foreach (DataRow dr in fromDbTable.Rows)
+                {
+                    try
+                    {
+                        itemName.Text = dr["itemName"].ToString();
+                        itemDescr.Text = dr["itemDescr"].ToString();
+                        unitCb.SelectedValuePath = dr["unit"].ToString();
+                        salePrice.Text = dr["salesPrice"].ToString();
+                        categoryCb.SelectedValuePath = dr["categoryID"].ToString();
+                        availStock.Text = dr["availQnty"].ToString();
+                        minQty.Text = dr["minStock"].ToString();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                dbCon.Close();
+                itemListGrid.Visibility = Visibility.Collapsed;
+                addNewItemGrid.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnDelete2_Click(object sender, RoutedEventArgs e)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (dbCon.IsConnect())
+                {
+                    if (invetoryDg.SelectedItems.Count > 0)
+                    {
+                        item_id = (invetoryDg.Columns[0].GetCellContent(invetoryDg.SelectedItem) as TextBlock).Text;
+
+                        string query = "DELETE FROM `odc_db`.`inventory_item_t` WHERE `itemNo`='" + item_id + "';";
+                        if (dbCon.deleteQuery(query, dbCon.Connection))
+                        {
+                            query = "DELETE FROM `odc_db`.`item_t` WHERE `itemNo`='" + item_id + "';";
+                            if (dbCon.deleteQuery(query, dbCon.Connection))
+                            {
+                                MessageBox.Show("Deleted.");
+                                item_id = "";
+                                setInventoryControls();
+                                dbCon.Close();
+                            }
+                        }
+
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        item_id = "";
+                        itemListGrid.Visibility = Visibility.Visible;
+                        addNewItemGrid.Visibility = Visibility.Collapsed;
+                        setInventoryControls();
+                        dbCon.Close();
+                    }
+                    else if (result == MessageBoxResult.Cancel)
+                    {
+                    }
+                }
+                
+            }
+        }
+
+        private void inventoryBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to cancel adding item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                item_id = "";
+                itemListGrid.Visibility = Visibility.Visible;
+                addNewItemGrid.Visibility = Visibility.Collapsed;
+                setInventoryControls();
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                    
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+
+            }
         }
     }
     internal class Item : INotifyPropertyChanged

@@ -291,6 +291,12 @@
     <Compile Include="manageEmployeeSettings.xaml.cs">
       <DependentUpon>manageEmployeeSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="manageProductSettings.xaml.cs">
+      <DependentUpon>manageProductSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="manageServicesSettings.xaml.cs">
+      <DependentUpon>manageServicesSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextBoxValidation.cs" />
     <Compile Include="editCustomer.xaml.cs">
       <DependentUpon>editCustomer.xaml</DependentUpon>
@@ -315,6 +321,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="manageEmployeeSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="manageProductSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="manageServicesSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -70,6 +70,10 @@ namespace prototype2
                     {
                         MessageBox.Show("Duplicate Entry");
                     }
+                    else
+                    {
+                        MessageBox.Show(""+ex);
+                    }
                 }
                
                 con.Close();
@@ -94,7 +98,7 @@ namespace prototype2
         {
             if (query.Length > 0)
             {
-                IsConnect();
+                con.Open();
                 sqlCommand = new MySqlCommand(query, con);
                 sqlCommand.ExecuteNonQuery();
                 Close();
