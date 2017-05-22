@@ -22,24 +22,34 @@ namespace prototype2
     /// </summary>
     public partial class MainMenu : Window
     {
+
+        public new String Name { get; set; }
+        public String Address { get; set; }
+        public String City { get; set; }
+        public String Number { get; set; }
+        public String Email { get; set; }
+        public object locProvinceId { get; set; }
+        public object cityID { get; set; }
+
+
         public MainMenu()
         {
             InitializeComponent();
+            custCompanyNameTb.DataContext = this;
+            locationAddressTb.DataContext = this;
+            cityCb.DataContext = this;
+            custProvinceCust.DataContext = this;
         }
         private static String dbname = "odc_db";
         private void salesBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Visible;
-            for (int x = 0; x < subMenuGrid.Children.Count; x++)
-            {
-                subMenuGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
             saleSubMenuGrid.Visibility = Visibility.Visible;
         }
 
         private void serviceBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -49,7 +59,8 @@ namespace prototype2
 
         private void inventoryBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -59,7 +70,8 @@ namespace prototype2
 
         private void reportsBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -69,7 +81,8 @@ namespace prototype2
 
         private void dashBoardBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -79,11 +92,7 @@ namespace prototype2
 
         private void manageBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Visible;
-            for (int x = 0; x < subMenuGrid.Children.Count; x++)
-            {
-                subMenuGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
             manageSubMenugrid.Visibility = Visibility.Visible;
         }
 
@@ -92,8 +101,9 @@ namespace prototype2
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Visual visual = e.OriginalSource as Visual;
-            if (!visual.IsDescendantOf(subMenuGrid))
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            if (!visual.IsDescendantOf(saleSubMenuGrid)&& !visual.IsDescendantOf(manageSubMenugrid))
+                saleSubMenuGrid.Visibility = Visibility.Collapsed;
+                manageSubMenugrid.Visibility = Visibility.Collapsed;
             if (!visual.IsDescendantOf(manageCustomeDataGrid))
             {
                 manageCustomeDataGrid.SelectedIndex = -1;
@@ -136,7 +146,8 @@ namespace prototype2
 
         private void quotesSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -160,7 +171,8 @@ namespace prototype2
 
         private void ordersSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -175,7 +187,8 @@ namespace prototype2
 
         private void invoiceSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -190,7 +203,8 @@ namespace prototype2
 
         private void recieptSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -236,7 +250,6 @@ namespace prototype2
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
             }
             dashboardGrid.Visibility = Visibility.Visible;
-            
         }
 
         private void setAddTransControlValues()
@@ -306,7 +319,7 @@ namespace prototype2
         {
             if (!(custCb.SelectedIndex < 0))
             {
-                addRepresentative addRep = new addRepresentative();
+                RepresentativeWindow addRep = new RepresentativeWindow();
                 addRep.custName = custCb.Text;
                 addRep.custId = custCb.SelectedValue.ToString();
                 addRep.ShowDialog();
@@ -323,7 +336,8 @@ namespace prototype2
 
         private void customerManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -401,9 +415,9 @@ namespace prototype2
         }
         private void manageCustomerAddBtn_Click(object sender, RoutedEventArgs e)
         {
-            addCustomer addCustomer = new addCustomer();
-            addCustomer.ShowDialog();
-            setManageCustomerGridControls();
+            manageCustomerHomeGrid.Visibility = Visibility.Hidden;
+            customerDetailsGrid.Visibility = Visibility.Visible;
+            
         }
 
         private void manageCustomeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -425,6 +439,130 @@ namespace prototype2
         {
             setManageCustomerGridControls();
         }
+
+        private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custCompanyNameTb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void locationAddressTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(locationAddressTb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void locationCityTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void custProvinceCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            if (dbCon.IsConnect() && custProvinceCust.SelectedIndex != -1)
+            {
+                string query = "SELECT * FROM city_by_province_t cp WHERE provinceID = '" + custProvinceCust.SelectedValue + "'";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                cityCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+            }
+            if (System.Windows.Controls.Validation.GetHasError(custProvinceCust) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void cityCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
+                saveBtn.IsEnabled = false;
+            else validateTextBoxes();
+        }
+
+        private void validateTextBoxes()
+        {
+            if (custCompanyNameTb.Text.Equals("") || locationAddressTb.Text.Equals("") || cityCb.SelectedIndex == -1 || custProvinceCust.SelectedIndex == -1)
+            {
+                saveBtn.IsEnabled = false;
+            }
+            else
+            {
+                saveBtn.IsEnabled = true;
+            }
+        }
+
+
+        
+
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            manageCustomerHomeGrid.Visibility = Visibility.Visible;
+            customerDetailsGrid.Visibility = Visibility.Hidden;
+            setManageCustomerGridControls();
+        }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = dbname;
+            MessageBoxResult result = MessageBox.Show("Do you want to save this new customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (dbCon.IsConnect())
+                {
+                    string query = "INSERT INTO location_details_t (locationAddress,locationCityId,locationProvinceID) VALUES ('" + locationAddressTb.Text + "','" + cityCb.SelectedValue + "', '" + custProvinceCust.SelectedValue + "')";
+
+                    if (dbCon.insertQuery(query, dbCon.Connection))
+                    {
+                        query = "select last_insert_id() from location_details_t";
+                        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                        DataSet fromDb = new DataSet();
+                        dataAdapter.Fill(fromDb, "t");
+                        string locID = "";
+                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                        {
+                            locID = myRow[0].ToString();
+                        }
+                        query = "INSERT INTO customer_t (custCompanyName,custAddInfo,locationID) VALUES ('" + custCompanyNameTb.Text + "','" + custAddInfoTb.Text + "','" + locID + "')";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            query = "select last_insert_id() from customer_t";
+                            dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                            fromDb = new DataSet();
+                            dataAdapter.Fill(fromDb, "t");
+                            string custId = "";
+                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                            {
+                                custId = myRow[0].ToString();
+                            }
+                            MessageBox.Show("Saved");
+                            manageCustomerHomeGrid.Visibility = Visibility.Visible;
+                            customerDetailsGrid.Visibility = Visibility.Hidden;
+                            setManageCustomerGridControls();
+                        }
+                    }
+                }
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                manageCustomerHomeGrid.Visibility = Visibility.Visible;
+                customerDetailsGrid.Visibility = Visibility.Hidden;
+                setManageCustomerGridControls();
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+            }
+
+        }
+
+        /*---------------------END OF CUSTOMER----------------------*/
 
         private void manageEmployeeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -516,7 +654,8 @@ namespace prototype2
 
         private void employeeManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -531,7 +670,8 @@ namespace prototype2
 
         private void supplierManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -718,7 +858,8 @@ namespace prototype2
 
         private void appSettingsManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -834,7 +975,8 @@ namespace prototype2
 
         private void contractorManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -922,7 +1064,8 @@ namespace prototype2
 
         private void utilitiesManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            subMenuGrid.Visibility = Visibility.Collapsed;
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -1190,6 +1333,32 @@ namespace prototype2
             {
 
             }
+        }
+        private List<string> idOfRepresentative = new List<string>();
+        private List<string> idOf = new List<string>();
+        private void newRepresentativeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            RepresentativeWindow repWindow = new RepresentativeWindow();
+            repWindow.ShowDialog();
+            idOfRepresentative = repWindow.idOf;
+            newCustomerGrid();
+        }
+
+        private void newCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            contactDetails contactWindow = new contactDetails();
+            contactWindow.ShowDialog();
+            newCustomerGrid();
+        }
+
+        private void newCustomerGrid()
+        {
+
+        }
+
+        private void customerRepresentativeDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
     internal class Item : INotifyPropertyChanged

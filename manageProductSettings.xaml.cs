@@ -43,7 +43,7 @@ namespace prototype2
                 dataAdapter.Fill(fromDb, "t");
                 invProductsCategoryLb.ItemsSource = fromDb.Tables["t"].DefaultView;
                 invProductsCategoryLb.DisplayMemberPath = "categoryName";
-                invProductsCategoryLb.SelectedValuePath = "categoryId";
+                invProductsCategoryLb.SelectedValuePath = "categoryID";
             }
         }
 
@@ -51,14 +51,15 @@ namespace prototype2
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
+            MessageBox.Show(""+ invProductsCategoryLb.SelectedValue);
             if (dbCon.IsConnect())
             {
                 string query = "DELETE FROM `odc_db`.`item_category_t` WHERE `categoryID`='" + invProductsCategoryLb.SelectedValue + "';";
-                if (dbCon.insertQuery(query, dbCon.Connection))
+                if (dbCon.deleteQuery(query, dbCon.Connection))
                 {
                     dbCon.Close();
-
-                    MessageBox.Show("Delete the category");
+                    setWindowControls();
+                    MessageBox.Show("Deleted the category");
                 }
 
 
@@ -76,6 +77,7 @@ namespace prototype2
                 if (dbCon.insertQuery(query, dbCon.Connection))
                 {
                     MessageBox.Show("Added");
+                    setWindowControls();
                     dbCon.Close();
                 }
 

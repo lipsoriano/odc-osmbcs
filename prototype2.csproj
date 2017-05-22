@@ -235,6 +235,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="contactDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="editContractor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -259,10 +263,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="addRepresentative.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -275,6 +275,9 @@
     </Compile>
     <Compile Include="addSupplier.xaml.cs">
       <DependentUpon>addSupplier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="contactDetails.xaml.cs">
+      <DependentUpon>contactDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="editContractor.xaml.cs">
       <DependentUpon>editContractor.xaml</DependentUpon>
@@ -297,15 +300,15 @@
     <Compile Include="manageServicesSettings.xaml.cs">
       <DependentUpon>manageServicesSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RepresentativeWindow.xaml.cs">
+      <DependentUpon>RepresentativeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextBoxValidation.cs" />
     <Compile Include="editCustomer.xaml.cs">
       <DependentUpon>editCustomer.xaml</DependentUpon>
     </Compile>
     <Compile Include="addCustomer.xaml.cs">
       <DependentUpon>addCustomer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="addRepresentative.xaml.cs">
-      <DependentUpon>addRepresentative.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -329,6 +332,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="manageServicesSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RepresentativeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

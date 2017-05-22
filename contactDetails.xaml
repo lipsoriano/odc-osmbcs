@@ -1,0 +1,55 @@
+﻿<Window x:Class="prototype2.contactDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:prototype2"
+        mc:Ignorable="d"
+        Title="Contact Details" Height="330.577" Width="582.912" ResizeMode="NoResize">
+    <Grid>
+        <Label x:Name="label1_Copy5" Content="Contact Details For:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="127" Margin="10,10,0,0" FontWeight="Bold"/>
+        <Label x:Name="label1_Copy" Content="(Name Here)" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="127" FontStyle="Italic" Margin="142,10,0,0"/>
+        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="398,271,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="492,271,0,0" VerticalAlignment="Top" Width="75"/>
+        <DataGrid x:Name="contactDetailsDg" Margin="10,88,10,0" AutoGenerateColumns="False" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedCustContact, Mode=TwoWay}" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" RowHeight="30" Height="178" VerticalAlignment="Top">
+            <DataGrid.Columns >
+                <DataGridTextColumn Binding="{Binding contactID}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Hidden"/>
+                <DataGridTextColumn Binding="{Binding ContactType}" ClipboardContentBinding="{x:Null}" Width="150" CanUserResize="False" Visibility="Visible" Header="Contact Type"/>
+                <DataGridTextColumn Binding="{Binding ContactDetails}" ClipboardContentBinding="{x:Null}" Header="" Width="200" CanUserResize="False"/>
+                <DataGridTemplateColumn x:Name="columnEditBtn" Width="100" Visibility="Hidden"  CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnEdit" Content="Edit"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="columnDelBtn" Width="100" Visibility="Hidden"  CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnDelete" Content="Delete" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ComboBox x:Name="contactTypeCb" Margin="41,46,406,0" VerticalAlignment="Top" Height="23" IsEditable="True" DisplayMemberPath = "locProvince" SelectedValuePath = "locProvinceID" Width="130" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <ComboBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.052"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ComboBox.RenderTransform>
+            <ComboBox.SelectedItem>
+                <Binding Path="locProvinceId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:TextBoxValidation TextBoxType="ComboBox"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedItem>
+        </ComboBox>
+        <TextBox x:Name="contactDetailTb" HorizontalAlignment="Left" Height="23" Margin="182,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" FontWeight="Normal"/>
+        <Button x:Name="addNewContactCustBtn" Content="save" HorizontalAlignment="Left" Margin="420,45,0,0" VerticalAlignment="Top" Width="67" FontWeight="Normal" Height="23"/>
+    </Grid>
+</Window>
