@@ -42,6 +42,40 @@ namespace prototype2
                     return ValidationResult.ValidResult;
 
                 }
+                else if (str.Equals("MobilNumber"))
+                {
+                    try
+                    {
+                        Decimal number = Decimal.Parse(value.ToString());
+                        if (value.ToString().Length > 11)
+                        {
+                            return new ValidationResult(false, "*Must be less than/equal 11 Digits");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return new ValidationResult(false, "* Only numbers.");
+                    }
+                    return ValidationResult.ValidResult;
+
+                }
+                else if (str.Equals("PhoneNumber"))
+                {
+                    try
+                    {
+                        Decimal number = Decimal.Parse(value.ToString());
+                        if (value.ToString().Length < 7)
+                        {
+                            return new ValidationResult(false, "* Must be equal to 7 Digits");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return new ValidationResult(false, "*Only numbers.");
+                    }
+                    return ValidationResult.ValidResult;
+
+                }
                 else if (str.Equals("Email"))
                 {
                     if (!regex.IsValidEmail(value.ToString()))

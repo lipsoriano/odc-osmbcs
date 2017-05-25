@@ -145,7 +145,7 @@ namespace prototype2
 
         private void validateTextBoxes()
         {
-            if (firstNameTb.Text.Equals("") || lastNameTb.Text.Equals("") || middleInitialTb.Text.Equals("") || contactTypeCb.SelectedIndex == 0)
+            if (idOf.Count==0)
             {
                 saveBtn.IsEnabled = false;
             }

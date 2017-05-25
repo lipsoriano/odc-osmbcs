@@ -41,48 +41,9 @@ namespace prototype2
             custProvinceCust.DataContext = this;
         }
         private static String dbname = "odc_db";
-        private void salesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Visible;
-        }
 
-        private void serviceBtn_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            servicesGrid.Visibility = Visibility.Visible;
-        }
-
-        private void inventoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            inventoryGrid.Visibility = Visibility.Visible;
-        }
-
-        private void reportsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            reportsGrid.Visibility = Visibility.Visible;
-        }
-
-        private void dashBoardBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
             for (int x = 0; x < containerGrid.Children.Count; x++)
             {
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
@@ -90,20 +51,12 @@ namespace prototype2
             dashboardGrid.Visibility = Visibility.Visible;
         }
 
-        private void manageBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Visible;
-        }
-
-        
-
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Visual visual = e.OriginalSource as Visual;
-            if (!visual.IsDescendantOf(saleSubMenuGrid)&& !visual.IsDescendantOf(manageSubMenugrid))
+            if (!visual.IsDescendantOf(saleSubMenuGrid) && !visual.IsDescendantOf(manageSubMenugrid))
                 saleSubMenuGrid.Visibility = Visibility.Collapsed;
-                manageSubMenugrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
             if (!visual.IsDescendantOf(manageCustomeDataGrid))
             {
                 manageCustomeDataGrid.SelectedIndex = -1;
@@ -134,16 +87,70 @@ namespace prototype2
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Hidden;
                 }
             }
-            if (!visual.IsDescendantOf(invetoryDg))
+        }
+
+        /*-----------------MENU BAR BUTTONS-------------------*/
+
+        private void logoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to logout?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
-                if (invetoryDg.SelectedItems.Count > 0)
-                {
-                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnEditBtn2)].Visibility = Visibility.Hidden;
-                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnDelBtn2)].Visibility = Visibility.Hidden;
-                }
+                this.Close();
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
             }
         }
 
+        private void salesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Visible;
+        }
+
+        private void serviceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            servicesGrid.Visibility = Visibility.Visible;
+        }
+
+        private void reportsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            reportsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void dashBoardBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            dashboardGrid.Visibility = Visibility.Visible;
+        }
+
+        private void manageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Visible;
+        }
+
+        /*-----------------END OF MENU BAR BUTTONS-------------------*/
+
+        /*-----------------SUB MENU BAR BUTTONS-------------------*/
         private void quotesSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             saleSubMenuGrid.Visibility = Visibility.Collapsed;
@@ -166,8 +173,6 @@ namespace prototype2
             setTransControlValues();
 
         }
-
-        
 
         private void ordersSalesMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -217,6 +222,10 @@ namespace prototype2
             transactionReceiptGrid.Visibility = Visibility.Visible;
         }
 
+        /*-----------------END OF SUB MENU BAR BUTTONS-------------------*/
+
+
+        /*-----------------TRANSTACTION-------------------*/
         private void transQuoteAddBtn_Click(object sender, RoutedEventArgs e)
         {
             for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
@@ -243,18 +252,9 @@ namespace prototype2
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            dashboardGrid.Visibility = Visibility.Visible;
-        }
-
         private void setAddTransControlValues()
         {
-            
+
             //String[] reqTypeArr = { };
             //String reqTypeSettings = Properties.Settings.Default.requestType.ToString();
             //reqTypeArr = reqTypeSettings.Split(',');
@@ -330,9 +330,182 @@ namespace prototype2
             }
 
         }
-        
 
-        //MANAGE GRID PART
+        private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
+        {
+            body1.IsEnabled = false;
+            body2.IsEnabled = false;
+            openingRemarksLbl.IsEnabled = false;
+            closingRemarksLbl.IsEnabled = false;
+        }
+
+        private void defaultTemplateCheckB_Unchecked(object sender, RoutedEventArgs e)
+        {
+            body1.IsEnabled = true;
+            body2.IsEnabled = true;
+            openingRemarksLbl.IsEnabled = true;
+            closingRemarksLbl.IsEnabled = true;
+        }
+
+        private void paymentCustomRb_Checked(object sender, RoutedEventArgs e)
+        {
+            downPercentTb.IsEnabled = true;
+            paymentDpLbl.IsEnabled = true;
+        }
+
+        private void paymentCustomRb_Unchecked(object sender, RoutedEventArgs e)
+        {
+            downPercentTb.IsEnabled = false;
+            paymentDpLbl.IsEnabled = false;
+        }
+
+        private void transRequestNext_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            makeSalesQuoteGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to save this progress?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+                {
+                    transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+                }
+                addRequestionGrid.Visibility = Visibility.Visible;
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+
+        }
+
+        private void transQuotationSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            viewQuotationGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transViewSaveOnlyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            quotationsGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transViewSaveSend_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            quotationsGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transViewBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
+            {
+                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            makeSalesQuoteGrid.Visibility = Visibility.Visible;
+        }
+
+        private void validtycustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            ValidityCustom.IsEnabled = true;
+            validtycustomlbl.IsEnabled = true;
+        }
+
+        private void validtycustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ValidityCustom.IsEnabled = false;
+            validtycustomlbl.IsEnabled = false;
+        }
+
+        private void warrantycustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            warrantyDaysCustom.IsEnabled = true;
+            warrantyDaysCustomLbl.IsEnabled = true;
+        }
+
+        private void warrantycustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            warrantyDaysCustom.IsEnabled = false;
+            warrantyDaysCustomLbl.IsEnabled = false;
+        }
+
+        private void deliveryCustomRd_Checked(object sender, RoutedEventArgs e)
+        {
+            deliveryDaysCustomLbl.IsEnabled = true;
+            deliveryDaysTb.IsEnabled = true;
+        }
+
+        private void deliveryCustomRd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            deliveryDaysCustomLbl.IsEnabled = false;
+            deliveryDaysTb.IsEnabled = false;
+        }
+
+        private void orderFormBack_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to cancel this transaction?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+                {
+                    transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+                }
+                transOrdersGridHome.Visibility = Visibility.Visible;
+            }
+            else if (result == MessageBoxResult.No)
+            {
+
+            }
+        }
+
+        private void transOrdersAddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            orderFormGrid.Visibility = Visibility.Visible;
+        }
+
+        private void transOrderSaveOnly_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            transOrdersGridHome.Visibility = Visibility.Visible;
+        }
+
+        private void transOrderSaveSend_Click(object sender, RoutedEventArgs e)
+        {
+            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
+            {
+                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            transOrdersGridHome.Visibility = Visibility.Visible;
+        }
+
+        /*-----------------END OF TRANSTACTION-------------------*/
+
+
+        /*-----------------MANAGE CUSTOMER-------------------*/
 
         private void customerManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -348,7 +521,6 @@ namespace prototype2
                 manageGrid.Children[x].Visibility = Visibility.Collapsed;
             }
             manageCustomerGrid.Visibility = Visibility.Visible;
-            
         }
 
         private void setManageCustomerGridControls()
@@ -357,11 +529,9 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.officePhoneNo, cc.emailAddress, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) AS custLocation " +
-                    "FROM customer_t c JOIN customer_contacts_t cc ON c.custID = cc.custID " +
-                    "JOIN location_details_t l ON c.locationID = l.locationID " +
+                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.contactType, cc.contactDetails, CONCAT(c.Address,' ',c.custCity,' ',p.locProvince) AS custLocation " +
+                    "FROM customer_t c JOIN contacts_t cc ON c.custID = cc.idOf " +
                     "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
-                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -497,8 +667,6 @@ namespace prototype2
                 saveBtn.IsEnabled = true;
             }
         }
-
-
         
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
@@ -562,8 +730,39 @@ namespace prototype2
 
         }
 
-        /*---------------------END OF CUSTOMER----------------------*/
+        private List<string> idOfRepresentative = new List<string>();
+        private List<string> idOf = new List<string>();
+        private void newRepresentativeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            RepresentativeWindow repWindow = new RepresentativeWindow();
+            repWindow.ShowDialog();
+            idOfRepresentative = repWindow.idOf;
+            newCustomerGrid();
+        }
 
+        private void newCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            contactDetails contactWindow = new contactDetails();
+            contactWindow.ShowDialog();
+            newCustomerGrid();
+        }
+
+        private void newCustomerGrid()
+        {
+
+        }
+
+        private void customerRepresentativeDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        /*-----------------END OF MANAGE CUSTOMER-------------------*/
+        /*
+        /*
+        /*
+        /*
+        /*
+        /*-----------------MANAGE EMPLOYEE-------------------------*/
         private void manageEmployeeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Visual visual = e.OriginalSource as Visual;
@@ -588,12 +787,11 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName,ept.positionName, e.empContacts, e.empEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as empAddress " +
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName, ept.positionName, e., e.empEmail, CONCAT(e.empAddress,' ',e.city,' ',p.locProvince) as empAddress " +
                     "FROM employee_t e " +
-                    "JOIN location_details_t l ON e.locationID = l.locationID " +
-                    "JOIN emp_position_t ept ON e.positionID = ept.positionId " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
-                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
+                    "JOIN contacts_t cc ON cc.idOF = e.empID " +
+                    "JOIN position_t ept ON e.position_ID = ept.positionId " +
+                    "JOIN provinces_t p ON e.empProvinceID = p.locProvinceId " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -667,6 +865,15 @@ namespace prototype2
             }
             manageEmployeeGrid.Visibility = Visibility.Visible;
         }
+
+        /*-----------------END OF MANAGE EMPLOYEE-------------------*/
+        /*
+        /*
+        /*
+        /*
+        /*
+        /*-----------------MANAGE SUPPLIER-------------------------*/
+
 
         private void supplierManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -748,130 +955,9 @@ namespace prototype2
                 else if (result == MessageBoxResult.Cancel)
                 {
                 }
-                setManageCustomerGridControls();
+                setManageSupplierGridControls();
             }
         }
-
-        private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
-        {
-            body1.IsEnabled = false;
-            body2.IsEnabled = false;
-            openingRemarksLbl.IsEnabled = false;
-            closingRemarksLbl.IsEnabled = false;
-        }
-
-        private void defaultTemplateCheckB_Unchecked(object sender, RoutedEventArgs e)
-        {
-            body1.IsEnabled = true;
-            body2.IsEnabled = true;
-            openingRemarksLbl.IsEnabled = true;
-            closingRemarksLbl.IsEnabled = true;
-        }
-
-        private void paymentCustomRb_Checked(object sender, RoutedEventArgs e)
-        {
-            downPercentTb.IsEnabled = true;
-            paymentDpLbl.IsEnabled = true;
-        }
-
-        private void paymentCustomRb_Unchecked(object sender, RoutedEventArgs e)
-        {
-            downPercentTb.IsEnabled = false;
-            paymentDpLbl.IsEnabled = false;
-        }
-
-        private void transRequestNext_Click(object sender, RoutedEventArgs e)
-        {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-            {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            makeSalesQuoteGrid.Visibility = Visibility.Visible;
-        }
-
-        private void transQuotationFormBack_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Do you want to save this progress?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-                {
-                    transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-                }
-                addRequestionGrid.Visibility = Visibility.Visible;
-            }
-            else if (result == MessageBoxResult.No)
-            {
-
-            }
-            
-        }
-
-        private void logoutBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Do you want to logout?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                this.Close();
-            }
-            else if (result == MessageBoxResult.No)
-            {
-
-            }
-        }
-
-        private void transQuotationSaveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-            {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            viewQuotationGrid.Visibility = Visibility.Visible;
-        }
-
-        private void transViewSaveOnlyBtn_Click(object sender, RoutedEventArgs e)
-        {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-            {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            quotationsGridHome.Visibility = Visibility.Visible;
-        }
-
-        private void transViewSaveSend_Click(object sender, RoutedEventArgs e)
-        {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-            {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            quotationsGridHome.Visibility = Visibility.Visible;
-        }
-
-        private void transViewBackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            for (int x = 1; x < transactionQuotationsGrid.Children.Count; x++)
-            {
-                transactionQuotationsGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            makeSalesQuoteGrid.Visibility = Visibility.Visible;
-        }
-
-        private void appSettingsManageMenuBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            manageGrid.Visibility = Visibility.Visible;
-            for (int x = 0; x < manageGrid.Children.Count; x++)
-            {
-                manageGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            manageApplicationGrid.Visibility = Visibility.Visible;
-        }
-        
 
         private void manageSupplierAddbtn_Click(object sender, RoutedEventArgs e)
         {
@@ -893,85 +979,80 @@ namespace prototype2
             }
         }
 
-        private void validtycustomRd_Checked(object sender, RoutedEventArgs e)
-        {
-            ValidityCustom.IsEnabled = true;
-            validtycustomlbl.IsEnabled = true;
-        }
+        /*-----------------END OF MANAGE SUPPLIER-------------------*/
+        /*
+        /*
+        /*
+        /*
+        /*
+        /*-----------------MANAGE UTILITIES-------------------------*/
 
-        private void validtycustomRd_Unchecked(object sender, RoutedEventArgs e)
+        private void utilitiesManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            ValidityCustom.IsEnabled = false;
-            validtycustomlbl.IsEnabled = false;
-        }
-
-        private void warrantycustomRd_Checked(object sender, RoutedEventArgs e)
-        {
-            warrantyDaysCustom.IsEnabled = true;
-            warrantyDaysCustomLbl.IsEnabled = true;
-        }
-
-        private void warrantycustomRd_Unchecked(object sender, RoutedEventArgs e)
-        {
-            warrantyDaysCustom.IsEnabled = false;
-            warrantyDaysCustomLbl.IsEnabled = false;
-        }
-
-        private void deliveryCustomRd_Checked(object sender, RoutedEventArgs e)
-        {
-            deliveryDaysCustomLbl.IsEnabled = true;
-            deliveryDaysTb.IsEnabled = true;
-        }
-
-        private void deliveryCustomRd_Unchecked(object sender, RoutedEventArgs e)
-        {
-            deliveryDaysCustomLbl.IsEnabled = false;
-            deliveryDaysTb.IsEnabled = false;
-        }
-
-        private void orderFormBack_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Do you want to cancel this transaction?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
             {
-                for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
-                {
-                    transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
-                }
-                transOrdersGridHome.Visibility = Visibility.Visible;
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
             }
-            else if (result == MessageBoxResult.No)
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
             {
-
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
             }
+            manageApplicationGrid.Visibility = Visibility.Visible;
         }
 
-        private void transOrdersAddBtn_Click(object sender, RoutedEventArgs e)
+
+
+        private void settingsEmployeeGridBtn_Click(object sender, RoutedEventArgs e)
         {
-            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
-            {
-                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            orderFormGrid.Visibility = Visibility.Visible;
+            manageEmployeeSettings manageEmployeeSettings = new manageEmployeeSettings();
+            manageEmployeeSettings.ShowDialog();
         }
 
-        private void transOrderSaveOnly_Click(object sender, RoutedEventArgs e)
+        private void settingsServicesGridBtn_Click(object sender, RoutedEventArgs e)
         {
-            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
-            {
-                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            transOrdersGridHome.Visibility = Visibility.Visible;
+            manageServicesSettings manageServicesSettings = new manageServicesSettings();
+            manageServicesSettings.ShowDialog();
         }
 
-        private void transOrderSaveSend_Click(object sender, RoutedEventArgs e)
+        private void settingsInvetoryBtn_Click(object sender, RoutedEventArgs e)
         {
-            for (int x = 1; x < transactionOrdersGrid.Children.Count; x++)
-            {
-                transactionOrdersGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            transOrdersGridHome.Visibility = Visibility.Visible;
+            manageProductSettings manageProductSettings = new manageProductSettings();
+            manageProductSettings.ShowDialog();
         }
+
+
+
+
+
+        private void appSettingsManageMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saleSubMenuGrid.Visibility = Visibility.Collapsed;
+            manageSubMenugrid.Visibility = Visibility.Collapsed;
+            for (int x = 0; x < containerGrid.Children.Count; x++)
+            {
+                containerGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageGrid.Visibility = Visibility.Visible;
+            for (int x = 0; x < manageGrid.Children.Count; x++)
+            {
+                manageGrid.Children[x].Visibility = Visibility.Collapsed;
+            }
+            manageApplicationGrid.Visibility = Visibility.Visible;
+        }
+
+
+        /*-----------------END OF MANAGE UTILITIES-------------------*/
+        /*
+        /*
+        /*
+        /*
+        /*
+        /*-----------------MANAGE CONTRACTOR-------------------------*/
+
+
 
         private void contractorManageMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -1062,22 +1143,6 @@ namespace prototype2
             setManageContractorGridControls();
         }
 
-        private void utilitiesManageMenuBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saleSubMenuGrid.Visibility = Visibility.Collapsed;
-            manageSubMenugrid.Visibility = Visibility.Collapsed;
-            for (int x = 0; x < containerGrid.Children.Count; x++)
-            {
-                containerGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            manageGrid.Visibility = Visibility.Visible;
-            for (int x = 0; x < manageGrid.Children.Count; x++)
-            {
-                manageGrid.Children[x].Visibility = Visibility.Collapsed;
-            }
-            manageApplicationGrid.Visibility = Visibility.Visible;
-        }
-
         private void manageContractorDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Visual visual = e.OriginalSource as Visual;
@@ -1091,275 +1156,16 @@ namespace prototype2
             }
         }
 
-        private void settingsEmployeeGridBtn_Click(object sender, RoutedEventArgs e)
-        {
-            manageEmployeeSettings manageEmployeeSettings = new manageEmployeeSettings();
-            manageEmployeeSettings.ShowDialog();
-        }
 
-        private void settingsServicesGridBtn_Click(object sender, RoutedEventArgs e)
-        {
-            manageServicesSettings manageServicesSettings = new manageServicesSettings();
-            manageServicesSettings.ShowDialog();
-        }
+        /*-----------------END OF MANAGE CONTRACTOR-------------------*/
+        /*
+        /*
+        /*
+        /*
+        /*
+        /*-----------------M-------------------------*/
 
-        private void settingsInvetoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            manageProductSettings manageProductSettings = new manageProductSettings();
-            manageProductSettings.ShowDialog();
-        }
 
-        private void addProductBtn_Click(object sender, RoutedEventArgs e)
-        {
-            itemListGrid.Visibility = Visibility.Collapsed;
-            addNewItemGrid.Visibility = Visibility.Visible;
-        }
-
-        private void invetoryDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Visual visual = e.OriginalSource as Visual;
-            if (visual.IsDescendantOf(invetoryDg))
-            {
-                if (invetoryDg.SelectedItems.Count > 0)
-                {
-                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnEditBtn2)].Visibility = Visibility.Visible;
-                    invetoryDg.Columns[invetoryDg.Columns.IndexOf(columnDelBtn2)].Visibility = Visibility.Visible;
-                }
-            }
-        }
-
-        private void inventoryGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            setInventoryControls();
-        }
-
-        private void setInventoryControls()
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect())
-            {
-                string query = "SELECT p.itemNo, p.itemName, p.itemDescr, p.unit, p.salesPrice, c.categoryName, q.availQnty " +
-                    "FROM item_t p " +
-                    "JOIN inventory_item_t q ON p.itemNo = q.itemNo " +
-                    "JOIN item_category_t c ON p.categoryID = c.categoryID;";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t");
-                invetoryDg.ItemsSource = fromDb.Tables["t"].DefaultView;
-                if (dbCon.IsConnect())
-                {
-                    query = "SELECT * FROM item_category_t";
-                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                    fromDb = new DataSet();
-                    dataAdapter.Fill(fromDb, "t1");
-                    categoryCb.ItemsSource = fromDb.Tables["t1"].DefaultView;
-                    dbCon.Close();
-                }
-            }
-        }
-        string item_id = "";
-        private void saveAddInventoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            MessageBoxResult result = MessageBox.Show("Do you want to save this item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                if (dbCon.IsConnect())
-                {
-                    if (item_id.Equals(""))
-                    {
-                        string query = "INSERT INTO item_t (itemName,itemDescr,unit,salesPrice,categoryID) VALUES ('" + itemName.Text + "','" + itemDescr.Text + "', '" + unitCb.SelectedValue + "','" + salePrice.Value + "', '" + categoryCb.SelectedValue + "')";
-                        if (dbCon.insertQuery(query, dbCon.Connection))
-                        {
-                            query = "select last_insert_id() from item_t";
-                            MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                            DataSet fromDb = new DataSet();
-                            dataAdapter.Fill(fromDb, "t");
-                            string itemid = "";
-                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                            {
-                                itemid = myRow[0].ToString();
-                            }
-                            query = "INSERT INTO inventory_item_t (itemNo,availQnty,minStock)VALUES ('" + itemid + "','" + availStock.Value + "', '" + minQty.Value + "')";
-                            if (dbCon.insertQuery(query, dbCon.Connection))
-                            {
-                                MessageBox.Show("Added");
-                                itemListGrid.Visibility = Visibility.Visible;
-                                addNewItemGrid.Visibility = Visibility.Collapsed;
-                                dbCon.Close();
-                                setInventoryControls();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string query = "UPDATE `item_t` SET itemName = '" + itemName.Text + "',itemDescr = '" + itemDescr.Text + "', salesPrice = '" + salePrice.Value + "' WHERE itemNo = '" + item_id + "'";
-                        if (dbCon.insertQuery(query, dbCon.Connection))
-                        {
-                            query = "UPDATE `inventory_item_t` SET availQnty = '" + availStock.Value + "',minStock = '" + minQty.Value + "' WHERE itemNo = '" + item_id + "'";
-                            if (dbCon.insertQuery(query, dbCon.Connection))
-                            {
-                                MessageBox.Show("Updated");
-                                item_id = "";
-                                itemListGrid.Visibility = Visibility.Visible;
-                                addNewItemGrid.Visibility = Visibility.Collapsed;
-                                dbCon.Close();
-                                setInventoryControls();
-                            }
-                        }
-                    }
-                }
-                
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                item_id = "";
-                itemListGrid.Visibility = Visibility.Visible;
-                addNewItemGrid.Visibility = Visibility.Collapsed;
-                setInventoryControls();
-            }
-            else if (result == MessageBoxResult.Cancel)
-            {
-            }
-        }
-
-        private void cancelAddInventoryBtn_Click(object sender, RoutedEventArgs e)
-        {
-            item_id = "";
-            itemListGrid.Visibility = Visibility.Visible;
-            addNewItemGrid.Visibility = Visibility.Collapsed;
-            setInventoryControls();
-        }
-
-        private void btnEdit2_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (invetoryDg.SelectedItems.Count > 0)
-            {
-                item_id = (invetoryDg.Columns[0].GetCellContent(invetoryDg.SelectedItem) as TextBlock).Text;
-                
-                string query = "SELECT i.itemNo, i.itemName, i.itemDescr, i.unit, i.salesPrice, i.categoryID, ii.availQnty, ii.minStock FROM item_t i " +
-                    "JOIN inventory_item_t ii ON i.itemNo = ii.itemNo " +
-                    "WHERE i.itemNo = '" + item_id + "';";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t");
-                DataTable fromDbTable = new DataTable();
-                fromDbTable = fromDb.Tables["t"];
-                foreach (DataRow dr in fromDbTable.Rows)
-                {
-                    try
-                    {
-                        itemName.Text = dr["itemName"].ToString();
-                        itemDescr.Text = dr["itemDescr"].ToString();
-                        unitCb.SelectedValuePath = dr["unit"].ToString();
-                        salePrice.Text = dr["salesPrice"].ToString();
-                        categoryCb.SelectedValuePath = dr["categoryID"].ToString();
-                        availStock.Text = dr["availQnty"].ToString();
-                        minQty.Text = dr["minStock"].ToString();
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                }
-                dbCon.Close();
-                itemListGrid.Visibility = Visibility.Collapsed;
-                addNewItemGrid.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void btnDelete2_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            MessageBoxResult result = MessageBox.Show("Do you want to delete this item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                if (dbCon.IsConnect())
-                {
-                    if (invetoryDg.SelectedItems.Count > 0)
-                    {
-                        item_id = (invetoryDg.Columns[0].GetCellContent(invetoryDg.SelectedItem) as TextBlock).Text;
-
-                        string query = "DELETE FROM `odc_db`.`inventory_item_t` WHERE `itemNo`='" + item_id + "';";
-                        if (dbCon.deleteQuery(query, dbCon.Connection))
-                        {
-                            query = "DELETE FROM `odc_db`.`item_t` WHERE `itemNo`='" + item_id + "';";
-                            if (dbCon.deleteQuery(query, dbCon.Connection))
-                            {
-                                MessageBox.Show("Deleted.");
-                                item_id = "";
-                                setInventoryControls();
-                                dbCon.Close();
-                            }
-                        }
-
-                    }
-                    else if (result == MessageBoxResult.No)
-                    {
-                        item_id = "";
-                        itemListGrid.Visibility = Visibility.Visible;
-                        addNewItemGrid.Visibility = Visibility.Collapsed;
-                        setInventoryControls();
-                        dbCon.Close();
-                    }
-                    else if (result == MessageBoxResult.Cancel)
-                    {
-                    }
-                }
-                
-            }
-        }
-
-        private void inventoryBackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Do you want to cancel adding item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
-            {
-                item_id = "";
-                itemListGrid.Visibility = Visibility.Visible;
-                addNewItemGrid.Visibility = Visibility.Collapsed;
-                setInventoryControls();
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                    
-            }
-            else if (result == MessageBoxResult.Cancel)
-            {
-
-            }
-        }
-        private List<string> idOfRepresentative = new List<string>();
-        private List<string> idOf = new List<string>();
-        private void newRepresentativeBtn_Click(object sender, RoutedEventArgs e)
-        {
-            RepresentativeWindow repWindow = new RepresentativeWindow();
-            repWindow.ShowDialog();
-            idOfRepresentative = repWindow.idOf;
-            newCustomerGrid();
-        }
-
-        private void newCustContactBtn_Click(object sender, RoutedEventArgs e)
-        {
-            contactDetails contactWindow = new contactDetails();
-            contactWindow.ShowDialog();
-            newCustomerGrid();
-        }
-
-        private void newCustomerGrid()
-        {
-
-        }
-
-        private void customerRepresentativeDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
     internal class Item : INotifyPropertyChanged
     {
