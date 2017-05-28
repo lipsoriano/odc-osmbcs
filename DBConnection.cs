@@ -56,11 +56,12 @@ namespace prototype2
             if (query.Length > 0)
             {
                 con.Open();
-                sqlCommand = new MySqlCommand();
-                sqlCommand.Connection = con;
-                sqlCommand.CommandText = query;
+                
                 try
                 {
+                    sqlCommand = new MySqlCommand();
+                    sqlCommand.Connection = con;
+                    sqlCommand.CommandText = query;
                     sqlCommand.ExecuteNonQuery();
                 }
                 catch (MySqlException ex)

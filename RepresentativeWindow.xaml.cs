@@ -24,18 +24,53 @@ namespace prototype2
         public String FirstName { get; set; }
         public String MiddleName { get; set; }
         public String LastName { get; set; }
+        public String EmailAddress { get; set; }
+        public String PhoneNumber { get; set; }
+        public String MobileNumber { get; set; }
+        public int Edit { get; set; }
         public RepresentativeWindow()
         {
             InitializeComponent();
             firstNameTb.DataContext = this;
             middleInitialTb.DataContext = this;
             lastNameTb.DataContext = this;
+            contactDetailsEmailTb.DataContext = this;
+            contactDetailsMobileTb.DataContext = this;
+            contactDetailsPhoneTb.DataContext = this;
         }
         public string custName { get; set; }
         public string custId { get; set; }
         public string repType { get; set; }
         private void setControlsValue()
         {
+            contactTypeCb.SelectedIndex = 0;
+            if (repDetails.Count!=0&&contactDetails.Count!=0)
+            {
+                foreach(string[] details in repDetails)
+                {
+                    FirstName = details[0];
+                    MiddleName = details[1];
+                    LastName = details[2];
+                }
+                foreach (string[] details in contactDetails)
+                {
+                    string contactType = "";
+                    if (details[0].Equals("1"))
+                    {
+                        contactType = "Email Address";
+                    }
+                    else if (details[0].Equals("2"))
+                    {
+                        contactType = "Phone Number";
+                    }
+                    else if (details[0].Equals("1"))
+                    {
+                        contactType = "Mobile Number";
+                    }
+                    var data = new Contacts { contactType = contactType, contactTypeID = details[0], contactDetails = details[1] };
+                    repContactsDg.Items.Add(data);
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -43,82 +78,70 @@ namespace prototype2
             setControlsValue();
         }
         private static String dbname = "odc_db";
-        
-        public List<string> idOf = new List<string>();
-        private void addNewContactCustBtn_Click(object sender, RoutedEventArgs e)
+        public List<string[]> repDetails = new List<string[]>();
+        public List<string[]> contactDetails = new List<string[]>();
+        private string contactDetail = "";
+        private void addNewCustContactBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!contactDetailTb.Text.Equals(""))
+            
+            if (contactTypeCb.SelectedIndex != 0)
             {
-                var dbCon = DBConnection.Instance();
-                dbCon.DatabaseName = dbname;
-                string query = "INSERT INTO contact_details_t (contactType,contactData) VALUES ('" + contactTypeCb.SelectedValue + "','" + contactDetailTb.Text + "')";
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    query = "select last_insert_id() from contact_details_t";
-                    MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                    DataSet fromDb = new DataSet();
-                    dataAdapter.Fill(fromDb, "t");
-                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                    {
-                        idOf.Add(myRow[0].ToString());
-                    }
-                    contactTypeCb.SelectedIndex = 0;
-                    contactDetailTb.Text = "";
-                    MessageBox.Show("Added!");
-                }
+                var data = new Contacts { contactType = contactTypeCb.SelectedValuePath.ToString(), contactTypeID = ""+contactTypeCb.SelectedIndex, contactDetails = contactDetail };
+                repContactsDg.Items.Add(data);
+                string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
+                contactDetails.Add(details);
+                validateTextBoxes();
+                contactDetailsEmailTb.Text = "";
+                contactDetailsMobileTb.Text = "";
+                contactDetailsPhoneTb.Text = "";
+                Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
+                Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
+                Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
+            }
+            else
+            {
+                MessageBox.Show("Select The Type");
             }
         }
 
         private void contactTypeCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!(contactTypeCb.SelectedIndex == 0))
+            if (contactTypeCb.SelectedIndex == 0)
             {
-                validateTextBoxes();
+                contactDetailsEmailTb.IsEnabled = false;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = false;
             }
-            else
+            else if (contactTypeCb.SelectedIndex == 1)
             {
-
+                contactDetailsEmailTb.Visibility = Visibility.Visible;
+                contactDetailsMobileTb.Visibility = Visibility.Collapsed;
+                contactDetailsPhoneTb.Visibility = Visibility.Collapsed;
+                contactDetailsEmailTb.IsEnabled = true;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = false;
             }
-        }
-
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect() && repType.Equals("CUST"))
+            else if (contactTypeCb.SelectedIndex == 2)
             {
-                string repid = "";
-                string query = "INSERT INTO customer_rep_t (custRepLname,custRepFname,custRepMi,custID)VALUES ('" + lastNameTb.Text + "','" + firstNameTb.Text + "', '" + middleInitialTb.Text + "','" + custId + "')";
-                query = "select last_insert_id() from customer_rep_t";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t");
-                foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                {
-                    repid = myRow[0].ToString();
-                }
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    foreach(String id in idOf)
-                    {
-                        query = "UPDATE `contact_details_t` SET `idOf`= '"+ repid + "' WHERE contactID = '" + id + "';";
-                        if (dbCon.insertQuery(query, dbCon.Connection))
-                        {
-                        }
-                    }
-                    MessageBox.Show("Customer's Representative Details is successfully inserted");
-                }
+                contactDetailsEmailTb.Visibility = Visibility.Collapsed;
+                contactDetailsPhoneTb.Visibility = Visibility.Visible;
+                contactDetailsMobileTb.Visibility = Visibility.Collapsed;
+                contactDetailsEmailTb.IsEnabled = false;
+                contactDetailsMobileTb.IsEnabled = true;
+                contactDetailsPhoneTb.IsEnabled = false;
             }
-            else if (dbCon.IsConnect() && repType.Equals("SUPP"))
+            else if (contactTypeCb.SelectedIndex == 3)
             {
-                string query = "INSERT INTO supplier_rep_t (suppRepLname,suppRepFname,suppRepMi,custID,suppRepContID) VALUES ('" + lastNameTb.Text + "','" + firstNameTb.Text + "', '" + middleInitialTb.Text + "','" + custId + "')";
-
-                if (dbCon.insertQuery(query, dbCon.Connection))
-                {
-                    MessageBox.Show("Customer's Representative Details is successfully inserted");
-                }
+                contactDetailsEmailTb.Visibility = Visibility.Collapsed;
+                contactDetailsMobileTb.Visibility = Visibility.Visible;
+                contactDetailsPhoneTb.Visibility = Visibility.Collapsed;
+                contactDetailsEmailTb.IsEnabled = false;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = true;
             }
         }
+
+        
 
         private void firstNameTb_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -127,7 +150,6 @@ namespace prototype2
             else validateTextBoxes();
         }
 
-        
 
         private void middleInitialTb_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -143,16 +165,154 @@ namespace prototype2
             else validateTextBoxes();
         }
 
+        private void contactDetailsEmailTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true)
+                saveBtn.IsEnabled = false;
+            else
+            {
+                contactDetail = contactDetailsEmailTb.Text;
+                validateTextBoxes();
+            }
+        }
+
+        private void contactDetailsPhoneTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true)
+                saveBtn.IsEnabled = false;
+            else
+            {
+                contactDetail = contactDetailsPhoneTb.Text;
+                validateTextBoxes();
+            }
+        }
+
+        private void contactDetailsMobileTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true)
+                saveBtn.IsEnabled = false;
+            else
+            {
+                contactDetail = contactDetailsMobileTb.Text;
+                validateTextBoxes();
+            }
+        }
+
         private void validateTextBoxes()
         {
-            if (idOf.Count==0)
-            {
-                saveBtn.IsEnabled = false;
-            }
-            else
+            if (contactDetails.Count>0)
             {
                 saveBtn.IsEnabled = true;
             }
+            else
+            {
+                saveBtn.IsEnabled = false;
+            }
         }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string[] details = { firstNameTb.Text, middleInitialTb.Text, lastNameTb.Text };
+            repDetails.Clear();
+            repDetails.Add(details);
+            this.Close();
+        }
+
+
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void editRepContBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (repContactsDg.SelectedItem != null)
+            {
+                String id = (repContactsDg.Columns[0].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                contactTypeCb.SelectedIndex = int.Parse(id);
+
+                if (id.Equals("1"))
+                {
+                    contactDetailsEmailTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+
+                }
+                else if (id.Equals("2"))
+                {
+                    contactDetailsMobileTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                }
+                else if (id.Equals("3"))
+                {
+                    contactDetailsPhoneTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                }
+                saveCustContactBtn.Visibility = Visibility.Visible;
+                cancelCustContactBtn.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void delRepContBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this representative?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                int selectIndex = repContactsDg.SelectedIndex;
+                contactDetails.RemoveAt(selectIndex);
+            }
+            else if (result == MessageBoxResult.No)
+            {
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+            }
+        }
+
+        private void saveCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true))
+            {
+                if (contactTypeCb.SelectedIndex != 0)
+                {
+                    saveCustContactBtn.Visibility = Visibility.Hidden;
+                    int selectIndex = repContactsDg.SelectedIndex;
+                    repContactsDg.Items.RemoveAt(selectIndex);
+                    string[] contactTemp = contactDetails[selectIndex];
+                    contactDetails.RemoveAt(selectIndex);
+                    contactTemp[1] = contactDetail;
+                    var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
+                    repContactsDg.Items.Add(data);
+                }
+                else
+                {
+                    MessageBox.Show("Select The Type");
+                }
+            }
+            else
+                MessageBox.Show("Please resolve the error first.");
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (!visual.IsDescendantOf(repContactsDg))
+            {
+                repContactsDg.SelectedIndex = -1;
+                repContactsDg.Columns[repContactsDg.Columns.IndexOf(colEditRepContact)].Visibility = Visibility.Hidden;
+                repContactsDg.Columns[repContactsDg.Columns.IndexOf(colDelRepContact)].Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void repContactsDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(repContactsDg))
+            {
+                if (repContactsDg.SelectedItems.Count > 0)
+                {
+                    repContactsDg.Columns[repContactsDg.Columns.IndexOf(colEditRepContact)].Visibility = Visibility.Visible;
+                    repContactsDg.Columns[repContactsDg.Columns.IndexOf(colDelRepContact)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        
     }
 }

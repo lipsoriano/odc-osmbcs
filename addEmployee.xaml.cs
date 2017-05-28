@@ -98,7 +98,6 @@ namespace prototype2
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-
                 }
 
             }
@@ -201,7 +200,6 @@ namespace prototype2
         }
         private byte[] SignatureToBitmapBytes()
         {
-
             Rect bounds = VisualTreeHelper.GetDescendantBounds(MyInkCanvas);
             double dpi = 96d;
 
@@ -213,17 +211,12 @@ namespace prototype2
                 dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
             }
             rtb.Render(dv);
-
-            string fileName = @"C:\sad\out" + firstNameTb.Text + "" + lastNameTb.Text + ".png";
-            BitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
             byte[] bitmapByte;
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
                 MyInkCanvas.Strokes.Save(ms);
                 bitmapByte = ms.ToArray();
             }
-            
             return bitmapByte;
         }
         private byte[] getSig(string fileName)

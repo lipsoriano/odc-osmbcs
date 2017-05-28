@@ -138,7 +138,5 @@ namespace prototype2
                 dbCon.Close();
             }
         }
-
-        
     }
 }

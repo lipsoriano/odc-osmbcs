@@ -29,16 +29,21 @@ namespace prototype2
         public String Number { get; set; }
         public String Email { get; set; }
         public object locProvinceId { get; set; }
-        public object cityID { get; set; }
-
+        public object CityName { get; set; }
+        public String EmailAddress { get; set; }
+        public String PhoneNumber { get; set; }
+        public String MobileNumber { get; set; }
 
         public MainMenu()
         {
             InitializeComponent();
             custCompanyNameTb.DataContext = this;
-            locationAddressTb.DataContext = this;
-            cityCb.DataContext = this;
-            custProvinceCust.DataContext = this;
+            custAddressTb.DataContext = this;
+            custCityTb.DataContext = this;
+            custProvinceCb.DataContext = this;
+            contactDetailsEmailTb.DataContext = this;
+            contactDetailsMobileTb.DataContext = this;
+            contactDetailsPhoneTb.DataContext = this;
         }
         private static String dbname = "odc_db";
 
@@ -49,6 +54,10 @@ namespace prototype2
                 containerGrid.Children[x].Visibility = Visibility.Collapsed;
             }
             dashboardGrid.Visibility = Visibility.Visible;
+            contactTypeCb.SelectedIndex = 0;
+            contactDetailsMobileTb.IsEnabled = false;
+            contactDetailsPhoneTb.IsEnabled = false;
+            contactDetailsEmailTb.IsEnabled = false;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -85,6 +94,14 @@ namespace prototype2
                 {
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnEditBtnCont)].Visibility = Visibility.Hidden;
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Hidden;
+                }
+            }
+            if (!visual.IsDescendantOf(custContactDetailsDg))
+            {
+                if (custContactDetailsDg.SelectedItems.Count > 0)
+                {
+                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Hidden;
+                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Hidden;
                 }
             }
         }
@@ -331,21 +348,21 @@ namespace prototype2
 
         }
 
-        private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
-        {
-            body1.IsEnabled = false;
-            body2.IsEnabled = false;
-            openingRemarksLbl.IsEnabled = false;
-            closingRemarksLbl.IsEnabled = false;
-        }
+        //private void defaultTemplateCheckB_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    body1.IsEnabled = false;
+        //    body2.IsEnabled = false;
+        //    openingRemarksLbl.IsEnabled = false;
+        //    closingRemarksLbl.IsEnabled = false;
+        //}
 
-        private void defaultTemplateCheckB_Unchecked(object sender, RoutedEventArgs e)
-        {
-            body1.IsEnabled = true;
-            body2.IsEnabled = true;
-            openingRemarksLbl.IsEnabled = true;
-            closingRemarksLbl.IsEnabled = true;
-        }
+        //private void defaultTemplateCheckB_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    body1.IsEnabled = true;
+        //    body2.IsEnabled = true;
+        //    openingRemarksLbl.IsEnabled = true;
+        //    closingRemarksLbl.IsEnabled = true;
+        //}
 
         private void paymentCustomRb_Checked(object sender, RoutedEventArgs e)
         {
@@ -529,15 +546,25 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, cc.contactType, cc.contactDetails, CONCAT(c.Address,' ',c.custCity,' ',p.locProvince) AS custLocation " +
-                    "FROM customer_t c JOIN contacts_t cc ON c.custID = cc.idOf " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
+                string query = query = "SELECT c.custID, c.custCompanyName, c.custAddInfo, CONCAT(c.custAddress,' ',c.custCity,' ',p.locProvince) AS custLocation " +
+                    "FROM customer_t c  " +
+                    "JOIN provinces_t p ON c.custProvinceID = p.locProvinceId " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
                 dataAdapter.Fill(fromDb, "t");
                 manageCustomeDataGrid.ItemsSource = fromDb.Tables["t"].DefaultView;
                 dbCon.Close();
+            }
+            if (dbCon.IsConnect())
+            {
+                string query = "SELECT * FROM provinces_t";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                custProvinceCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+
             }
         }
 
@@ -610,111 +637,110 @@ namespace prototype2
             setManageCustomerGridControls();
         }
 
-        private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (System.Windows.Controls.Validation.GetHasError(custCompanyNameTb) == true)
-                saveBtn.IsEnabled = false;
-            else validateTextBoxes();
-        }
-
-        private void locationAddressTb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (System.Windows.Controls.Validation.GetHasError(locationAddressTb) == true)
-                saveBtn.IsEnabled = false;
-            else validateTextBoxes();
-        }
-
-        private void locationCityTb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
-                saveBtn.IsEnabled = false;
-            else validateTextBoxes();
-        }
-
-        private void custProvinceCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = dbname;
-            if (dbCon.IsConnect() && custProvinceCust.SelectedIndex != -1)
-            {
-                string query = "SELECT * FROM city_by_province_t cp WHERE provinceID = '" + custProvinceCust.SelectedValue + "'";
-                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                DataSet fromDb = new DataSet();
-                dataAdapter.Fill(fromDb, "t");
-                cityCb.ItemsSource = fromDb.Tables["t"].DefaultView;
-                dbCon.Close();
-            }
-            if (System.Windows.Controls.Validation.GetHasError(custProvinceCust) == true)
-                saveBtn.IsEnabled = false;
-            else validateTextBoxes();
-        }
-
-        private void cityCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (System.Windows.Controls.Validation.GetHasError(cityCb) == true)
-                saveBtn.IsEnabled = false;
-            else validateTextBoxes();
-        }
-
-        private void validateTextBoxes()
-        {
-            if (custCompanyNameTb.Text.Equals("") || locationAddressTb.Text.Equals("") || cityCb.SelectedIndex == -1 || custProvinceCust.SelectedIndex == -1)
-            {
-                saveBtn.IsEnabled = false;
-            }
-            else
-            {
-                saveBtn.IsEnabled = true;
-            }
-        }
-        
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        private void cancelCustBtn_Click(object sender, RoutedEventArgs e)
         {
             manageCustomerHomeGrid.Visibility = Visibility.Visible;
             customerDetailsGrid.Visibility = Visibility.Hidden;
             setManageCustomerGridControls();
         }
 
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        private void saveCustBtn_Click(object sender, RoutedEventArgs e)
         {
             var dbCon = DBConnection.Instance();
             dbCon.DatabaseName = dbname;
             MessageBoxResult result = MessageBox.Show("Do you want to save this new customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
+                string custid = "";
                 if (dbCon.IsConnect())
                 {
-                    string query = "INSERT INTO location_details_t (locationAddress,locationCityId,locationProvinceID) VALUES ('" + locationAddressTb.Text + "','" + cityCb.SelectedValue + "', '" + custProvinceCust.SelectedValue + "')";
+                    string query = "INSERT INTO customer_t (custCompanyName,custAddInfo,custAddress,custCity,custProvinceID) VALUES ('" + custCompanyNameTb.Text + "','" + custAddInfoTb.Text + "','" + custAddressTb.Text + "','" + custCityTb.Text + "','"+custProvinceCb.SelectedValue+"')";
 
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
-                        query = "select last_insert_id() from location_details_t";
+                        query = "select last_insert_id() from customer_t";
                         MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                         DataSet fromDb = new DataSet();
                         dataAdapter.Fill(fromDb, "t");
-                        string locID = "";
                         foreach (DataRow myRow in fromDb.Tables[0].Rows)
                         {
-                            locID = myRow[0].ToString();
+                            custid = myRow[0].ToString();
                         }
-                        query = "INSERT INTO customer_t (custCompanyName,custAddInfo,locationID) VALUES ('" + custCompanyNameTb.Text + "','" + custAddInfoTb.Text + "','" + locID + "')";
-                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        foreach (List<string[]> repDetail in repDetails)
                         {
-                            query = "select last_insert_id() from customer_t";
-                            dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                            fromDb = new DataSet();
-                            dataAdapter.Fill(fromDb, "t");
-                            string custId = "";
-                            foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                            foreach (string[] detail in repDetail)
                             {
-                                custId = myRow[0].ToString();
+                                query = "INSERT INTO customer_rep_t (custRepLname,custrepfname,custrepmi, custId) VALUES ('" + detail[2] + "','" + detail[0] + "','" + detail[1] + "','"+ custid + "')";
+                                if (dbCon.insertQuery(query, dbCon.Connection))
+                                {
+                                    query = "select last_insert_id() from customer_rep_t"; 
+                                    if (dbCon.insertQuery(query, dbCon.Connection))
+                                    {
+                                        dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                                        fromDb = new DataSet();
+                                        dataAdapter.Fill(fromDb, "t");
+                                        string repid = "";
+                                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                                        {
+                                            repid = myRow[0].ToString();
+                                        }
+                                        foreach (List<string[]> repcontact in repcontactDetails)
+                                        {
+                                            foreach (string[] contact in repcontact)
+                                            {
+                                                query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
+                                                dbCon.insertQuery(query, dbCon.Connection);
+                                                query = "select last_insert_id() from contacts_t";
+                                                if (dbCon.insertQuery(query, dbCon.Connection))
+                                                {
+                                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                                                    fromDb = new DataSet();
+                                                    dataAdapter.Fill(fromDb, "t");
+                                                    string contId = "";
+                                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                                                    {
+                                                        contId = myRow[0].ToString();
+                                                    }
+                                                    query = "INSERT INTO customer_rep_t_contact_t (custRepId,contactId) VALUES ('" + repid + "','" + contId + "')";
+                                                    dbCon.insertQuery(query, dbCon.Connection);
+                                                }
+                                            }
+
+                                        }
+
+                                    }
+                                    
+                                }
                             }
-                            MessageBox.Show("Saved");
-                            manageCustomerHomeGrid.Visibility = Visibility.Visible;
-                            customerDetailsGrid.Visibility = Visibility.Hidden;
-                            setManageCustomerGridControls();
+
                         }
+                        foreach (string[] contact in contactDetails)
+                        {
+                            query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
+                            if (dbCon.insertQuery(query, dbCon.Connection))
+                            {
+                                query = "select last_insert_id() from contacts_t";
+                                if (dbCon.insertQuery(query, dbCon.Connection))
+                                {
+                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                                    fromDb = new DataSet();
+                                    dataAdapter.Fill(fromDb, "t");
+                                    string contId = "";
+                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                                    {
+                                        contId = myRow[0].ToString();
+                                    }
+                                    query = "INSERT INTO customer_t_contact_t (custId,contactId) VALUES ('" + custid + "','" + contId + "')";
+                                    dbCon.insertQuery(query, dbCon.Connection);
+                                }
+                                
+                            }
+                        }
+
+                        MessageBox.Show("Saved");
+                        manageCustomerHomeGrid.Visibility = Visibility.Visible;
+                        customerDetailsGrid.Visibility = Visibility.Hidden;
+                        setManageCustomerGridControls();
                     }
                 }
             }
@@ -730,32 +756,316 @@ namespace prototype2
 
         }
 
-        private List<string> idOfRepresentative = new List<string>();
-        private List<string> idOf = new List<string>();
+        public List<List<string[]>> repDetails = new List<List<string[]>>();
+        public List<List<string[]>> repcontactDetails = new List<List<string[]>>();
         private void newRepresentativeBtn_Click(object sender, RoutedEventArgs e)
         {
             RepresentativeWindow repWindow = new RepresentativeWindow();
             repWindow.ShowDialog();
-            idOfRepresentative = repWindow.idOf;
+            repDetails.Add(repWindow.repDetails);
+            repcontactDetails.Add(repWindow.contactDetails);
             newCustomerGrid();
+            validateCustomerDetailsTextBoxes();
         }
-
-        private void newCustContactBtn_Click(object sender, RoutedEventArgs e)
-        {
-            contactDetails contactWindow = new contactDetails();
-            contactWindow.ShowDialog();
-            newCustomerGrid();
-        }
+        
 
         private void newCustomerGrid()
         {
-
+            foreach (List<string[]> repDetail in repDetails)
+            {
+                foreach (string[] detail in repDetail)
+                {
+                    var data = new Representative { firstName = detail[0], middleName = detail[1], lastName = detail[2] };
+                    customerRepresentativeDg.Items.Add(data);
+                }
+                
+            }
         }
 
         private void customerRepresentativeDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(customerRepresentativeDg))
+            {
+                if (customerRepresentativeDg.SelectedItems.Count > 0)
+                {
+                    customerRepresentativeDg.Columns[customerRepresentativeDg.Columns.IndexOf(columnEditBtnCustContRep)].Visibility = Visibility.Visible;
+                    customerRepresentativeDg.Columns[customerRepresentativeDg.Columns.IndexOf(columnDelBtnCustContRep)].Visibility = Visibility.Visible;
+                }
+            }
         }
+        public List<string[]> contactDetails = new List<string[]>();
+        private void addNewCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true)&& !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true)&& !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true))
+            {
+                if (contactTypeCb.SelectedIndex != 0)
+                {
+                    
+                    var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb.SelectedIndex, contactDetails = contactDetail };
+                    custContactDetailsDg.Items.Add(data);
+                    string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
+                    contactDetails.Add(details);
+                    contactDetailsEmailTb.Text = "";
+                    contactDetailsMobileTb.Text = "";
+                    contactDetailsPhoneTb.Text = "";
+                    validateCustomerDetailsTextBoxes();
+                    Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
+                }
+                else
+                {
+                    MessageBox.Show("Select The Type");
+                }
+            }
+            else
+                MessageBox.Show("Please resolve the error first.");
+            
+            
+        }
+
+        private string contactDetail = "";
+        private void contactTypeCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (contactTypeCb.SelectedIndex == 1)
+            {
+                contactDetailsEmailTb.Visibility = Visibility.Visible;
+                contactDetailsMobileTb.Visibility = Visibility.Collapsed;
+                contactDetailsPhoneTb.Visibility = Visibility.Collapsed;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = false;
+                contactDetailsEmailTb.IsEnabled = true;
+            }
+            else if (contactTypeCb.SelectedIndex == 2)
+            {
+                contactDetailsEmailTb.Visibility = Visibility.Collapsed;
+                contactDetailsMobileTb.Visibility = Visibility.Collapsed;
+                contactDetailsPhoneTb.Visibility = Visibility.Visible;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = true;
+                contactDetailsEmailTb.IsEnabled = false;
+            }
+            else if (contactTypeCb.SelectedIndex == 3)
+            {
+                contactDetailsEmailTb.Visibility = Visibility.Collapsed;
+                contactDetailsMobileTb.Visibility = Visibility.Visible;
+                contactDetailsPhoneTb.Visibility = Visibility.Collapsed;
+                
+                contactDetailsMobileTb.IsEnabled = true;
+                contactDetailsPhoneTb.IsEnabled = false;
+                contactDetailsEmailTb.IsEnabled = false;
+            }
+        }
+        private void contactDetailsEmailTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true)
+            {
+                saveCustBtn.IsEnabled = false;
+                saveCustContactBtn.IsEnabled = false;
+            }
+            else
+            {
+                contactDetail = contactDetailsEmailTb.Text;
+                saveCustContactBtn.IsEnabled = true;
+                validateCustomerDetailsTextBoxes();
+            }
+        }
+
+        private void contactDetailsPhoneTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true)
+            {
+                saveCustBtn.IsEnabled = false;
+                saveCustContactBtn.IsEnabled = false;
+            }
+            else
+            {
+                contactDetail = contactDetailsPhoneTb.Text;
+                saveCustContactBtn.IsEnabled = true;
+                validateCustomerDetailsTextBoxes();
+            }
+        }
+
+        private void contactDetailsMobileTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true)
+            {
+                saveCustBtn.IsEnabled = false;
+                saveCustContactBtn.IsEnabled = false;
+            }
+            else
+            {
+                contactDetail = contactDetailsMobileTb.Text;
+                validateCustomerDetailsTextBoxes();
+                saveCustContactBtn.IsEnabled = true;
+            }
+        }
+
+        private void custCompanyNameTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custCompanyNameTb) == true)
+                saveCustBtn.IsEnabled = false;
+            else validateCustomerDetailsTextBoxes();
+        }
+
+        private void locationAddressTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custAddressTb) == true)
+                saveCustBtn.IsEnabled = false;
+            else validateCustomerDetailsTextBoxes();
+        }
+
+        private void locationCityTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (System.Windows.Controls.Validation.GetHasError(custCityTb) == true)
+                saveCustBtn.IsEnabled = false;
+            else validateCustomerDetailsTextBoxes();
+        }
+
+        private void validateCustomerDetailsTextBoxes()
+        {
+            if (custCompanyNameTb.Text.Equals("") || custAddressTb.Text.Equals("") || custCityTb.Text.Equals("") || custProvinceCb.SelectedIndex == -1||contactDetails.Count==0 ||repDetails.Count==0)
+            {
+                saveCustBtn.IsEnabled = false;
+            }
+            else
+            {
+                saveCustBtn.IsEnabled = true;
+            }
+        }
+
+        private void custContactDetailsDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            if (visual.IsDescendantOf(custContactDetailsDg))
+            {
+                if (custContactDetailsDg.SelectedItems.Count > 0)
+                {
+                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Visible;
+                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void btnEditCustCont_Click(object sender, RoutedEventArgs e)
+        {
+            if (custContactDetailsDg.SelectedItem!=null)
+            {
+                String id = (custContactDetailsDg.Columns[0].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                contactTypeCb.SelectedIndex = int.Parse(id);
+                
+                if (id.Equals("1"))
+                {
+                    contactDetailsEmailTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+
+                }
+                else if (id.Equals("2"))
+                {
+                    contactDetailsMobileTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                }
+                else if (id.Equals("3"))
+                {
+                    contactDetailsPhoneTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                }
+                saveCustContactBtn.Visibility = Visibility.Visible;
+                cancelCustContactBtn.Visibility = Visibility.Visible;
+            }
+
+            
+        }
+        int newCust = 0;
+        private void btnDeleteCustCont_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this customer contact information?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (newCust == 0)
+                {
+                    int selectIndex = custContactDetailsDg.SelectedIndex;
+                    custContactDetailsDg.Items.RemoveAt(selectIndex);
+                    contactDetails.RemoveAt(selectIndex);
+                }
+            }
+            else if (result == MessageBoxResult.No)
+            {
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+            }
+            
+            
+        }
+
+        private void saveCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true))
+            {
+                if (contactTypeCb.SelectedIndex != 0)
+                {
+                    saveCustContactBtn.Visibility = Visibility.Hidden;
+                    int selectIndex = custContactDetailsDg.SelectedIndex;
+                    custContactDetailsDg.Items.RemoveAt(selectIndex);
+                    string[] contactTemp = contactDetails[selectIndex];
+                    contactDetails.RemoveAt(selectIndex);
+                    contactTemp[1] = contactDetail;
+                    var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
+                    custContactDetailsDg.Items.Add(data);
+                }
+                else
+                {
+                    MessageBox.Show("Select The Type");
+                }
+            }
+            else
+                MessageBox.Show("Please resolve the error first.");
+            
+        }
+
+        private void cancelCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            contactDetailsEmailTb.Text = "";
+            contactDetailsMobileTb.Text = "";
+            contactDetailsPhoneTb.Text = "";
+            cancelCustContactBtn.Visibility = Visibility.Hidden;
+            saveCustContactBtn.Visibility = Visibility.Hidden;
+        }
+
+        private void editBtnCustContRep_Click(object sender, RoutedEventArgs e)
+        {
+            RepresentativeWindow repWindow = new RepresentativeWindow();
+            int selectIndex = custContactDetailsDg.SelectedIndex;
+            repWindow.Edit = 1;
+            repWindow.repDetails = repDetails[selectIndex];
+            repWindow.contactDetails = repcontactDetails[selectIndex];
+            repDetails.RemoveAt(selectIndex);
+            repcontactDetails.RemoveAt(selectIndex);
+            repWindow.ShowDialog();
+            repDetails.Add(repWindow.repDetails);
+            repcontactDetails.Add(repWindow.contactDetails);
+            newCustomerGrid();
+            validateCustomerDetailsTextBoxes();
+        }
+
+        private void delBtnCustContRep_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete this representative?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                int selectIndex = custContactDetailsDg.SelectedIndex;
+                repDetails.RemoveAt(selectIndex);
+                repcontactDetails.RemoveAt(selectIndex);
+            }
+            else if (result == MessageBoxResult.No)
+            {
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+            }
+            
+        }
+
         /*-----------------END OF MANAGE CUSTOMER-------------------*/
         /*
         /*
@@ -787,10 +1097,9 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName, ept.positionName, e., e.empEmail, CONCAT(e.empAddress,' ',e.city,' ',p.locProvince) as empAddress " +
+                string query = query = "SELECT e.empID, CONCAT(e.empFName,' ',e.empMi,'. ',e.empLname) AS empName, ept.positionName, CONCAT(e.empAddress,' ',e.empcity,' ',p.locProvince) as empAddress " +
                     "FROM employee_t e " +
-                    "JOIN contacts_t cc ON cc.idOF = e.empID " +
-                    "JOIN position_t ept ON e.position_ID = ept.positionId " +
+                    "JOIN position_t ept ON e.positionid = ept.positionId " +
                     "JOIN provinces_t p ON e.empProvinceID = p.locProvinceId " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
@@ -902,11 +1211,9 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT c.suppID, c.suppCompanyName, c.suppAddInfo, cc.sOfficeNo, cc.sEmailAddress, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) AS suppLocation " +
-                    "FROM supplier_t c JOIN supplier_contacts_t cc ON c.suppID = cc.suppID " +
-                    "JOIN location_details_t l ON c.locationID = l.locationID " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
-                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
+                string query = query = "SELECT c.suppID, c.suppCompanyName, c.suppAddInfo, CONCAT(c.suppAddress,' ',c.suppCity,' ',p.locProvince) AS suppLocation " +
+                    "FROM supplier_t c " +
+                    "JOIN provinces_t p ON c.suppProvinceId = p.locProvinceId " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -1122,11 +1429,10 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = query = "SELECT e.contID, CONCAT(e.contFName,' ',e.contMi,'. ',e.contLname) AS contName,e.jobTitle, e.contContact, e.contEmail, CONCAT(l.locationAddress,' ',cp.cityName,' ',p.locProvince) as contAddress " +
-                    "FROM contractor_t e " +
-                    "JOIN location_details_t l ON e.locationID = l.locationID " +
-                    "JOIN provinces_t p ON l.locationProvinceID = p.locProvinceId " +
-                    "JOIN city_by_province_t cp ON l.locationCityID = cp.cityID " +
+                string query = query = "SELECT c.contractorID, CONCAT(c.contFName,' ',c.contMi,'. ',c.contLname) AS contName,j.jobName, CONCAT(c.contAddress,' ',c.contcity,' ',p.locProvince) as contAddress " +
+                    "FROM contractor_t c " +
+                    "JOIN job_title_t j ON j.jobID = c.jobID " +
+                    "JOIN provinces_t p ON c.contProvinceID = p.locProvinceId " +
                     "WHERE isDeleted = 0;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
@@ -1156,6 +1462,24 @@ namespace prototype2
             }
         }
 
+        
+
+        private void servicesDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        
+
+
+
+
+
+
+
+
+
+
 
         /*-----------------END OF MANAGE CONTRACTOR-------------------*/
         /*
@@ -1163,7 +1487,8 @@ namespace prototype2
         /*
         /*
         /*
-        /*-----------------M-------------------------*/
+        /*----------------------UNIVERSAL-----------------------------*/
+
 
 
     }
@@ -1223,6 +1548,76 @@ namespace prototype2
         {
             get { return _totalAmount; }
             set { SetField(ref _totalAmount, value, "Total Amount"); }
+        }
+    }
+
+    internal class Contacts : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        protected bool SetField<T>(ref T field, T value, string propertyName)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        private string _contactTypeID;
+        public string contactTypeID
+        {
+            get { return _contactTypeID; }
+            set { SetField(ref _contactTypeID, value, ""); }
+        }
+        private string _contactType;
+        public string contactType
+        {
+            get { return _contactType; }
+            set { SetField(ref _contactType, value, "Contact Type"); }
+        }
+        private string _contactDetails;
+        public string contactDetails
+        {
+            get { return _contactDetails; }
+            set { SetField(ref _contactDetails, value, ""); }
+        }
+    }
+
+    internal class Representative : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        protected bool SetField<T>(ref T field, T value, string propertyName)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        private string _firstName;
+        public string firstName
+        {
+            get { return _firstName; }
+            set { SetField(ref _firstName, value, ""); }
+        }
+        private string _middleName;
+        public string middleName
+        {
+            get { return _middleName; }
+            set { SetField(ref _middleName, value, "Contact Type"); }
+        }
+        private string _lastName;
+        public string lastName
+        {
+            get { return _lastName; }
+            set { SetField(ref _lastName, value, ""); }
         }
     }
 

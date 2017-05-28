@@ -42,7 +42,7 @@ namespace prototype2
                     return ValidationResult.ValidResult;
 
                 }
-                else if (str.Equals("MobilNumber"))
+                else if (str.Equals("Mobile"))
                 {
                     try
                     {
@@ -59,12 +59,12 @@ namespace prototype2
                     return ValidationResult.ValidResult;
 
                 }
-                else if (str.Equals("PhoneNumber"))
+                else if (str.Equals("Phone"))
                 {
                     try
                     {
                         Decimal number = Decimal.Parse(value.ToString());
-                        if (value.ToString().Length < 7)
+                        if (value.ToString().Length > 7)
                         {
                             return new ValidationResult(false, "* Must be equal to 7 Digits");
                         }
