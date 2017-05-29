@@ -263,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="form.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -290,6 +294,9 @@
     </Compile>
     <Compile Include="addEmployee.xaml.cs">
       <DependentUpon>addEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="form.xaml.cs">
+      <DependentUpon>form.xaml</DependentUpon>
     </Compile>
     <Compile Include="manageEmployeeSettings.xaml.cs">
       <DependentUpon>manageEmployeeSettings.xaml</DependentUpon>

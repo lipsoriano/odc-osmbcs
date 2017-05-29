@@ -97,6 +97,7 @@ namespace prototype2
                 Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
                 Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
                 Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
+                validateTextBoxes();
             }
             else
             {
@@ -127,8 +128,8 @@ namespace prototype2
                 contactDetailsPhoneTb.Visibility = Visibility.Visible;
                 contactDetailsMobileTb.Visibility = Visibility.Collapsed;
                 contactDetailsEmailTb.IsEnabled = false;
-                contactDetailsMobileTb.IsEnabled = true;
-                contactDetailsPhoneTb.IsEnabled = false;
+                contactDetailsMobileTb.IsEnabled = false;
+                contactDetailsPhoneTb.IsEnabled = true;
             }
             else if (contactTypeCb.SelectedIndex == 3)
             {
@@ -136,8 +137,8 @@ namespace prototype2
                 contactDetailsMobileTb.Visibility = Visibility.Visible;
                 contactDetailsPhoneTb.Visibility = Visibility.Collapsed;
                 contactDetailsEmailTb.IsEnabled = false;
-                contactDetailsMobileTb.IsEnabled = false;
-                contactDetailsPhoneTb.IsEnabled = true;
+                contactDetailsMobileTb.IsEnabled = true;
+                contactDetailsPhoneTb.IsEnabled = false;
             }
         }
 
@@ -215,6 +216,7 @@ namespace prototype2
             string[] details = { firstNameTb.Text, middleInitialTb.Text, lastNameTb.Text };
             repDetails.Clear();
             repDetails.Add(details);
+
             this.Close();
         }
 
@@ -256,6 +258,7 @@ namespace prototype2
             {
                 int selectIndex = repContactsDg.SelectedIndex;
                 contactDetails.RemoveAt(selectIndex);
+                repContactsDg.Items.RemoveAt(selectIndex);
             }
             else if (result == MessageBoxResult.No)
             {
@@ -279,6 +282,15 @@ namespace prototype2
                     contactTemp[1] = contactDetail;
                     var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
                     repContactsDg.Items.Add(data);
+                    contactDetails.Add(contactTemp);
+                    contactDetailsEmailTb.Text = "";
+                    contactDetailsMobileTb.Text = "";
+                    contactDetailsPhoneTb.Text = "";
+                    cancelCustContactBtn.Visibility = Visibility.Hidden;
+                    saveCustContactBtn.Visibility = Visibility.Hidden;
+                    Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
                 }
                 else
                 {
@@ -313,6 +325,16 @@ namespace prototype2
             }
         }
 
-        
+        private void cancelCustContactBtn_Click(object sender, RoutedEventArgs e)
+        {
+            contactDetailsEmailTb.Text = "";
+            contactDetailsMobileTb.Text = "";
+            contactDetailsPhoneTb.Text = "";
+            cancelCustContactBtn.Visibility = Visibility.Hidden;
+            saveCustContactBtn.Visibility = Visibility.Hidden;
+            Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
+            Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
+            Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
+        }
     }
 }

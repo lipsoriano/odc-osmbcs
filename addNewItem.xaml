@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:prototype2"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="prototype2.addNewItem"
         mc:Ignorable="d"
-        Title="addNewItem" Height="707.335" Width="726.01" ResizeMode="NoResize">
+        Title="addNewItem" Height="707.335" Width="726.01" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <GroupBox x:Name="groupBox" Header="New Item" HorizontalAlignment="Left" Margin="10,10,0,48" Width="700">
             <ScrollViewer HorizontalAlignment="Left" Width="690" Margin="0,0,-2,0">
@@ -15,12 +15,7 @@
                     <RadioButton x:Name="productRbtn" Content="Product" HorizontalAlignment="Left" Margin="37,39,0,0" VerticalAlignment="Top" GroupName="itemType" Checked="productRbtn_Checked" Unchecked="productRbtn_Unchecked"/>
                     <RadioButton x:Name="serviceRbtn" Content="Service" HorizontalAlignment="Left" Margin="37,59,0,0" VerticalAlignment="Top" GroupName="itemType" Checked="serviceRbtn_Checked" Unchecked="serviceRbtn_Unchecked"/>
                     <Grid x:Name="forms" Margin="10,79,10,10">
-                        <Grid x:Name="productFrom" Margin="0,2,442,457">
-                            <Label x:Name="label_Copy" Content="Product" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
-                            <RadioButton x:Name="productRbtn_Copy" Content="From Inventory" HorizontalAlignment="Left" Margin="27,29,0,0" VerticalAlignment="Top" GroupName="productType" Checked="productRbtn_Checked" Unchecked="productRbtn_Unchecked"/>
-                            <RadioButton x:Name="serviceRbtn_Copy" Content="From Supplier" HorizontalAlignment="Left" Margin="27,49,0,0" VerticalAlignment="Top" GroupName="itemType" Checked="serviceRbtn_Checked" Unchecked="serviceRbtn_Unchecked"/>
-                        </Grid>
-                        <Grid x:Name="service" Margin="0,0,13,90" d:IsHidden="True">
+                        <Grid x:Name="service" Margin="0,0,13,90">
                             <Label Content="Service Type:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
                             <ComboBox x:Name="serviceTypeCb" HorizontalAlignment="Left" Margin="27,31,0,0" VerticalAlignment="Top" Width="120"/>
                             <Label Content="Description:" VerticalAlignment="Top" Height="26" Margin="0,59,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
@@ -51,7 +46,7 @@
                             <Label Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="0,384,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
                             <TextBox x:Name="totalPrice2" HorizontalAlignment="Left" Height="23" Margin="27,415,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" IsEnabled="False"/>
                         </Grid>
-                        <Grid x:Name="product" Margin="0,71,0,-17">
+                        <Grid x:Name="product" Margin="0,0,0,54" d:IsHidden="True">
                             <Label Content="Item Code:" VerticalAlignment="Top" Height="26" Margin="0,1,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
                             <TextBox x:Name="itemCode" Height="23" Margin="27,35,493,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal"/>
                             <Label Content="Description:" VerticalAlignment="Top" Height="26" Margin="0,67,0,0" HorizontalAlignment="Left" Width="80" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
@@ -61,20 +56,11 @@
                             <Label Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="0,277,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
                             <TextBox x:Name="totalPrice1" HorizontalAlignment="Left" Height="23" Margin="27,308,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" IsEnabled="False"/>
                         </Grid>
-                        <Grid x:Name="fromInventory" Margin="0,0,0,90" d:IsHidden="True">
-                            <Label Content="Select Item From Inventory" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
-                            <DataGrid x:Name="inventoryDg" HorizontalAlignment="Left" Height="100" Margin="27,26,0,0" VerticalAlignment="Top" Width="613"/>
-                            <Label Content="Quantity:" VerticalAlignment="Top" Height="26" Margin="0,143,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
-                            <xctk:IntegerUpDown x:Name="qty3" HorizontalAlignment="Left" Margin="27,174,0,0" VerticalAlignment="Top" Width="63"/>
-                            <Label Content="Unit Price:" VerticalAlignment="Top" Height="26" Margin="0,204,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
-                            <xctk:DecimalUpDown x:Name="unitPrice3" HorizontalAlignment="Left" Margin="27,245,0,0" VerticalAlignment="Top" Width="186"/>
-                            <Label Content="Total Amount:" VerticalAlignment="Top" Height="26" Margin="0,282,0,0" HorizontalAlignment="Left" Width="90" FontSize="12" FontFamily="Segoe UI" FontStyle="Italic" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
-                            <TextBox x:Name="totalPrice3" HorizontalAlignment="Left" Height="23" Margin="27,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" FontSize="12" FontFamily="Segoe UI" FontStyle="Normal" FontWeight="Normal" IsEnabled="False"/>
-                        </Grid>
                     </Grid>
                 </Grid>
             </ScrollViewer>
         </GroupBox>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="635,0,0,10" VerticalAlignment="Bottom" Width="75"/>
+        <Button x:Name="saveBtn" Content="Save" Margin="549,0,96,10" VerticalAlignment="Bottom"/>
+        <Button x:Name="cancelBtn" Content="Cancel" Margin="635,0,10,10" VerticalAlignment="Bottom" Click="cancelBtn_Click"/>
     </Grid>
 </Window>

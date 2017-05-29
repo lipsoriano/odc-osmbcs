@@ -30,7 +30,6 @@ namespace prototype2
             {
                 forms.Children[x].Visibility = Visibility.Hidden;
             }
-            productFrom.Visibility = Visibility.Visible;
         }
 
         private void productRbtn_Unchecked(object sender, RoutedEventArgs e)
@@ -50,6 +49,11 @@ namespace prototype2
         private void serviceRbtn_Unchecked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
