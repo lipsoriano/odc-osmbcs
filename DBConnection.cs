@@ -109,6 +109,23 @@ namespace prototype2
                 return false;
         }
 
+        public MySqlCommand storedProc(string query, MySqlConnection con)
+        {
+            if (query.Length > 0)
+            {
+                con.Open();
+                sqlCommand = new MySqlCommand();
+                sqlCommand.Connection = con;
+                sqlCommand.CommandText = query;
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                return sqlCommand;
+            }
+            else
+                return null;
+
+        }
+
+
         public void Close()
         {
             connection.Close();

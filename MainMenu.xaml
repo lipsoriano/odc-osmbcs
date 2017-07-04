@@ -87,7 +87,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </Window.Resources>
+    <Window.DataContext>
+        <local:MainViewModel x:Name="MainViewModel"/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -97,7 +101,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Background="#FF2C3E50" Height="70" VerticalAlignment="Top" d:IsLocked="True">
+        <Grid Background="#FF2C3E50" Height="70" VerticalAlignment="Top">
             <Grid Margin="10,0,959,0">
                 <Image x:Name="image" HorizontalAlignment="Left" Width="50" Source="Resources/user-16.png"/>
                 <Label x:Name="label" Content="Lewis Ken Kinaadman" HorizontalAlignment="Left" Margin="69,18,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
@@ -446,26 +450,27 @@
             </Grid>
         </Grid>
         <Grid x:Name="containerGrid" Grid.Row="1" Background="#FF1695A3">
-            <Grid x:Name="manageSubMenugrid" HorizontalAlignment="Right" Width="175" Background="#FF395066" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="140" Panel.ZIndex="999999" VerticalAlignment="Top" Visibility="Hidden" d:IsHidden="True" d:IsLocked="True">
+            <Grid x:Name="manageSubMenugrid" HorizontalAlignment="Right" Width="175" Background="#FF395066" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="140" Panel.ZIndex="999999" VerticalAlignment="Top" Visibility="Hidden" d:IsHidden="True">
                 <Button x:Name="employeeManageMenuBtn" Content="Employees" Margin="0,1,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Width="175" Click="employeeManageMenuBtn_Click" HorizontalContentAlignment="Right" Padding="1,1,10,1"/>
                 <Button x:Name="customerManageMenuBtn" Content="Customers" Margin="0,36,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}"  Foreground="White" Width="175" Click="customerManageMenuBtn_Click" HorizontalContentAlignment="Right" Padding="1,1,10,1"/>
                 <Button x:Name="supplierManageMenuBtn" Content="Suppliers" Margin="0,71,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Width="175" Click="supplierManageMenuBtn_Click" HorizontalContentAlignment="Right" Padding="1,1,10,1"/>
                 <Button x:Name="contractorManageMenuBtn" Content="Contractor" Margin="0,106,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="contractorManageMenuBtn_Click" Width="175" HorizontalContentAlignment="Right" Padding="1,1,10,1"/>
             </Grid>
-            <Grid x:Name="saleSubMenuGrid" Width="175" Margin="0,0,369,0" Background="#FF395066" HorizontalAlignment="Right" Panel.ZIndex="999999" VerticalAlignment="Top" Visibility="Hidden" d:IsLocked="True" d:IsHidden="True">
+            <Grid x:Name="saleSubMenuGrid" Width="175" Margin="0,0,369,0" Background="#FF395066" HorizontalAlignment="Right" Panel.ZIndex="999999" VerticalAlignment="Top" Visibility="Hidden" d:IsHidden="True">
                 <Button x:Name="quotesSalesMenuBtn" Content="Quotations" Margin="0,75,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="quotesSalesMenuBtn_Click" Width="175" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,1,1,1"/>
                 <Button x:Name="ordersSalesMenuBtn" Content="Orders" Margin="0,40,0,0" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ordersSalesMenuBtn_Click" Width="175" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,1,1,1"/>
                 <Button x:Name="invoiceSalesMenuBtn" Content="Invoices" VerticalAlignment="Top" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="invoiceSalesMenuBtn_Click" Width="175" Margin="0,5,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,1,1,1"/>
             </Grid>
-            <Grid x:Name="dashboardGrid" Margin="10,0" Background="#FFECF0F1" d:IsLocked="True" d:IsHidden="True">
+            <Grid x:Name="dashboardGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True">
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="228*"/>
-                    <ColumnDefinition Width="263*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Grid Margin="10,76,0,285" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5">
+                <Grid Margin="10,62,10,10" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" d:LayoutOverrides="LeftMargin, RightMargin">
                     <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="10,48,5,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1" Content="Today's Appointment" Height="33" Margin="19,10,242,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
                     <Label x:Name="label2" Content="No appointment/s to show." Height="37" Margin="19,59,22,0" VerticalAlignment="Top"/>
@@ -473,29 +478,29 @@
                     <Label x:Name="label1_Copy1" Content="Upcoming appointment" Height="26" Margin="272,122,12,0" VerticalAlignment="Top" FlowDirection="RightToLeft" FontWeight="Bold"/>
                     <ListBox x:Name="listBox" Margin="13,153,11,10"/>
                 </Grid>
-                <Grid Margin="10,76,10,0" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1" VerticalAlignment="Top" Height="100">
+                <Grid Margin="10,62,10,167" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin">
                     <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="10,48,10,0" VerticalAlignment="Top"/>
                     <Label x:Name="label3" Content="Pending Balance" HorizontalAlignment="Left" Height="33" Margin="10,6,0,0" VerticalAlignment="Top" Width="175" FontSize="16" FontWeight="Bold"/>
                     <Label x:Name="label4" Margin="19,59,10,10" HorizontalContentAlignment="Right" FontWeight="Bold" FontSize="16" VerticalContentAlignment="Stretch" Content="$ 90,000"/>
                     <Label x:Name="label1_Copy2" Content="As of February 18, 2016" Height="26" Margin="357,10,3,0" VerticalAlignment="Top" FlowDirection="RightToLeft" FontWeight="Bold" HorizontalAlignment="Right"/>
                 </Grid>
-                <Grid Margin="10,189,10,0" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Height="103" VerticalAlignment="Top">
+                <Grid Margin="10,0,10,10" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin" Height="144" VerticalAlignment="Bottom">
                     <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="12,48,10,0" VerticalAlignment="Top"/>
                     <Label x:Name="label5" Content="Profits made" HorizontalAlignment="Left" Height="33" Margin="19,10,0,0" VerticalAlignment="Top" Width="175" FontSize="16" FontWeight="Bold"/>
                     <Label x:Name="label6" Content="$ 50,000" Margin="19,59,10,10" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalContentAlignment="Stretch" TextOptions.TextFormattingMode="Ideal" TextOptions.TextHintingMode="Auto" FontSize="16" UseLayoutRounding="False"/>
                     <Label x:Name="label1_Copy3" Content="As of February 18, 2016" HorizontalAlignment="Right" Height="26" Margin="357,10,0,0" VerticalAlignment="Top" Width="146" FlowDirection="RightToLeft" FontWeight="Bold"/>
                 </Grid>
-                <Label x:Name="label7" Content="Dashboard" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Grid.ColumnSpan="2" Height="57" VerticalAlignment="Top"/>
-                <Grid Margin="10,315,10,127" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
+                <Label x:Name="label7" Content="Dashboard" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Grid.ColumnSpan="2" Height="57" VerticalAlignment="Top" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                <Grid Margin="10" Background="#99ABABAB" RenderTransformOrigin="0.5,0.5" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin" Grid.Row="1">
                     <Border BorderBrush="Black" BorderThickness="1" Height="1" Margin="10,48,5,0" VerticalAlignment="Top"/>
                     <Label x:Name="label18" Content="Pending Sales Quote" Height="33" Margin="19,10,242,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
                     <Label x:Name="label1_Copy5" Content="February 18, 2016" Height="26" Margin="302,10,5,0" VerticalAlignment="Top" FlowDirection="RightToLeft" FontWeight="Bold"/>
                     <ListBox x:Name="listBox1" Margin="13,54,11,10"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="transactionGrid" Margin="10,0" Background="#FFECF0F1">
-                <Grid x:Name="transactionQuotationsGrid">
-                    <Label x:Name="transQuotationHeader" Content="Transaction - Quotations" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
+            <Grid x:Name="transactionGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True">
+                <Grid x:Name="transactionQuotationsGrid" d:IsHidden="True">
+                    <Label x:Name="transQuotationHeader" Content="Transaction - Quotations" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid x:Name="quotationsGridHome" Margin="10,70,10,10">
                         <Grid Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="476">
                             <Label x:Name="label8" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -625,7 +630,7 @@
                     </Grid>
                 </Grid>
                 <Grid x:Name="transactionInvoiceGrid" d:IsHidden="True">
-                    <Label x:Name="label7_Copy1" Content="Transaction - Invoice" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
+                    <Label x:Name="label7_Copy1" Content="Transaction - Invoice" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid Margin="10,70,10,10">
                         <Grid Margin="10,7,461,383" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Label x:Name="label10" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -634,12 +639,12 @@
                         </Grid>
                         <Button x:Name="transQuoteAddBtn2" Content="Convert" HorizontalAlignment="Right" Height="26" Margin="0,10,10,0" VerticalAlignment="Top" Width="90"/>
                         <DataGrid x:Name="quotationsDataGrid2" Margin="0,41,0,0" AutoGenerateColumns="False">
-                            
+
                         </DataGrid>
                     </Grid>
                 </Grid>
                 <Grid x:Name="transactionReceiptGrid" d:IsHidden="True">
-                    <Label x:Name="label7_Copy2" Content="Transaction - Receipts" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
+                    <Label x:Name="label7_Copy2" Content="Transaction - Receipts" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid Margin="10,70,10,10">
                         <Grid Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="478">
                             <Label x:Name="label11" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -650,8 +655,8 @@
                         <DataGrid x:Name="quotationsDataGrid3" Margin="0,41,0,0" AutoGenerateColumns="False"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="transactionOrdersGrid" d:IsHidden="True">
-                    <Label x:Name="label7_Copy3" Content="Transaction - Purchase Orders" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
+                <Grid x:Name="transactionOrdersGrid">
+                    <Label x:Name="label7_Copy3" Content="Transaction - Purchase Orders" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top" Margin="10,0"/>
                     <Grid x:Name="transOrdersGridHome" Margin="10,70,10,10" d:IsHidden="True">
                         <Grid Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="474">
                             <Label x:Name="label9" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -774,9 +779,9 @@
                     </DataGrid>
                     <DatePicker HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" Width="167"/>
                 </Grid>
-                <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF2980B9">
-                    <Label x:Name="label7_Copy7" Content="Services" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
-                    <Button x:Name="settingsServicesGridBtn" Margin="1170,0,0,0" Style="{StaticResource settingsButton}" HorizontalAlignment="Right" Width="59" Foreground="White"  Click="settingsServicesGridBtn_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF1695A3">
+                    <Label x:Name="label7_Copy7" Content="Services" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="{x:Null}" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
+                    <Button x:Name="settingsServicesGridBtn" Margin="1170,0,0,0" Style="{StaticResource settingsButton}" HorizontalAlignment="Right" Width="59" Foreground="White"  Click="settingsServicesGridBtn_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="55">
                             <Canvas x:Name="Capa_1g2" Width="30" Height="30">
                                 <Canvas.RenderTransform>
@@ -819,11 +824,11 @@
                     </Button>
                 </Grid>
             </Grid>
-            <Grid x:Name="reportsGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True" d:IsLocked="True"/>
-            <Grid x:Name="manageGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True" >
+            <Grid x:Name="reportsGrid" Margin="10,0" Background="#FFECF0F1" d:IsHidden="True"/>
+            <Grid x:Name="manageGrid" Margin="10,0" Background="#FFECF0F1" >
                 <Grid x:Name="manageCustomerGrid" IsVisibleChanged="manageCustomerGrid_IsVisibleChanged">
                     <Label x:Name="label7_Copy" Content="Manage - Customer" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
-                    <Grid x:Name="manageCustomerHomeGrid" Margin="10,70,10,10">
+                    <Grid x:Name="manageCustomerHomeGrid" Margin="10,70,10,10" d:IsHidden="True">
                         <Grid Margin="10,1,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Label x:Name="label13" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
                             <TextBox x:Name="searchBox4" HorizontalAlignment="Left" Height="25" Margin="56,3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="317"/>
@@ -855,7 +860,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
-                    <Grid x:Name="customerDetailsGrid" Margin="10,70,10,10" IsEnabled="False" Visibility="Hidden" d:IsLocked="True">
+                    <Grid x:Name="customerDetailsGrid" Margin="10,70,10,10" IsEnabled="False" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1175*"/>
                             <ColumnDefinition Width="62*"/>
@@ -964,10 +969,11 @@
                                     </DataGrid>
                                     <Label x:Name="label1_Copy6" Content="Representative:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Width="129" FontStyle="Italic" Margin="14,636,0,0"/>
                                     <Button x:Name="newRepresentativeBtn" Content="+add" HorizontalAlignment="Left" Margin="491,639,0,0" VerticalAlignment="Top" Width="111" FontWeight="Normal" Click="newRepresentativeBtn_Click"/>
-                                    <DataGrid x:Name="customerRepresentativeDg" HorizontalAlignment="Left" Height="169" Margin="47,677,0,0" VerticalAlignment="Top" Width="555" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedCustContact, Mode=TwoWay}" SelectionChanged="customerRepresentativeDg_SelectionChanged" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" RowHeight="30">
+                                    <DataGrid x:Name="customerRepresentativeDg" HorizontalAlignment="Left" Height="169" Margin="47,677,0,0" VerticalAlignment="Top" Width="555" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectionChanged="customerRepresentativeDg_SelectionChanged" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" RowHeight="30" ItemsSource="{Binding Representatives}" SelectedItem="{Binding SelectedRepresentative}">
+                                        
                                         <DataGrid.Columns >
-                                            <DataGridTextColumn Binding="{Binding firstName}" ClipboardContentBinding="{x:Null}" Width="200" CanUserResize="False" Visibility="Visible" Header="First Name"/>
-                                            <DataGridTextColumn Binding="{Binding lastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="200" CanUserResize="False"/>
+                                            <DataGridTextColumn Binding="{Binding FirstName}" ClipboardContentBinding="{x:Null}" Width="200" CanUserResize="False" Visibility="Visible" Header="First Name"/>
+                                            <DataGridTextColumn Binding="{Binding LastName}" ClipboardContentBinding="{x:Null}" Header="Last Name" Width="200" CanUserResize="False"/>
                                             <DataGridTemplateColumn x:Name="columnEditBtnCustContRep" Width="100" Visibility="Hidden"  CanUserResize="False">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -994,9 +1000,9 @@
                     </Grid>
                 </Grid>
                 <Grid x:Name="manageEmployeeGrid" IsVisibleChanged="manageCustomerGrid_IsVisibleChanged" d:IsHidden="True">
-                    <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF2980B9">
-                        <Label x:Name="label7_Copy4" Content="Manage - Employee" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
-                        <Button x:Name="settingsEmployeeGridBtn" Margin="1170,0,0,0" Style="{StaticResource settingsButton}" HorizontalAlignment="Right" Width="59" Foreground="White"  Click="settingsEmployeeGridBtn_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF1695A3">
+                        <Label x:Name="label7_Copy4" Content="Manage - Employee" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="{x:Null}" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
+                        <Button x:Name="settingsEmployeeGridBtn" Margin="1170,0,0,0" Style="{StaticResource settingsButton}" HorizontalAlignment="Right" Width="59" Foreground="White"  Click="settingsEmployeeGridBtn_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{x:Null}">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="55">
                                 <Canvas x:Name="Capa_1g1" Width="30" Height="30">
                                     <Canvas.RenderTransform>
@@ -1073,7 +1079,7 @@
                     </Grid>
                 </Grid>
                 <Grid x:Name="manageSupplierGrid" IsVisibleChanged="manageSupplierGrid_IsVisibleChanged" d:IsHidden="True">
-                    <Label x:Name="label7_Copy5" Content="Manage - Supplier" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
+                    <Label x:Name="label7_Copy5" Content="Manage - Supplier" Margin="10,0" FontSize="20" FontWeight="Bold" Background="#FF1695A3" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
                     <Grid x:Name="manageSupplierHome" Margin="10,70,10,10">
                         <Grid Margin="10,1,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Label x:Name="label15" Content="Search:" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -1283,8 +1289,8 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
-                    <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF2980B9">
-                        <Label x:Name="label7_Copy9" Content="Manage - Contractor" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="#FF2980B9" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
+                    <Grid Height="57" Margin="10,0" VerticalAlignment="Top" Background="#FF1695A3">
+                        <Label x:Name="label7_Copy9" Content="Manage - Contractor" Margin="0,0,307,0" FontSize="20" FontWeight="Bold" Background="{x:Null}" Foreground="White" Padding="10,10,10,5" Height="57" VerticalAlignment="Top"/>
                     </Grid>
                 </Grid>
                 <Grid x:Name="manageApplicationGrid" d:IsHidden="True">

@@ -67,8 +67,8 @@ namespace prototype2
                     {
                         contactType = "Mobile Number";
                     }
-                    var data = new Contacts { contactType = contactType, contactTypeID = details[0], contactDetails = details[1] };
-                    repContactsDg.Items.Add(data);
+                    //var data = new Contacts { contactType = contactType, contactTypeID = details[0], contactDetails = details[1] };
+                    //repContactsDg.Items.Add(data);
                 }
             }
         }
@@ -86,8 +86,7 @@ namespace prototype2
             
             if (contactTypeCb.SelectedIndex != 0)
             {
-                var data = new Contacts { contactType = contactTypeCb.SelectedValuePath.ToString(), contactTypeID = ""+contactTypeCb.SelectedIndex, contactDetails = contactDetail };
-                repContactsDg.Items.Add(data);
+                RepContacts.RepContact.Add(new RepContacts() { ContactTypeID = contactTypeCb.SelectedIndex.ToString(), ContactType = contactTypeCb.SelectedValue.ToString(), ContactDetails = contactDetail });
                 string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
                 contactDetails.Add(details);
                 validateTextBoxes();
@@ -204,10 +203,12 @@ namespace prototype2
             if (contactDetails.Count>0)
             {
                 saveBtn.IsEnabled = true;
+                saveCustContactBtn.IsEnabled = true;
             }
             else
             {
                 saveBtn.IsEnabled = false;
+                saveCustContactBtn.IsEnabled = false;
             }
         }
 
@@ -230,21 +231,20 @@ namespace prototype2
         {
             if (repContactsDg.SelectedItem != null)
             {
-                String id = (repContactsDg.Columns[0].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
-                contactTypeCb.SelectedIndex = int.Parse(id);
+                contactTypeCb.SelectedIndex = int.Parse(RepContacts.SelectedRepContact.ContactTypeID);
 
-                if (id.Equals("1"))
+                if (RepContacts.SelectedRepContact.ContactTypeID.Equals("1"))
                 {
-                    contactDetailsEmailTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsEmailTb.Text = RepContacts.SelectedRepContact.ContactDetails;
 
                 }
-                else if (id.Equals("2"))
+                else if (RepContacts.SelectedRepContact.ContactTypeID.Equals("2"))
                 {
-                    contactDetailsMobileTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsPhoneTb.Text = RepContacts.SelectedRepContact.ContactDetails;
                 }
-                else if (id.Equals("3"))
+                else if (RepContacts.SelectedRepContact.ContactTypeID.Equals("3"))
                 {
-                    contactDetailsPhoneTb.Text = (repContactsDg.Columns[2].GetCellContent(repContactsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsMobileTb.Text = RepContacts.SelectedRepContact.ContactDetails;
                 }
                 saveCustContactBtn.Visibility = Visibility.Visible;
                 cancelCustContactBtn.Visibility = Visibility.Visible;
@@ -275,14 +275,9 @@ namespace prototype2
                 if (contactTypeCb.SelectedIndex != 0)
                 {
                     saveCustContactBtn.Visibility = Visibility.Hidden;
-                    int selectIndex = repContactsDg.SelectedIndex;
-                    repContactsDg.Items.RemoveAt(selectIndex);
-                    string[] contactTemp = contactDetails[selectIndex];
-                    contactDetails.RemoveAt(selectIndex);
-                    contactTemp[1] = contactDetail;
-                    var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
-                    repContactsDg.Items.Add(data);
-                    contactDetails.Add(contactTemp);
+                    RepContacts.SelectedRepContact.ContactDetails = contactDetail;
+                    RepContacts.SelectedRepContact.ContactType = contactTypeCb.SelectedValue.ToString();
+                    RepContacts.SelectedRepContact.ContactTypeID = contactTypeCb.SelectedIndex.ToString();
                     contactDetailsEmailTb.Text = "";
                     contactDetailsMobileTb.Text = "";
                     contactDetailsPhoneTb.Text = "";

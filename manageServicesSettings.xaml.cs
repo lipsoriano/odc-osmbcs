@@ -57,6 +57,16 @@ namespace prototype2
                 serviceTypeDg.ItemsSource = fromDb.Tables["t"].DefaultView;
                 dbCon.Close();
             }
+            if (dbCon.IsConnect())
+            {
+                string query = "SELECT * FROM provinces_t";
+                MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                DataSet fromDb = new DataSet();
+                dataAdapter.Fill(fromDb, "t");
+                custProvinceCb.ItemsSource = fromDb.Tables["t"].DefaultView;
+                dbCon.Close();
+
+            }
         }
 
         private void serviceName_TextChanged(object sender, TextChangedEventArgs e)
@@ -201,6 +211,97 @@ namespace prototype2
             }
         }
 
-        
+        private void setPriceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (locationPrice.Value != null)
+            {
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                MessageBoxResult result = MessageBox.Show("Do you want to save this price?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (initPrice)
+                    {
+                        string query = "INSERT INTO location_details_t (locationProvinceID,locationPrice) VALUES ('" + custProvinceCb.SelectedValue + "', '" + locationPrice.Value + "')";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Saved.");
+                            custProvinceCb.SelectedValue = -1;
+                            locationPrice.Value = 0;
+                            setWindowControls();
+                        }
+                    }
+                    else
+                    {
+                        string query = "UPDATE `location_details_t` SET locationPrice = '" + locationPrice.Value + "' WHERE locationId = '" + locationid + "'";
+                        if (dbCon.insertQuery(query, dbCon.Connection))
+                        {
+                            MessageBox.Show("Updated.");
+                            id = "";
+                            custProvinceCb.SelectedValue = -1;
+                            locationPrice.Value = 0;
+                            initPrice = true;
+                            setWindowControls();
+                        }
+                    }
+                    
+
+
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    custProvinceCb.SelectedValue = -1;
+                    locationPrice.Value = 0;
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                }
+            }
+            else
+            {
+                MessageBox.Show("Enter the price.");
+            }
+            
+        }
+        bool initPrice = true;
+        string locationid = "";
+        private void custProvinceCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (custProvinceCb.SelectedIndex==-1)
+            {
+                setPriceBtn.IsEnabled = false;
+            }
+            else
+            {
+                setPriceBtn.IsEnabled = true;
+                var dbCon = DBConnection.Instance();
+                dbCon.DatabaseName = dbname;
+                if (dbCon.IsConnect())
+                {
+                    string query = "SELECT locationID,locationPrice FROM location_details_t " +
+                        "WHERE locationProvinceId = '" + custProvinceCb.SelectedValue + "';";
+                    MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                    DataSet fromDb = new DataSet();
+                    DataTable fromDbTable = new DataTable();
+                    dataAdapter.Fill(fromDb, "t");
+                    fromDbTable = fromDb.Tables["t"];
+                    if (fromDbTable.Rows.Count!=0)
+                    {
+                        initPrice = false;
+                        foreach (DataRow dr in fromDbTable.Rows)
+                        {
+                            locationPrice.Value = Decimal.Parse(dr["locationPrice"].ToString());
+                            locationid = dr["locationId"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        locationPrice.Value = 0;
+                        initPrice = true;
+                    }
+                }
+                }
+            
+        }
     }
 }

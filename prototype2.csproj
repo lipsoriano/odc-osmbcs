@@ -223,6 +223,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModelEntity.cs" />
+    <Compile Include="ViewModels.cs" />
     <Page Include="addContractor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -307,6 +309,7 @@
     <Compile Include="manageServicesSettings.xaml.cs">
       <DependentUpon>manageServicesSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models.cs" />
     <Compile Include="RepresentativeWindow.xaml.cs">
       <DependentUpon>RepresentativeWindow.xaml</DependentUpon>
     </Compile>

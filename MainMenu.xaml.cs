@@ -63,6 +63,7 @@ namespace prototype2
             contactDetailsMobileTb1.IsEnabled = false;
             contactDetailsPhoneTb1.IsEnabled = false;
             contactDetailsEmailTb1.IsEnabled = false;
+            
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -701,92 +702,68 @@ namespace prototype2
             MessageBoxResult result = MessageBox.Show("Do you want to save this new customer?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
-                string custid = "";
-                if (dbCon.IsConnect())
+                try
                 {
-                    string query = "INSERT INTO customer_t (custCompanyName,custAddInfo,custAddress,custCity,custProvinceID) VALUES ('" + custCompanyNameTb.Text + "','" + custAddInfoTb.Text + "','" + custAddressTb.Text + "','" + custCityTb.Text + "','" + custProvinceCb.SelectedValue + "')";
-
-                    if (dbCon.insertQuery(query, dbCon.Connection))
+                    string custid = "";
+                    if (dbCon.IsConnect())
                     {
-                        query = "select last_insert_id() from customer_t";
-                        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                        DataSet fromDb = new DataSet();
-                        dataAdapter.Fill(fromDb, "t");
-                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                        //INSERT NEW CUSTOMER TO DB;
+                        string proc = "INSERT_CUSTOMER";
+                        MySqlCommand cmd = dbCon.storedProc(proc, dbCon.Connection);
+                        cmd.Parameters.AddWithValue("?companyName", custCompanyNameTb.Text);
+                        cmd.Parameters["?companyName"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.AddWithValue("?addInfo", custAddInfoTb.Text);
+                        cmd.Parameters["?addInfo"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.AddWithValue("?address", custAddressTb.Text);
+                        cmd.Parameters["?address"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.AddWithValue("?city", custCityTb.Text);
+                        cmd.Parameters["?city"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.AddWithValue("?province", custProvinceCb.SelectedValue);
+                        cmd.Parameters["?province"].Direction = ParameterDirection.Input;
+                        cmd.ExecuteNonQuery();
+                        int lastinsertid = (int)cmd.Parameters["?lastinsertid"].Value;
+                        //INSERT CUST CONTACTS INTO DB;
+                        foreach (Contacts cont in MainViewModel.Contact)
                         {
-                            custid = myRow[0].ToString();
+                            proc = "INSERT_CUSTOMER_REP_CONT";
+                            cmd = dbCon.storedProc(proc, dbCon.Connection);
+                            cmd.Parameters.AddWithValue("?contactType", cont.ContactTypeID);
+                            cmd.Parameters["?contactType"].Direction = ParameterDirection.Input;
+                            cmd.Parameters.AddWithValue("?contactDetail", cont.ContactDetails);
+                            cmd.Parameters["?contactDetail"].Direction = ParameterDirection.Input;
+                            cmd.Parameters.AddWithValue("?custId", lastinsertid);
+                            cmd.Parameters["?custRepId"].Direction = ParameterDirection.Input;
+                            cmd.ExecuteNonQuery();
                         }
-                        foreach (List<string[]> repDetail in repDetails)
+                        //INSERT REPRESENTATIVE TO DB;
+                        foreach (Representative rep in MainViewModel.Representatives)
                         {
-                            foreach (string[] detail in repDetail)
+                            proc = "INSERT_CUSTOMER_REP";
+                            cmd = dbCon.storedProc(proc, dbCon.Connection);
+                            cmd.Parameters.AddWithValue("?repLName", rep.LastName);
+                            cmd.Parameters["?repLName"].Direction = ParameterDirection.Input;
+                            cmd.Parameters.AddWithValue("?repFName", rep.FirstName);
+                            cmd.Parameters["?repFName"].Direction = ParameterDirection.Input;
+                            cmd.Parameters.AddWithValue("?repMName", rep.MiddleName);
+                            cmd.Parameters["?repMName"].Direction = ParameterDirection.Input;
+                            cmd.Parameters.AddWithValue("?custID", lastinsertid);
+                            cmd.Parameters["?custID"].Direction = ParameterDirection.Input;
+                            cmd.ExecuteNonQuery();
+                            int lastinsertid1 = (int)cmd.Parameters["?lastinsertid"].Value;
+                            //INSERT CONTACTS OF REPRESENTATIVE TO DB;
+                            foreach (RepContacts repcont in MainViewModel.RepContact)
                             {
-                                query = "INSERT INTO customer_rep_t (custRepLname,custrepfname,custrepmi, custId) VALUES ('" + detail[2] + "','" + detail[0] + "','" + detail[1] + "','" + custid + "')";
-                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                {
-                                    query = "select last_insert_id() from customer_rep_t";
-                                    if (dbCon.insertQuery(query, dbCon.Connection))
-                                    {
-                                        dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                        fromDb = new DataSet();
-                                        dataAdapter.Fill(fromDb, "t");
-                                        string repid = "";
-                                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                        {
-                                            repid = myRow[0].ToString();
-                                        }
-                                        foreach (List<string[]> repcontact in repcontactDetails)
-                                        {
-                                            foreach (string[] contact in repcontact)
-                                            {
-                                                query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
-                                                dbCon.insertQuery(query, dbCon.Connection);
-                                                query = "select last_insert_id() from contacts_t";
-                                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                                {
-                                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                                    fromDb = new DataSet();
-                                                    dataAdapter.Fill(fromDb, "t");
-                                                    string contId = "";
-                                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                                    {
-                                                        contId = myRow[0].ToString();
-                                                    }
-                                                    query = "INSERT INTO customer_rep_t_contact_t (custRepId,contactId) VALUES ('" + repid + "','" + contId + "')";
-                                                    dbCon.insertQuery(query, dbCon.Connection);
-                                                }
-                                            }
-
-                                        }
-
-                                    }
-
-                                }
-                            }
-
-                        }
-                        foreach (string[] contact in contactDetails)
-                        {
-                            query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
-                            if (dbCon.insertQuery(query, dbCon.Connection))
-                            {
-                                query = "select last_insert_id() from contacts_t";
-                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                {
-                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                    fromDb = new DataSet();
-                                    dataAdapter.Fill(fromDb, "t");
-                                    string contId = "";
-                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                    {
-                                        contId = myRow[0].ToString();
-                                    }
-                                    query = "INSERT INTO customer_t_contact_t (custId,contactId) VALUES ('" + custid + "','" + contId + "')";
-                                    dbCon.insertQuery(query, dbCon.Connection);
-                                }
-
+                                proc = "INSERT_CUSTOMER_REP_CONT";
+                                cmd = dbCon.storedProc(proc, dbCon.Connection);
+                                cmd.Parameters.AddWithValue("?contactType", repcont.ContactTypeID);
+                                cmd.Parameters["?contactType"].Direction = ParameterDirection.Input;
+                                cmd.Parameters.AddWithValue("?contactDetail", repcont.ContactDetails);
+                                cmd.Parameters["?contactDetail"].Direction = ParameterDirection.Input;
+                                cmd.Parameters.AddWithValue("?custRepId", lastinsertid1);
+                                cmd.Parameters["?custRepId"].Direction = ParameterDirection.Input;
+                                cmd.ExecuteNonQuery();
                             }
                         }
-
                         MessageBox.Show("Saved");
                         manageCustomerHomeGrid.Visibility = Visibility.Visible;
                         customerDetailsGrid.Visibility = Visibility.Hidden;
@@ -809,6 +786,15 @@ namespace prototype2
                         customerDetailsGrid.IsEnabled = false;
                         setManageCustomerGridControls();
                     }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    dbCon.Close();
                 }
             }
             else if (result == MessageBoxResult.No)
@@ -1543,8 +1529,8 @@ namespace prototype2
                     if (contactTypeCb.SelectedIndex != 0)
                     {
 
-                        var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb.SelectedIndex, contactDetails = contactDetail };
-                        custContactDetailsDg.Items.Add(data);
+                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb.SelectedIndex, contactDetails = contactDetail };
+                        //custContactDetailsDg.Items.Add(data);
                         string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
                         contactDetails.Add(details);
                         contactDetailsEmailTb.Text = "";
@@ -1570,8 +1556,8 @@ namespace prototype2
                     if (contactTypeCb1.SelectedIndex != 0)
                     {
 
-                        var data = new Contacts { contactType = contactTypeCb1.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb1.SelectedIndex, contactDetails = contactDetail };
-                        custContactDetailsDg1.Items.Add(data);
+                        //var data = new Contacts { contactType = contactTypeCb1.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb1.SelectedIndex, contactDetails = contactDetail };
+                        //custContactDetailsDg1.Items.Add(data);
                         string[] details = { contactTypeCb1.SelectedIndex.ToString(), contactDetail };
                         contactDetails.Add(details);
                         contactDetailsEmailTb1.Text = "";
@@ -1810,8 +1796,8 @@ namespace prototype2
                         string[] contactTemp = contactDetails[selectIndex];
                         contactDetails.RemoveAt(selectIndex);
                         contactTemp[1] = contactDetail;
-                        var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
-                        custContactDetailsDg.Items.Add(data);
+                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
+                        //custContactDetailsDg.Items.Add(data);
                         contactDetails.Add(contactTemp);
                         contactDetailsEmailTb.Text = "";
                         contactDetailsMobileTb.Text = "";
@@ -1842,8 +1828,8 @@ namespace prototype2
                         string[] contactTemp = contactDetails[selectIndex];
                         contactDetails.RemoveAt(selectIndex);
                         contactTemp[1] = contactDetail;
-                        var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
-                        custContactDetailsDg1.Items.Add(data);
+                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
+                        //custContactDetailsDg1.Items.Add(data);
                         contactDetails.Add(contactTemp);
 
                         contactDetailsEmailTb1.Text = "";
@@ -1980,8 +1966,8 @@ namespace prototype2
             {
                 foreach (string[] detail in repDetail)
                 {
-                    var data = new Representative { firstName = detail[0], middleName = detail[1], lastName = detail[2] };
-                    customerRepresentativeDg.Items.Add(data);
+                    //var data = new Representative { firstName = detail[0], middleName = detail[1], lastName = detail[2] };
+                    //customerRepresentativeDg.Items.Add(data);
 
                 }
 
@@ -1994,8 +1980,8 @@ namespace prototype2
             {
                 foreach (string[] detail in repDetail)
                 {
-                    var data = new Representative { firstName = detail[0], middleName = detail[1], lastName = detail[2] };
-                    customerRepresentativeDg1.Items.Add(data);
+                    //var data = new Representative { firstName = detail[0], middleName = detail[1], lastName = detail[2] };
+                    //customerRepresentativeDg1.Items.Add(data);
 
                 }
 
@@ -2006,6 +1992,10 @@ namespace prototype2
         {
             addNewItem newItem = new addNewItem();
             newItem.ShowDialog();
+            foreach (Representative rep in RepresentativeViewModel.Representatives)
+            {
+
+            }
         }
     }
     internal class Item : INotifyPropertyChanged
@@ -2067,74 +2057,74 @@ namespace prototype2
         }
     }
 
-    internal class Contacts : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        protected bool SetField<T>(ref T field, T value, string propertyName)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-        private string _contactTypeID;
-        public string contactTypeID
-        {
-            get { return _contactTypeID; }
-            set { SetField(ref _contactTypeID, value, ""); }
-        }
-        private string _contactType;
-        public string contactType
-        {
-            get { return _contactType; }
-            set { SetField(ref _contactType, value, "Contact Type"); }
-        }
-        private string _contactDetails;
-        public string contactDetails
-        {
-            get { return _contactDetails; }
-            set { SetField(ref _contactDetails, value, ""); }
-        }
-    }
+    //internal class Contacts : inotifypropertychanged
+    //{
+    //    public event propertychangedeventhandler propertychanged;
+    //    protected virtual void onpropertychanged(string propertyname)
+    //    {
+    //        propertychangedeventhandler handler = propertychanged;
+    //        if (handler != null) handler(this, new propertychangedeventargs(propertyname));
+    //    }
+    //    protected bool setfield<t>(ref t field, t value, string propertyname)
+    //    {
+    //        if (equalitycomparer<t>.default.equals(field, value)) return false;
+    //        field = value;
+    //        onpropertychanged(propertyname);
+    //        return true;
+    //    }
+    //    private string _contacttypeid;
+    //    public string contacttypeid
+    //    {
+    //        get { return _contacttypeid; }
+    //        set { setfield(ref _contacttypeid, value, ""); }
+    //    }
+    //    private string _contacttype;
+    //    public string contacttype
+    //    {
+    //        get { return _contacttype; }
+    //        set { setfield(ref _contacttype, value, "contact type"); }
+    //    }
+    //    private string _contactdetails;
+    //    public string contactdetails
+    //    {
+    //        get { return _contactdetails; }
+    //        set { setfield(ref _contactdetails, value, ""); }
+    //    }
+    //}
 
-    internal class Representative : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        protected bool SetField<T>(ref T field, T value, string propertyName)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-        private string _firstName;
-        public string firstName
-        {
-            get { return _firstName; }
-            set { SetField(ref _firstName, value, ""); }
-        }
-        private string _middleName;
-        public string middleName
-        {
-            get { return _middleName; }
-            set { SetField(ref _middleName, value, "Contact Type"); }
-        }
-        private string _lastName;
-        public string lastName
-        {
-            get { return _lastName; }
-            set { SetField(ref _lastName, value, ""); }
-        }
-    }
+    //internal class Representative1 : INotifyPropertyChanged
+    //{
+    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    protected virtual void OnPropertyChanged(string propertyName)
+    //    {
+    //        PropertyChangedEventHandler handler = PropertyChanged;
+    //        if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+    //    }
+    //    protected bool SetField<T>(ref T field, T value, string propertyName)
+    //    {
+    //        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+    //        field = value;
+    //        OnPropertyChanged(propertyName);
+    //        return true;
+    //    }
+    //    private string _firstName;
+    //    public string firstName
+    //    {
+    //        get { return _firstName; }
+    //        set { SetField(ref _firstName, value, ""); }
+    //    }
+    //    private string _middleName;
+    //    public string middleName
+    //    {
+    //        get { return _middleName; }
+    //        set { SetField(ref _middleName, value, "Contact Type"); }
+    //    }
+    //    private string _lastName;
+    //    public string lastName
+    //    {
+    //        get { return _lastName; }
+    //        set { SetField(ref _lastName, value, ""); }
+    //    }
+    //}
 
 }

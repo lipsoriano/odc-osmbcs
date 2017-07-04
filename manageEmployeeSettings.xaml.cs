@@ -41,7 +41,7 @@ namespace prototype2
             {
                 if (dbCon.IsConnect())
                 {
-                    string query = "INSERT INTO `odc_db`.`emp_position_t` (`positionName`) VALUES('" + empPosNewTb.Text + "')";
+                    string query = "INSERT INTO `odc_db`.`position_t` (`positionName`) VALUES('" + empPosNewTb.Text + "')";
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
                         MessageBox.Show("Added");
@@ -66,7 +66,7 @@ namespace prototype2
             {
                 if (dbCon.IsConnect())
                 {
-                    string query = "UPDATE `odc_db`.`emp_position_t` set `positionName` = '" + empPosNewTb.Text + "' where positionID = '" + posID + "'";
+                    string query = "UPDATE `odc_db`.`position_t` set `positionName` = '" + empPosNewTb.Text + "' where positionID = '" + posID + "'";
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
                         MessageBox.Show("Saved");
@@ -86,7 +86,7 @@ namespace prototype2
                 dbCon.DatabaseName = dbname;
                 if (dbCon.IsConnect())
                 {
-                    string query = "DELETE FROM `odc_db`.`emp_position_t` WHERE `positionID`='" + employeePositionLb.SelectedValue + "';";
+                    string query = "DELETE FROM `odc_db`.`position_t` WHERE `positionID`='" + employeePositionLb.SelectedValue + "';";
                     if (dbCon.insertQuery(query, dbCon.Connection))
                     {
                         dbCon.Close();
@@ -128,7 +128,7 @@ namespace prototype2
             dbCon.DatabaseName = dbname;
             if (dbCon.IsConnect())
             {
-                string query = "SELECT * FROM EMP_POSITION_T;";
+                string query = "SELECT * FROM POSITION_T;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
                 dataAdapter.Fill(fromDb, "t1");

@@ -64,7 +64,7 @@ namespace prototype2
             }
             if (dbCon.IsConnect())
             {
-                string query = "SELECT * FROM EMP_POSITION_T;";
+                string query = "SELECT * FROM POSITION_T;";
                 MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
                 DataSet fromDb = new DataSet();
                 dataAdapter.Fill(fromDb, "t");

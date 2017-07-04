@@ -22,6 +22,7 @@ namespace prototype2
         public addNewItem()
         {
             InitializeComponent();
+            productRbtn.IsChecked = true;
         }
 
         private void productRbtn_Checked(object sender, RoutedEventArgs e)
@@ -30,6 +31,8 @@ namespace prototype2
             {
                 forms.Children[x].Visibility = Visibility.Hidden;
             }
+            product.Visibility = Visibility.Visible;
+            service.Visibility = Visibility.Hidden;
         }
 
         private void productRbtn_Unchecked(object sender, RoutedEventArgs e)
@@ -43,6 +46,7 @@ namespace prototype2
             {
                 forms.Children[x].Visibility = Visibility.Hidden;
             }
+            product.Visibility = Visibility.Hidden;
             service.Visibility = Visibility.Visible;
         }
 
