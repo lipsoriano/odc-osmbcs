@@ -212,10 +212,8 @@ namespace prototype2
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
-            string[] details = { firstNameTb.Text, middleInitialTb.Text, lastNameTb.Text };
-            repDetails.Clear();
-            repDetails.Add(details);
-
+            MainVM.Representatives.Add(new Representative() { FirstName = firstNameTb.Text , MiddleName = middleInitialTb.Text, LastName = lastNameTb.Text});
+            MainVM.ContactOfRep.Add(MainVM.RepContacts);
             this.Close();
         }
 

@@ -1524,7 +1524,7 @@ namespace prototype2
                 {
 
                     MainVM.CustContacts.Add(new Contact() { ContactTypeID = contactTypeCb.SelectedIndex.ToString(), ContactType = contactTypeCb.SelectedValue.ToString(), ContactDetails = contactDetail });
-                    custContactDg.ItemsSource = MainVM.CustContacts;
+                    //custContactDg.ItemsSource = MainVM.CustContacts;
                     contactDetailsEmailTb.Text = "";
                     contactDetailsMobileTb.Text = "";
                     contactDetailsPhoneTb.Text = "";

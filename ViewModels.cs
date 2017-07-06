@@ -46,6 +46,14 @@ namespace prototype2
             set { SetProperty(ref selectedContact, value); }
         }
 
+        protected List<ObservableCollection<Contact>> contactOfRep = new List<ObservableCollection<Contact>>();
+
+        public List<ObservableCollection<Contact>> ContactOfRep
+        {
+            get { return contactOfRep; }
+            set { contactOfRep = value; }
+        }
+
         protected ObservableCollection<Contact> repcontact =
             new ObservableCollection<Contact>();
 
