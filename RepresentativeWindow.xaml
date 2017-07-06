@@ -36,7 +36,7 @@
         </Style>
     </Window.Resources>
     <Window.DataContext>
-        <local:RepContactsViewModel x:Name="RepContacts"/>
+        <local:MainViewModel x:Name="MainVM"/>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -99,7 +99,7 @@
                 <Button x:Name="addNewCustContactBtn" Content="+add" HorizontalAlignment="Left" Margin="414,129,0,0" VerticalAlignment="Top" Width="66" FontWeight="Normal" Height="23" Click="addNewCustContactBtn_Click"/>
                 <Button x:Name="saveCustContactBtn" Content="save" HorizontalAlignment="Left" Margin="414,129,0,0" VerticalAlignment="Top" Width="66" FontWeight="Normal" Height="23" Click="saveCustContactBtn_Click" IsEnabled="False" Visibility="Hidden"/>
                 <Button x:Name="cancelCustContactBtn" Content="cancel" HorizontalAlignment="Left" Margin="485,129,0,0" VerticalAlignment="Top" Width="66" FontWeight="Normal" Height="23" Click="cancelCustContactBtn_Click" IsEnabled="True" Visibility="Hidden"/>
-                <DataGrid x:Name="repContactsDg" HorizontalAlignment="Left" Height="148" Margin="35,172,0,0" VerticalAlignment="Top" Width="547" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedRepContact}" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" RowHeight="30" SelectionChanged="repContactsDg_SelectionChanged" ItemsSource="{Binding RepContact}">
+                <DataGrid x:Name="repContactsDg" HorizontalAlignment="Left" Height="148" Margin="35,172,0,0" VerticalAlignment="Top" Width="547" AutoGenerateColumns="False" FontSize="14" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="True" IsReadOnly="True" SelectedItem="{Binding SelectedRepContact}" SelectionMode="Single" MinRowHeight="20" MinColumnWidth="0" RowHeight="30" SelectionChanged="repContactsDg_SelectionChanged" ItemsSource="{Binding CustContacts}">
                     <DataGrid.Columns >
                         <DataGridTextColumn Binding="{Binding ContactTypeID}" ClipboardContentBinding="{x:Null}" Width="0" CanUserResize="False" Visibility="Visible"/>
                         <DataGridTextColumn Binding="{Binding ContactType}" ClipboardContentBinding="{x:Null}" Width="200" CanUserResize="False" Visibility="Visible" Header="Contact Type"/>

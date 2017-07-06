@@ -86,9 +86,7 @@ namespace prototype2
             
             if (contactTypeCb.SelectedIndex != 0)
             {
-                RepContacts.RepContact.Add(new RepContacts() { ContactTypeID = contactTypeCb.SelectedIndex.ToString(), ContactType = contactTypeCb.SelectedValue.ToString(), ContactDetails = contactDetail });
-                string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
-                contactDetails.Add(details);
+                MainVM.CustContacts.Add(new Contact() { ContactTypeID = contactTypeCb.SelectedIndex.ToString(), ContactType = contactTypeCb.SelectedValue.ToString(), ContactDetails = contactDetail });
                 validateTextBoxes();
                 contactDetailsEmailTb.Text = "";
                 contactDetailsMobileTb.Text = "";
@@ -231,20 +229,20 @@ namespace prototype2
         {
             if (repContactsDg.SelectedItem != null)
             {
-                contactTypeCb.SelectedIndex = int.Parse(RepContacts.SelectedRepContact.ContactTypeID);
+                contactTypeCb.SelectedIndex = int.Parse(MainVM.SelectedRepContact.ContactTypeID);
 
-                if (RepContacts.SelectedRepContact.ContactTypeID.Equals("1"))
+                if (MainVM.SelectedRepContact.ContactTypeID.Equals("1"))
                 {
-                    contactDetailsEmailTb.Text = RepContacts.SelectedRepContact.ContactDetails;
+                    contactDetailsEmailTb.Text = MainVM.SelectedRepContact.ContactDetails;
 
                 }
-                else if (RepContacts.SelectedRepContact.ContactTypeID.Equals("2"))
+                else if (MainVM.SelectedRepContact.ContactTypeID.Equals("2"))
                 {
-                    contactDetailsPhoneTb.Text = RepContacts.SelectedRepContact.ContactDetails;
+                    contactDetailsPhoneTb.Text = MainVM.SelectedRepContact.ContactDetails;
                 }
-                else if (RepContacts.SelectedRepContact.ContactTypeID.Equals("3"))
+                else if (MainVM.SelectedRepContact.ContactTypeID.Equals("3"))
                 {
-                    contactDetailsMobileTb.Text = RepContacts.SelectedRepContact.ContactDetails;
+                    contactDetailsMobileTb.Text = MainVM.SelectedRepContact.ContactDetails;
                 }
                 saveCustContactBtn.Visibility = Visibility.Visible;
                 cancelCustContactBtn.Visibility = Visibility.Visible;
@@ -275,9 +273,9 @@ namespace prototype2
                 if (contactTypeCb.SelectedIndex != 0)
                 {
                     saveCustContactBtn.Visibility = Visibility.Hidden;
-                    RepContacts.SelectedRepContact.ContactDetails = contactDetail;
-                    RepContacts.SelectedRepContact.ContactType = contactTypeCb.SelectedValue.ToString();
-                    RepContacts.SelectedRepContact.ContactTypeID = contactTypeCb.SelectedIndex.ToString();
+                    MainVM.SelectedRepContact.ContactDetails = contactDetail;
+                    MainVM.SelectedRepContact.ContactType = contactTypeCb.SelectedValue.ToString();
+                    MainVM.SelectedRepContact.ContactTypeID = contactTypeCb.SelectedIndex.ToString();
                     contactDetailsEmailTb.Text = "";
                     contactDetailsMobileTb.Text = "";
                     contactDetailsPhoneTb.Text = "";

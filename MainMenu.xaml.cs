@@ -102,14 +102,14 @@ namespace prototype2
                     manageCustomeDataGrid.Columns[manageContractorDataGrid.Columns.IndexOf(columnDelBtnCont)].Visibility = Visibility.Hidden;
                 }
             }
-            if (!visual.IsDescendantOf(custContactDetailsDg))
-            {
-                if (custContactDetailsDg.SelectedItems.Count > 0)
-                {
-                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Hidden;
-                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Hidden;
-                }
-            }
+            //if (!visual.IsDescendantOf(custContactDg))
+            //{
+            //    if (custContactDg.SelectedItems.Count > 0)
+            //    {
+            //        custContactDg.Columns[custContactDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Hidden;
+            //        custContactDg.Columns[custContactDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Hidden;
+            //    }
+            //}
         }
 
         /*-----------------MENU BAR BUTTONS-------------------*/
@@ -673,7 +673,6 @@ namespace prototype2
         {
             manageCustomerHomeGrid.Visibility = Visibility.Hidden;
             customerDetailsGrid.Visibility = Visibility.Visible;
-            customerDetailsGrid.IsEnabled = true;
         }
 
         private void manageCustomeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -721,9 +720,10 @@ namespace prototype2
                         cmd.Parameters.AddWithValue("?province", custProvinceCb.SelectedValue);
                         cmd.Parameters["?province"].Direction = ParameterDirection.Input;
                         cmd.ExecuteNonQuery();
+                        
                         int lastinsertid = (int)cmd.Parameters["?lastinsertid"].Value;
                         //INSERT CUST CONTACTS INTO DB;
-                        foreach (Contacts cont in MainViewModel.Contact)
+                        foreach (Contact cont in MainVM.CustContacts)
                         {
                             proc = "INSERT_CUSTOMER_REP_CONT";
                             cmd = dbCon.storedProc(proc, dbCon.Connection);
@@ -736,7 +736,7 @@ namespace prototype2
                             cmd.ExecuteNonQuery();
                         }
                         //INSERT REPRESENTATIVE TO DB;
-                        foreach (Representative rep in MainViewModel.Representatives)
+                        foreach (Representative rep in MainVM.Representatives)
                         {
                             proc = "INSERT_CUSTOMER_REP";
                             cmd = dbCon.storedProc(proc, dbCon.Connection);
@@ -751,7 +751,7 @@ namespace prototype2
                             cmd.ExecuteNonQuery();
                             int lastinsertid1 = (int)cmd.Parameters["?lastinsertid"].Value;
                             //INSERT CONTACTS OF REPRESENTATIVE TO DB;
-                            foreach (RepContacts repcont in MainViewModel.RepContact)
+                            foreach (Contact repcont in MainVM.RepContacts)
                             {
                                 proc = "INSERT_CUSTOMER_REP_CONT";
                                 cmd = dbCon.storedProc(proc, dbCon.Connection);
@@ -769,7 +769,6 @@ namespace prototype2
                         customerDetailsGrid.Visibility = Visibility.Hidden;
                         repDetails.Clear();
                         repcontactDetails.Clear();
-                        contactDetails.Clear();
                         Name = "";
                         Address = "";
                         City = "";
@@ -803,7 +802,6 @@ namespace prototype2
                 customerDetailsGrid.Visibility = Visibility.Hidden;
                 repDetails.Clear();
                 repcontactDetails.Clear();
-                contactDetails.Clear();
                 Name = "";
                 Address = "";
                 City = "";
@@ -834,7 +832,6 @@ namespace prototype2
             customerDetailsGrid.IsEnabled = false;
             repDetails.Clear();
             repcontactDetails.Clear();
-            contactDetails.Clear();
             Name = "";
             Address = "";
             City = "";
@@ -1095,97 +1092,97 @@ namespace prototype2
             if (result == MessageBoxResult.Yes)
             {
                 string custid = "";
-                if (dbCon.IsConnect())
-                {
-                    string query = "INSERT INTO supplier_t (suppCompanyName,suppAddInfo,suppAddress,suppCity,suppProvinceID) VALUES ('" + custCompanyNameTb1.Text + "','" + custAddInfoTb1.Text + "','" + custAddressTb1.Text + "','" + custCityTb1.Text + "','" + custProvinceCb1.SelectedValue + "')";
+                //if (dbCon.IsConnect())
+                //{
+                //    string query = "INSERT INTO supplier_t (suppCompanyName,suppAddInfo,suppAddress,suppCity,suppProvinceID) VALUES ('" + custCompanyNameTb1.Text + "','" + custAddInfoTb1.Text + "','" + custAddressTb1.Text + "','" + custCityTb1.Text + "','" + custProvinceCb1.SelectedValue + "')";
 
-                    if (dbCon.insertQuery(query, dbCon.Connection))
-                    {
-                        query = "select last_insert_id() from supplier_t";
-                        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                        DataSet fromDb = new DataSet();
-                        dataAdapter.Fill(fromDb, "t");
-                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                        {
-                            custid = myRow[0].ToString();
-                        }
-                        foreach (List<string[]> repDetail in repDetails)
-                        {
-                            foreach (string[] detail in repDetail)
-                            {
-                                query = "INSERT INTO supplier_rep_t (suppRepLname,supprepfname,supprepmi, suppId) VALUES ('" + detail[2] + "','" + detail[0] + "','" + detail[1] + "','" + custid + "')";
-                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                {
-                                    query = "select last_insert_id() from supplier_rep_t";
-                                    if (dbCon.insertQuery(query, dbCon.Connection))
-                                    {
-                                        dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                        fromDb = new DataSet();
-                                        dataAdapter.Fill(fromDb, "t");
-                                        string repid = "";
-                                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                        {
-                                            repid = myRow[0].ToString();
-                                        }
-                                        foreach (List<string[]> repcontact in repcontactDetails)
-                                        {
-                                            foreach (string[] contact in repcontact)
-                                            {
-                                                query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
-                                                dbCon.insertQuery(query, dbCon.Connection);
-                                                query = "select last_insert_id() from contacts_t";
-                                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                                {
-                                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                                    fromDb = new DataSet();
-                                                    dataAdapter.Fill(fromDb, "t");
-                                                    string contId = "";
-                                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                                    {
-                                                        contId = myRow[0].ToString();
-                                                    }
-                                                    query = "INSERT INTO supplier_rep_t_contact_t (suppRepId,contactId) VALUES ('" + repid + "','" + contId + "')";
-                                                    dbCon.insertQuery(query, dbCon.Connection);
-                                                }
-                                            }
+                //    if (dbCon.insertQuery(query, dbCon.Connection))
+                //    {
+                //        query = "select last_insert_id() from supplier_t";
+                //        MySqlDataAdapter dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                //        DataSet fromDb = new DataSet();
+                //        dataAdapter.Fill(fromDb, "t");
+                //        foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                //        {
+                //            custid = myRow[0].ToString();
+                //        }
+                //        foreach (List<string[]> repDetail in repDetails)
+                //        {
+                //            foreach (string[] detail in repDetail)
+                //            {
+                //                query = "INSERT INTO supplier_rep_t (suppRepLname,supprepfname,supprepmi, suppId) VALUES ('" + detail[2] + "','" + detail[0] + "','" + detail[1] + "','" + custid + "')";
+                //                if (dbCon.insertQuery(query, dbCon.Connection))
+                //                {
+                //                    query = "select last_insert_id() from supplier_rep_t";
+                //                    if (dbCon.insertQuery(query, dbCon.Connection))
+                //                    {
+                //                        dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                //                        fromDb = new DataSet();
+                //                        dataAdapter.Fill(fromDb, "t");
+                //                        string repid = "";
+                //                        foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                //                        {
+                //                            repid = myRow[0].ToString();
+                //                        }
+                //                        foreach (List<string[]> repcontact in repcontactDetails)
+                //                        {
+                //                            foreach (string[] contact in repcontact)
+                //                            {
+                //                                query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
+                //                                dbCon.insertQuery(query, dbCon.Connection);
+                //                                query = "select last_insert_id() from contacts_t";
+                //                                if (dbCon.insertQuery(query, dbCon.Connection))
+                //                                {
+                //                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                //                                    fromDb = new DataSet();
+                //                                    dataAdapter.Fill(fromDb, "t");
+                //                                    string contId = "";
+                //                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                //                                    {
+                //                                        contId = myRow[0].ToString();
+                //                                    }
+                //                                    query = "INSERT INTO supplier_rep_t_contact_t (suppRepId,contactId) VALUES ('" + repid + "','" + contId + "')";
+                //                                    dbCon.insertQuery(query, dbCon.Connection);
+                //                                }
+                //                            }
 
-                                        }
+                //                        }
 
-                                    }
+                //                    }
 
-                                }
-                            }
+                //                }
+                //            }
 
-                        }
-                        foreach (string[] contact in contactDetails)
-                        {
-                            query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
-                            if (dbCon.insertQuery(query, dbCon.Connection))
-                            {
-                                query = "select last_insert_id() from contacts_t";
-                                if (dbCon.insertQuery(query, dbCon.Connection))
-                                {
-                                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
-                                    fromDb = new DataSet();
-                                    dataAdapter.Fill(fromDb, "t");
-                                    string contId = "";
-                                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
-                                    {
-                                        contId = myRow[0].ToString();
-                                    }
-                                    query = "INSERT INTO supplier_t_contact_t (suppId,contactId) VALUES ('" + custid + "','" + contId + "')";
-                                    dbCon.insertQuery(query, dbCon.Connection);
-                                }
+                //        }
+                //        foreach (string[] contact in contactDetails)
+                //        {
+                //            query = "INSERT INTO contacts_t (contactType,contactDetails) VALUES ('" + contact[0] + "','" + contact[1] + "')";
+                //            if (dbCon.insertQuery(query, dbCon.Connection))
+                //            {
+                //                query = "select last_insert_id() from contacts_t";
+                //                if (dbCon.insertQuery(query, dbCon.Connection))
+                //                {
+                //                    dataAdapter = dbCon.selectQuery(query, dbCon.Connection);
+                //                    fromDb = new DataSet();
+                //                    dataAdapter.Fill(fromDb, "t");
+                //                    string contId = "";
+                //                    foreach (DataRow myRow in fromDb.Tables[0].Rows)
+                //                    {
+                //                        contId = myRow[0].ToString();
+                //                    }
+                //                    query = "INSERT INTO supplier_t_contact_t (suppId,contactId) VALUES ('" + custid + "','" + contId + "')";
+                //                    dbCon.insertQuery(query, dbCon.Connection);
+                //                }
 
-                            }
-                        }
+                //            }
+                //        }
 
-                        MessageBox.Show("Saved");
-                        manageSupplierHome.Visibility = Visibility.Visible;
-                        supplierDetailsGrid.Visibility = Visibility.Hidden;
-                        supplierDetailsGrid.IsEnabled = false;
-                    }
-                }
+                //        MessageBox.Show("Saved");
+                //        manageSupplierHome.Visibility = Visibility.Visible;
+                //        supplierDetailsGrid.Visibility = Visibility.Hidden;
+                //        supplierDetailsGrid.IsEnabled = false;
+                //    }
+                //}
             }
             else if (result == MessageBoxResult.No)
             {
@@ -1449,7 +1446,7 @@ namespace prototype2
 
         private void validateCustomerDetailsTextBoxes()
         {
-            if (custCompanyNameTb.Text.Equals("") || custAddressTb.Text.Equals("") || custCityTb.Text.Equals("") || custProvinceCb.SelectedIndex == -1 || contactDetails.Count == 0 || repDetails.Count == 0)
+            if (custCompanyNameTb.Text.Equals("") || custAddressTb.Text.Equals("") || custCityTb.Text.Equals("") || custProvinceCb.SelectedIndex == -1 || MainVM.RepContacts.Count == 0 || repDetails.Count == 0)
             {
                 saveCustBtn.IsEnabled = false;
             }
@@ -1460,7 +1457,7 @@ namespace prototype2
         }
         private void validateSuppDetailsTextBoxes()
         {
-            if (custCompanyNameTb1.Text.Equals("") || custAddressTb1.Text.Equals("") || custCityTb1.Text.Equals("") || custProvinceCb1.SelectedIndex == -1 || contactDetails.Count == 0 || repDetails.Count == 0)
+            if (custCompanyNameTb1.Text.Equals("") || custAddressTb1.Text.Equals("") || custCityTb1.Text.Equals("") || custProvinceCb1.SelectedIndex == -1 || MainVM.RepContacts.Count == 0 || repDetails.Count == 0)
             {
                 saveSuppBtn.IsEnabled = false;
             }
@@ -1519,63 +1516,32 @@ namespace prototype2
                 contactDetailsEmailTb1.IsEnabled = false;
             }
         }
-        public List<string[]> contactDetails = new List<string[]>();
         private void addNewCustContactBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (customerDetailsGrid.IsEnabled)
+            if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true))
             {
-                if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb) == true))
+                if (contactTypeCb.SelectedIndex != 0)
                 {
-                    if (contactTypeCb.SelectedIndex != 0)
-                    {
 
-                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb.SelectedIndex, contactDetails = contactDetail };
-                        //custContactDetailsDg.Items.Add(data);
-                        string[] details = { contactTypeCb.SelectedIndex.ToString(), contactDetail };
-                        contactDetails.Add(details);
-                        contactDetailsEmailTb.Text = "";
-                        contactDetailsMobileTb.Text = "";
-                        contactDetailsPhoneTb.Text = "";
-                        validateCustomerDetailsTextBoxes();
-                        Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
-                        Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
-                        Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Select The Type");
-                    }
+                    MainVM.CustContacts.Add(new Contact() { ContactTypeID = contactTypeCb.SelectedIndex.ToString(), ContactType = contactTypeCb.SelectedValue.ToString(), ContactDetails = contactDetail });
+                    custContactDg.ItemsSource = MainVM.CustContacts;
+                    contactDetailsEmailTb.Text = "";
+                    contactDetailsMobileTb.Text = "";
+                    contactDetailsPhoneTb.Text = "";
+                    validateCustomerDetailsTextBoxes();
+                    Validation.ClearInvalid((contactDetailsPhoneTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsEmailTb).GetBindingExpression(TextBox.TextProperty));
+                    Validation.ClearInvalid((contactDetailsMobileTb).GetBindingExpression(TextBox.TextProperty));
+                    MessageBox.Show(""+custContactDg.Items.Count);
+                   
                 }
                 else
-                    MessageBox.Show("Please resolve the error first.");
-            }
-            else if (supplierDetailsGrid.IsEnabled)
-            {
-                if (!(System.Windows.Controls.Validation.GetHasError(contactDetailsPhoneTb1) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsEmailTb1) == true) && !(System.Windows.Controls.Validation.GetHasError(contactDetailsMobileTb1) == true))
                 {
-                    if (contactTypeCb1.SelectedIndex != 0)
-                    {
-
-                        //var data = new Contacts { contactType = contactTypeCb1.SelectedValue.ToString(), contactTypeID = "" + contactTypeCb1.SelectedIndex, contactDetails = contactDetail };
-                        //custContactDetailsDg1.Items.Add(data);
-                        string[] details = { contactTypeCb1.SelectedIndex.ToString(), contactDetail };
-                        contactDetails.Add(details);
-                        contactDetailsEmailTb1.Text = "";
-                        contactDetailsMobileTb1.Text = "";
-                        contactDetailsPhoneTb1.Text = "";
-                        validateSuppDetailsTextBoxes();
-                        Validation.ClearInvalid((contactDetailsPhoneTb1).GetBindingExpression(TextBox.TextProperty));
-                        Validation.ClearInvalid((contactDetailsEmailTb1).GetBindingExpression(TextBox.TextProperty));
-                        Validation.ClearInvalid((contactDetailsMobileTb1).GetBindingExpression(TextBox.TextProperty));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Select The Type");
-                    }
+                    MessageBox.Show("Select The Type");
                 }
-                else
-                    MessageBox.Show("Please resolve the error first.");
             }
+            else
+                MessageBox.Show("Please resolve the error first.");
 
         }
 
@@ -1676,47 +1642,25 @@ namespace prototype2
                 }
             }
         }
-
-        private void custContactDetailsDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Visual visual = e.OriginalSource as Visual;
-            if (visual.IsDescendantOf(custContactDetailsDg))
-            {
-                if (custContactDetailsDg.SelectedItems.Count > 0)
-                {
-                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Visible;
-                    custContactDetailsDg.Columns[custContactDetailsDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Visible;
-                }
-            }
-            if (visual.IsDescendantOf(custContactDetailsDg1))
-            {
-                if (custContactDetailsDg1.SelectedItems.Count > 0)
-                {
-                    custContactDetailsDg1.Columns[custContactDetailsDg1.Columns.IndexOf(columnEditBtnCustCont1)].Visibility = Visibility.Visible;
-                    custContactDetailsDg1.Columns[custContactDetailsDg1.Columns.IndexOf(columnDelBtnCustCont1)].Visibility = Visibility.Visible;
-                }
-            }
-        }
-
         private void btnEditCustCont_Click(object sender, RoutedEventArgs e)
         {
-            if (custContactDetailsDg.SelectedItem != null)
+            if (custContactDg.SelectedItem != null)
             {
-                String id = (custContactDetailsDg.Columns[0].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                String id = (custContactDg.Columns[0].GetCellContent(custContactDg.SelectedItem) as TextBlock).Text;
                 contactTypeCb.SelectedIndex = int.Parse(id);
 
                 if (id.Equals("1"))
                 {
-                    contactDetailsEmailTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsEmailTb.Text = (custContactDg.Columns[2].GetCellContent(custContactDg.SelectedItem) as TextBlock).Text;
 
                 }
                 else if (id.Equals("2"))
                 {
-                    contactDetailsMobileTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsMobileTb.Text = (custContactDg.Columns[2].GetCellContent(custContactDg.SelectedItem) as TextBlock).Text;
                 }
                 else if (id.Equals("3"))
                 {
-                    contactDetailsPhoneTb.Text = (custContactDetailsDg.Columns[2].GetCellContent(custContactDetailsDg.SelectedItem) as TextBlock).Text;
+                    contactDetailsPhoneTb.Text = (custContactDg.Columns[2].GetCellContent(custContactDg.SelectedItem) as TextBlock).Text;
                 }
                 saveCustContactBtn.Visibility = Visibility.Visible;
                 cancelCustContactBtn.Visibility = Visibility.Visible;
@@ -1756,9 +1700,9 @@ namespace prototype2
                 {
                     if (newCust == 0)
                     {
-                        int selectIndex = custContactDetailsDg.SelectedIndex;
-                        custContactDetailsDg.Items.RemoveAt(selectIndex);
-                        contactDetails.RemoveAt(selectIndex);
+                        int selectIndex = custContactDg.SelectedIndex;
+                        custContactDg.Items.RemoveAt(selectIndex);
+                        MainVM.RepContacts.RemoveAt(selectIndex);
                     }
                 }
                 else if (supplierDetailsGrid.IsEnabled)
@@ -1767,7 +1711,7 @@ namespace prototype2
                     {
                         int selectIndex = custContactDetailsDg1.SelectedIndex;
                         custContactDetailsDg1.Items.RemoveAt(selectIndex);
-                        contactDetails.RemoveAt(selectIndex);
+                        MainVM.RepContacts.RemoveAt(selectIndex);
                     }
                 }
                 
@@ -1790,15 +1734,7 @@ namespace prototype2
                 {
                     if (contactTypeCb.SelectedIndex != 0)
                     {
-                        saveCustContactBtn.Visibility = Visibility.Hidden;
-                        int selectIndex = custContactDetailsDg.SelectedIndex;
-                        custContactDetailsDg.Items.RemoveAt(selectIndex);
-                        string[] contactTemp = contactDetails[selectIndex];
-                        contactDetails.RemoveAt(selectIndex);
-                        contactTemp[1] = contactDetail;
-                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
-                        //custContactDetailsDg.Items.Add(data);
-                        contactDetails.Add(contactTemp);
+                        validateCustomerDetailsTextBoxes();
                         contactDetailsEmailTb.Text = "";
                         contactDetailsMobileTb.Text = "";
                         contactDetailsPhoneTb.Text = "";
@@ -1825,13 +1761,6 @@ namespace prototype2
                         saveCustContactBtn1.Visibility = Visibility.Hidden;
                         int selectIndex = custContactDetailsDg1.SelectedIndex;
                         custContactDetailsDg1.Items.RemoveAt(selectIndex);
-                        string[] contactTemp = contactDetails[selectIndex];
-                        contactDetails.RemoveAt(selectIndex);
-                        contactTemp[1] = contactDetail;
-                        //var data = new Contacts { contactType = contactTypeCb.SelectedValue.ToString(), contactTypeID = contactTemp[0], contactDetails = contactTemp[1] };
-                        //custContactDetailsDg1.Items.Add(data);
-                        contactDetails.Add(contactTemp);
-
                         contactDetailsEmailTb1.Text = "";
                         contactDetailsMobileTb1.Text = "";
                         contactDetailsPhoneTb1.Text = "";
@@ -1929,7 +1858,7 @@ namespace prototype2
         private void editBtnCustContRep_Click(object sender, RoutedEventArgs e)
         {
             RepresentativeWindow repWindow = new RepresentativeWindow();
-            int selectIndex = custContactDetailsDg.SelectedIndex;
+            int selectIndex = custContactDg.SelectedIndex;
             repWindow.Edit = 1;
             repWindow.repDetails = repDetails[selectIndex];
             repWindow.contactDetails = repcontactDetails[selectIndex];
@@ -1947,7 +1876,7 @@ namespace prototype2
             MessageBoxResult result = MessageBox.Show("Do you want to delete this representative?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
-                int selectIndex = custContactDetailsDg.SelectedIndex;
+                int selectIndex = custContactDg.SelectedIndex;
                 repDetails.RemoveAt(selectIndex);
                 repcontactDetails.RemoveAt(selectIndex);
             }
@@ -1992,9 +1921,30 @@ namespace prototype2
         {
             addNewItem newItem = new addNewItem();
             newItem.ShowDialog();
-            foreach (Representative rep in RepresentativeViewModel.Representatives)
-            {
+            //foreach (Representative rep in MainVM.Representatives)
+            //{
 
+            //}
+        }
+
+        private void custContactDg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Visual visual = e.OriginalSource as Visual;
+            //if (visual.IsDescendantOf(custContactDg))
+            //{
+            //    if (custContactDg.SelectedItems.Count > 0)
+            //    {
+            //        custContactDg.Columns[custContactDg.Columns.IndexOf(columnEditBtnCustCont)].Visibility = Visibility.Visible;
+            //        custContactDg.Columns[custContactDg.Columns.IndexOf(columnDelBtnCustCont)].Visibility = Visibility.Visible;
+            //    }
+            //}
+            if (visual.IsDescendantOf(custContactDetailsDg1))
+            {
+                if (custContactDetailsDg1.SelectedItems.Count > 0)
+                {
+                    custContactDetailsDg1.Columns[custContactDetailsDg1.Columns.IndexOf(columnEditBtnCustCont1)].Visibility = Visibility.Visible;
+                    custContactDetailsDg1.Columns[custContactDetailsDg1.Columns.IndexOf(columnDelBtnCustCont1)].Visibility = Visibility.Visible;
+                }
             }
         }
     }

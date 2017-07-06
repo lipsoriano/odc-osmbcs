@@ -7,37 +7,9 @@ using System.Threading.Tasks;
 
 namespace prototype2
 {
-    public class MainViewModel
+    public class MainViewModel : ViewModelEntity
     {
         public MainViewModel()
-        {
-
-        }
-        RepresentativeViewModel RepresentativeVM = new RepresentativeViewModel();
-        RepContactsViewModel RepContactsVM = new RepContactsViewModel();
-
-        ContactViewModel ContactVM = new ContactViewModel();
-
-        public ObservableCollection<Representative> Representatives {
-            get { return RepresentativeVM.Representatives; }
-            set { RepresentativeVM.Representatives = value; }
-        }
-        public ObservableCollection<RepContacts> RepContact
-        {
-            get { return RepContactsVM.RepContact; }
-            set { RepContactsVM.RepContact = value; }
-        }
-
-        public ObservableCollection<Contacts> Contact
-        {
-            get { return ContactVM.Contact; }
-            set { ContactVM.Contact = value; }
-        }
-    }
-
-    public class RepresentativeViewModel : ViewModelEntity
-    {
-        public RepresentativeViewModel()
         {
 
         }
@@ -55,76 +27,40 @@ namespace prototype2
         public Representative SelectedRepresentative
         {
             get { return selectedRepresentative; }
-            set
-            {
-                if (selectedRepresentative != value)
-                {
-                    selectedRepresentative = value;
-                    NotifyPropertyChanged("SelectedRepresentative");
-                }
-            }
+            set { SetProperty(ref selectedRepresentative, value); }
         }
-    }
 
-    public class RepContactsViewModel : ViewModelEntity
-    {
-        public RepContactsViewModel()
+        protected ObservableCollection<Contact> custcontact = new ObservableCollection<Contact>();
+
+        protected Contact selectedContact = null;
+
+        public ObservableCollection<Contact> CustContacts
         {
-
+            get { return custcontact; }
+            set { custcontact = value; }
         }
-        protected ObservableCollection<RepContacts> repcontact =
-            new ObservableCollection<RepContacts>();
 
-        protected RepContacts selectedRepContact = null;
+        public Contact SelectedCustContact
+        {
+            get { return selectedContact; }
+            set { SetProperty(ref selectedContact, value); }
+        }
 
-        public ObservableCollection<RepContacts> RepContact
+        protected ObservableCollection<Contact> repcontact =
+            new ObservableCollection<Contact>();
+
+        protected Contact selectedRepContact = null;
+
+        public ObservableCollection<Contact> RepContacts
         {
             get { return repcontact; }
             set { repcontact = value; }
         }
 
-        public RepContacts SelectedRepContact
+        public Contact SelectedRepContact
         {
             get { return selectedRepContact; }
-            set
-            {
-                if (selectedRepContact != value)
-                {
-                    selectedRepContact = value;
-                    NotifyPropertyChanged("SelectedRepContact");
-                }
-            }
-        }
-    }
-
-    public class ContactViewModel : ViewModelEntity
-    {
-        public ContactViewModel()
-        {
-
-        }
-        protected ObservableCollection<Contacts> contact =
-            new ObservableCollection<Contacts>();
-
-        protected RepContacts selectedContact = null;
-
-        public ObservableCollection<Contacts> Contact
-        {
-            get { return contact; }
-            set { contact = value; }
-        }
-
-        public RepContacts SelectedContact
-        {
-            get { return selectedContact; }
-            set
-            {
-                if (selectedContact != value)
-                {
-                    selectedContact = value;
-                    NotifyPropertyChanged("SelectedContact");
-                }
-            }
+            set { SetProperty(ref selectedRepContact, value); }
         }
     }
 }

@@ -19,44 +19,71 @@ namespace prototype2
         public string FirstName
         {
             get { return firstname; }
-            set
-            {
-                if (firstname != value)
-                {
-                    firstname = value;
-                    NotifyPropertyChanged("FirstName");
-                }
-            }
+            set { SetProperty(ref firstname, value); }
         }
         public string MiddleName
         {
             get { return middlename; }
-            set
-            {
-                if (middlename != value)
-                {
-                    middlename = value;
-                    NotifyPropertyChanged("MiddleName");
-                }
-            }
+            set { SetProperty(ref middlename, value); }
         }
         public string LastName
         {
             get { return lastname; }
-            set
-            {
-                if (lastname != value)
-                {
-                    lastname = value;
-                    NotifyPropertyChanged("LastName");
-                }
-            }
+            set { SetProperty(ref lastname, value); }
         }
     }
     
-    public class RepContacts : ViewModelEntity
+    //public class RepContacts : ViewModelEntity
+    //{
+    //    public RepContacts()
+    //    {
+
+    //    }
+    //    protected string typeidr;
+    //    protected string typenamer;
+    //    protected string detailsr;
+
+    //    public string RepContactTypeID
+    //    {
+    //        get { return typeidr; }
+    //        set
+    //        {
+    //            if (typeidr != value)
+    //            {
+    //                typeidr = value;
+    //                NotifyPropertyChanged("RepContactTypeID");
+    //            }
+    //        }
+    //    }
+    //    public string RepContactType
+    //    {
+    //        get { return typenamer; }
+    //        set
+    //        {
+    //            if (typenamer != value)
+    //            {
+    //                typenamer = value;
+    //                NotifyPropertyChanged("RepContactType");
+    //            }
+    //        }
+    //    }
+    //    public string RepContactDetails
+    //    {
+    //        get { return detailsr; }
+    //        set
+    //        {
+    //            if (detailsr != value)
+    //            {
+    //                detailsr = value;
+    //                NotifyPropertyChanged("RepContactDetails");
+    //            }
+    //        }
+    //    }
+    //}
+
+    public class Contact : ViewModelEntity
     {
-        public RepContacts()
+        public Contact()
         {
 
         }
@@ -67,86 +94,18 @@ namespace prototype2
         public string ContactTypeID
         {
             get { return typeid; }
-            set
-            {
-                if (typeid != value)
-                {
-                    typeid = value;
-                    NotifyPropertyChanged("ContactTypeID");
-                }
-            }
+            set { SetProperty(ref typeid, value); }
         }
         public string ContactType
         {
             get { return typename; }
-            set
-            {
-                if (typename != value)
-                {
-                    typename = value;
-                    NotifyPropertyChanged("ContactType");
-                }
-            }
+            set { SetProperty(ref typename, value); }
         }
         public string ContactDetails
         {
             get { return details; }
-            set
-            {
-                if (details != value)
-                {
-                    details = value;
-                    NotifyPropertyChanged("ContactDetails");
-                }
-            }
+            set { SetProperty(ref details, value); }
         }
     }
 
-    public class Contacts : ViewModelEntity
-    {
-        public Contacts()
-        {
-
-        }
-        protected string typeid;
-        protected string typename;
-        protected string details;
-
-        public string ContactTypeID
-        {
-            get { return typeid; }
-            set
-            {
-                if (typeid != value)
-                {
-                    typeid = value;
-                    NotifyPropertyChanged("ContactTypeID");
-                }
-            }
-        }
-        public string ContactType
-        {
-            get { return typename; }
-            set
-            {
-                if (typename != value)
-                {
-                    typename = value;
-                    NotifyPropertyChanged("ContactType");
-                }
-            }
-        }
-        public string ContactDetails
-        {
-            get { return details; }
-            set
-            {
-                if (details != value)
-                {
-                    details = value;
-                    NotifyPropertyChanged("ContactDetails");
-                }
-            }
-        }
-    }
 }
